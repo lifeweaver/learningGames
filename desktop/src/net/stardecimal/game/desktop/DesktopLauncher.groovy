@@ -7,7 +7,7 @@ import net.stardecimal.game.PongGame
 class DesktopLauncher {
 	static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration()
-		config.title = "my-gdx-game"
+		config.title = "Pong"
 		config.useGL30 = false
 		config.width = 800
 		config.height = 480
