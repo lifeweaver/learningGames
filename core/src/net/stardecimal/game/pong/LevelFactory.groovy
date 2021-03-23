@@ -26,13 +26,13 @@ import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
 
-class PongFactory implements DefaultLevelFactory {
+class LevelFactory implements DefaultLevelFactory {
 	private TextureRegion boundaryTex, paddleTex, pingPongTex, enemyScoreWallTex
 	Entity enemyScoringWall
 	Entity enemyPaddle
 	Entity pingPong
 
-	PongFactory(PooledEngine en, SdAssetManager assetManager) {
+	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		init(en, assetManager)
 
 		//Specific textures

@@ -4,17 +4,17 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.MathUtils
-import net.stardecimal.game.pong.PongFactory
+import net.stardecimal.game.pong.LevelFactory
 import net.stardecimal.game.entity.components.EnemyComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
 
 class EnemyPaddleSystem extends IteratingSystem{
 
-	private PongFactory levelFactory
+	private LevelFactory levelFactory
 
 	@SuppressWarnings("unchecked")
-	EnemyPaddleSystem(PongFactory lvlf) {
+	EnemyPaddleSystem(LevelFactory lvlf) {
 		super(Family.all(EnemyComponent.class).get())
 		levelFactory = lvlf
 	}
