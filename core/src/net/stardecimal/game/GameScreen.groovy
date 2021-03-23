@@ -17,25 +17,25 @@ trait GameScreen {
 	SpriteBatch batch
 	PooledEngine engine
 	Entity player
-	PongFactory levelFactory
+	LevelFactory lvlFactory
 
-	void init(final MyGames game) {
+	void init(final MyGames game, Class instance) {
 		this.parent = game
 
 		parent.assetManager.queueAddSounds()
 		parent.assetManager.manager.finishLoading()
 		controller = new KeyboardController()
 		engine = new PooledEngine()
-		levelFactory = new PongFactory(engine, parent.assetManager)
+		lvlFactory = (LevelFactory) instance.newInstance(engine, parent.assetManager)
 
 		batch = new SpriteBatch()
 		RenderingSystem renderingSystem = new RenderingSystem(batch)
 		camera = renderingSystem.camera
 		batch.projectionMatrix = camera.combined
 
-		engine.addSystem(new PhysicsSystem(levelFactory.world))
+		engine.addSystem(new PhysicsSystem(lvlFactory.world))
 		engine.addSystem(renderingSystem)
-		engine.addSystem(new PhysicsDebugSystem(levelFactory.world, renderingSystem.camera))
+		engine.addSystem(new PhysicsDebugSystem(lvlFactory.world, renderingSystem.camera))
 		engine.addSystem(new SteeringSystem())
 	}
 

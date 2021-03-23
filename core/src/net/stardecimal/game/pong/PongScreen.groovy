@@ -12,9 +12,11 @@ import net.stardecimal.game.pong.entity.systems.PongPlayerControlSystem
 
 
 class PongScreen extends ScreenAdapter implements GameScreen {
+	PongFactory levelFactory
 
 	PongScreen(final MyGames game) {
-		init(game)
+		init(game, PongFactory.class)
+		levelFactory = (PongFactory) lvlFactory
 
 		engine.addSystem(new PongPlayerControlSystem(controller))
 		engine.addSystem(new PongCollisionSystem(parent, levelFactory))
