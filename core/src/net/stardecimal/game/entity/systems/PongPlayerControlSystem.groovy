@@ -10,11 +10,11 @@ import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.StateComponent
 
-class PlayerControlSystem extends IteratingSystem {
+class PongPlayerControlSystem extends IteratingSystem {
 	KeyboardController controller
 
 	@SuppressWarnings("unchecked")
-	PlayerControlSystem(KeyboardController keyCon) {
+	PongPlayerControlSystem(KeyboardController keyCon) {
 		super(Family.all(PlayerComponent.class).get())
 		controller = keyCon
 	}

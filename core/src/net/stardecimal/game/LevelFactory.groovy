@@ -31,5 +31,4 @@ trait LevelFactory {
 			world.destroyBody(it)
 		}
 	}
-
 }

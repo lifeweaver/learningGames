@@ -7,50 +7,25 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import net.stardecimal.game.GameScreen
 import net.stardecimal.game.KeyboardController
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.WormFactory
-import net.stardecimal.game.entity.systems.PingPongCollisionSystem
 import net.stardecimal.game.entity.systems.PhysicsDebugSystem
 import net.stardecimal.game.entity.systems.PhysicsSystem
-import net.stardecimal.game.entity.systems.PlayerControlSystem
+import net.stardecimal.game.entity.systems.PongPlayerControlSystem
 import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.entity.systems.SteeringSystem
 
-class WormScreen extends ScreenAdapter {
-	final MyGames parent
-	OrthographicCamera camera
-	KeyboardController controller
-	SpriteBatch batch
-	PooledEngine engine
-	Entity player
-	WormFactory levelFactory
+class WormScreen extends ScreenAdapter implements GameScreen {
 
 	WormScreen(final MyGames game) {
-		this.parent = game
-
-		parent.assetManager.queueAddSounds()
-		parent.assetManager.manager.finishLoading()
-		controller = new KeyboardController()
-		engine = new PooledEngine()
-		levelFactory = new WormFactory(engine, parent.assetManager)
-
-		batch = new SpriteBatch()
-		RenderingSystem renderingSystem = new RenderingSystem(batch)
-		camera = renderingSystem.camera
-		batch.projectionMatrix = camera.combined
-
-		engine.addSystem(new PhysicsSystem(levelFactory.world))
-		engine.addSystem(renderingSystem)
-		engine.addSystem(new PhysicsDebugSystem(levelFactory.world, renderingSystem.camera))
-		engine.addSystem(new PlayerControlSystem(controller))
+		init(game)
 
 //		engine.addSystem(new PingPongCollisionSystem(parent, levelFactory))
 //		engine.addSystem(new PongPaddleEnemySystem(levelFactory))
 //		engine.addSystem(new PingPongSystem(parent, levelFactory))
-		engine.addSystem(new SteeringSystem())
 
-		//TODO: used to be above the block above, any reason?
 //		player = levelFactory.createPlayer(camera)
 //		levelFactory.createPingPong()
 //		levelFactory.createEnemy()
@@ -60,9 +35,7 @@ class WormScreen extends ScreenAdapter {
 	}
 
 	void resetWorld() {
-		println('Resetting world')
-		engine.removeAllEntities()
-//		levelFactory.resetWorld()
+		reset()
 		parent.playerScore = 0
 		parent.enemyScore = 0
 
@@ -72,15 +45,6 @@ class WormScreen extends ScreenAdapter {
 //		levelFactory.createFloor()
 //		levelFactory.createCeiling()
 //		levelFactory.createEnemyScoringWall()
-
-		// reset controller controls (fixes bug where controller stuck on direction if died in that position)
-		controller.left = false
-		controller.right = false
-		controller.up = false
-		controller.down = false
-		controller.isMouse1Down = false
-		controller.isMouse2Down = false
-		controller.isMouse3Down = false
 	}
 
 	@Override
