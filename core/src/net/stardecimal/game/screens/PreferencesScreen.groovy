@@ -16,11 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import net.stardecimal.game.PongGame
+import net.stardecimal.game.MyGames
 import net.stardecimal.game.loader.SdAssetManager
 
 class PreferencesScreen extends ScreenAdapter {
-	PongGame parent
+	MyGames parent
 	Stage stage
 	private Label titleLabel
 	private Label volumeMusicLabel
@@ -28,8 +28,8 @@ class PreferencesScreen extends ScreenAdapter {
 	private Label musicOnOffLabel
 	private Label soundOnOffLabel
 
-	PreferencesScreen(PongGame PongGame) {
-		parent = PongGame
+	PreferencesScreen(MyGames game) {
+		parent = game
 		stage = new Stage(new ScreenViewport())
 	}
 
@@ -102,7 +102,7 @@ class PreferencesScreen extends ScreenAdapter {
 		backButton.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeEvent event, Actor actor) {
-				parent.changeScreen(PongGame.MENU)
+				parent.changeScreen(MyGames.MENU)
 			}
 		})
 

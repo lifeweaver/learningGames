@@ -4,13 +4,12 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
-import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import net.stardecimal.game.KeyboardController
 import net.stardecimal.game.LevelFactory
-import net.stardecimal.game.PongGame
+import net.stardecimal.game.MyGames
 import net.stardecimal.game.entity.systems.BulletSystem
 import net.stardecimal.game.entity.systems.CollisionSystem
 import net.stardecimal.game.entity.systems.EnemySystem
@@ -21,7 +20,7 @@ import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.entity.systems.SteeringSystem
 
 class MainScreen extends ScreenAdapter {
-	final PongGame parent
+	final MyGames parent
 	OrthographicCamera camera
 	KeyboardController controller
 	SpriteBatch batch
@@ -29,7 +28,7 @@ class MainScreen extends ScreenAdapter {
 	Entity player
 	LevelFactory levelFactory
 
-	MainScreen(final PongGame game) {
+	MainScreen(final MyGames game) {
 		this.parent = game
 
 		parent.assetManager.queueAddSounds()

@@ -9,7 +9,7 @@ import net.stardecimal.game.screens.MenuScreen
 import net.stardecimal.game.screens.MainScreen
 import net.stardecimal.game.screens.PreferencesScreen
 
-class PongGame extends Game {
+class MyGames extends Game {
 //	private LoadingScreen loadingScreen
 
 	private PreferencesScreen preferencesScreen

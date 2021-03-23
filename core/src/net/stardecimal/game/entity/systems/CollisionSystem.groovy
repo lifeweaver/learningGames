@@ -4,16 +4,11 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.audio.Sound
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.physics.box2d.Fixture
-import com.badlogic.gdx.physics.box2d.PolygonShape
-import com.badlogic.gdx.physics.box2d.Shape
 import net.stardecimal.game.LevelFactory
-import net.stardecimal.game.PongGame
+import net.stardecimal.game.MyGames
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
-import net.stardecimal.game.entity.components.EnemyComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
@@ -23,13 +18,13 @@ import net.stardecimal.game.loader.SdAssetManager
 class CollisionSystem extends IteratingSystem {
 
 	Sound bounce, paddleLeftLoss, paddleRightLoss
-	final PongGame parent
+	final MyGames parent
 	final LevelFactory levelFactory
 
 	@SuppressWarnings('unchecked')
-	CollisionSystem(PongGame pongGame, LevelFactory lvlFactory) {
+	CollisionSystem(MyGames game, LevelFactory lvlFactory) {
 		super(Family.all(CollisionComponent.class).get())
-		parent = pongGame
+		parent = game
 		levelFactory = lvlFactory
 		bounce = parent.assetManager.manager.get(SdAssetManager.bounce)
 		paddleLeftLoss = parent.assetManager.manager.get(SdAssetManager.paddleLeftLoss)

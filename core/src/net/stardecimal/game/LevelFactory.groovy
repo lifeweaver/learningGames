@@ -1,17 +1,15 @@
 package net.stardecimal.game
 
-import com.badlogic.ashley.core.ComponentMapper
+
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.utils.Array
-import net.stardecimal.game.ai.SteeringPresets
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.EnemyComponent
@@ -44,7 +42,7 @@ class LevelFactory {
 		enemyScoreWallTex = DFUtils.makeTextureRegion(0.1, 1, '#000000')
 
 		world = new World(new Vector2(0, 0), true)
-		world.setContactListener(new PongContactListener())
+		world.setContactListener(new MyContactListener())
 		bodyFactory = BodyFactory.getInstance(world)
 	}
 
@@ -222,7 +220,7 @@ class LevelFactory {
 	Entity createPingPong() {
 		Array<Body> bodies = new Array<>()
 		world.getBodies(bodies)
-//		bodies
+
 		def pingPongs = engine.entities.findAll {Entity entity ->
 			Mapper.typeCom.get(entity).type == TypeComponent.BULLET && Mapper.bulletCom.get(entity) && !Mapper.bulletCom.get(entity).isDead
 		}
@@ -243,7 +241,6 @@ class LevelFactory {
 
 		sdBody.body = bodyFactory.makeCirclePolyBody(screenSize.x / RenderingSystem.PPM / 2 as float, screenSize.y / RenderingSystem.PPM / 2 as float,0.2f, BodyFactory.PING_PONG, BodyDef.BodyType.DynamicBody,true)
 		sdBody.body.setBullet(true) // increase physics computation to limit body travelling through other objects
-//		bodyFactory.makeAllFixturesSensors(b2dbody.body) // make bullets sensors so they don't move player
 		position.position.set(screenSize.x / RenderingSystem.PPM / 2 as float, screenSize.y / RenderingSystem.PPM / 2 as float,0)
 		texture.region = pingPongTex
 

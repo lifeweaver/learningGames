@@ -5,17 +5,17 @@ import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.Vector2
 import net.stardecimal.game.LevelFactory
-import net.stardecimal.game.PongGame
+import net.stardecimal.game.MyGames
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
 
 class BulletSystem extends IteratingSystem {
 	private LevelFactory levelFactory
-	private PongGame parent
+	private MyGames parent
 
 	@SuppressWarnings("unchecked")
-	BulletSystem(PongGame parent, LevelFactory lvlFactory){
+	BulletSystem(MyGames parent, LevelFactory lvlFactory){
 		super(Family.all(BulletComponent.class).get())
 		this.levelFactory = lvlFactory
 		this.parent = parent

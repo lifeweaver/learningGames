@@ -9,9 +9,9 @@ import com.badlogic.gdx.physics.box2d.Manifold
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
 
-class PongContactListener implements ContactListener {
+class MyContactListener implements ContactListener {
 
-	PongContactListener() {
+	MyContactListener() {
 	}
 
 	@Override

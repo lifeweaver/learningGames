@@ -15,17 +15,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import net.stardecimal.game.PongGame
+import net.stardecimal.game.MyGames
 
 class EndScreen extends ScreenAdapter {
-	private PongGame parent
+	private MyGames parent
 	private Skin skin
 	private Stage stage
 	private TextureAtlas atlas
 	private TextureAtlas.AtlasRegion background
 
-	EndScreen(PongGame pongGame){
-		parent = pongGame
+	EndScreen(MyGames game){
+		parent = game
 	}
 
 	@Override
@@ -43,7 +43,7 @@ class EndScreen extends ScreenAdapter {
 			@Override
 			void changed(ChangeEvent event, Actor actor) {
 				println("To the MENU")
-				parent.changeScreen(PongGame.MENU)
+				parent.changeScreen(MyGames.MENU)
 			}
 		})
 
