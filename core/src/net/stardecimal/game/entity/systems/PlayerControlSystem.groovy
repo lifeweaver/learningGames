@@ -1,0 +1,52 @@
+package net.stardecimal.game.entity.systems
+
+import com.badlogic.ashley.core.Entity
+import com.badlogic.ashley.core.Family
+import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Vector2
+import net.stardecimal.game.KeyboardController
+import net.stardecimal.game.LevelFactory
+import net.stardecimal.game.entity.components.Mapper
+import net.stardecimal.game.entity.components.PlayerComponent
+import net.stardecimal.game.entity.components.SdBodyComponent
+import net.stardecimal.game.entity.components.StateComponent
+
+class PlayerControlSystem extends IteratingSystem {
+	KeyboardController controller
+	LevelFactory lvlFactory
+
+
+	@SuppressWarnings("unchecked")
+	PlayerControlSystem(KeyboardController keyCon, LevelFactory levelFactory) {
+		super(Family.all(PlayerComponent.class).get())
+		controller = keyCon
+		lvlFactory = levelFactory
+	}
+	@Override
+	protected void processEntity(Entity entity, float deltaTime) {
+		SdBodyComponent playerBody = Mapper.bCom.get(entity)
+		StateComponent state = Mapper.stateCom.get(entity)
+		PlayerComponent player = Mapper.playerCom.get(entity)
+//		player.cam.position.y = playerBody.body.position.y
+
+//		println("position y: ${playerBody.body.position.y}")
+		if(playerBody.body.linearVelocity.y == 0){
+			if(playerBody.body.linearVelocity.y != 0 && state.get() != StateComponent.STATE_MOVING){
+				state.set(StateComponent.STATE_MOVING)
+			}
+		}
+
+		if(controller.up) {
+			playerBody.body.setLinearVelocity(playerBody.body.linearVelocity.x, MathUtils.lerp(playerBody.body.linearVelocity.y, 10f, 0.2f))
+		}
+
+		if(controller.down) {
+			playerBody.body.setLinearVelocity(playerBody.body.linearVelocity.x, MathUtils.lerp(playerBody.body.linearVelocity.y, -10f, 0.2f))
+		}
+
+		if(!controller.up && !controller.down){
+			playerBody.body.setLinearVelocity(playerBody.body.linearVelocity.x, MathUtils.lerp(playerBody.body.linearVelocity.y, 0, 0.1f))
+		}
+	}
+}

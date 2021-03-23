@@ -8,9 +8,6 @@ class DesktopLauncher {
 	static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration()
 		config.title = "Pong"
-		config.useGL30 = false
-		config.width = 800
-		config.height = 480
 		new LwjglApplication(new PongGame(), config)
 	}
 }
