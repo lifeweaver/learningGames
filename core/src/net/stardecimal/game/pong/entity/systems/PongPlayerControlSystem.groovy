@@ -1,4 +1,4 @@
-package net.stardecimal.game.entity.systems
+package net.stardecimal.game.pong.entity.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family

@@ -1,14 +1,14 @@
-package net.stardecimal.game.screens
+package net.stardecimal.game.pong
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
-import net.stardecimal.game.entity.systems.PingPongSystem
-import net.stardecimal.game.entity.systems.PongCollisionSystem
-import net.stardecimal.game.entity.systems.PongPaddleEnemySystem
-import net.stardecimal.game.entity.systems.PongPlayerControlSystem
+import net.stardecimal.game.pong.entity.systems.PingPongSystem
+import net.stardecimal.game.pong.entity.systems.PongCollisionSystem
+import net.stardecimal.game.pong.entity.systems.PongPaddleEnemySystem
+import net.stardecimal.game.pong.entity.systems.PongPlayerControlSystem
 
 
 class PongScreen extends ScreenAdapter implements GameScreen {

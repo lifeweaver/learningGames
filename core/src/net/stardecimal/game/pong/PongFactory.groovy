@@ -1,4 +1,4 @@
-package net.stardecimal.game
+package net.stardecimal.game.pong
 
 
 import com.badlogic.ashley.core.Entity
@@ -10,6 +10,9 @@ import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.utils.Array
+import net.stardecimal.game.BodyFactory
+import net.stardecimal.game.DFUtils
+import net.stardecimal.game.LevelFactory
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.EnemyComponent

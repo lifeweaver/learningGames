@@ -1,6 +1,7 @@
-package net.stardecimal.game
+package net.stardecimal.game.worm
 
 import com.badlogic.ashley.core.PooledEngine
+import net.stardecimal.game.LevelFactory
 import net.stardecimal.game.loader.SdAssetManager
 
 class WormFactory implements LevelFactory {

@@ -20,9 +20,9 @@ class SdAssetManager {
 //	final static String waterEffect = "particles/water.pe"
 //	final static String fireEffect = "particles/fire.pe"
 
-	final static String bounce = 'sounds/bounce.wav'
-	final static String paddleLeftLoss = 'sounds/computerWhatAreYouDoing.wav'
-	final static String paddleRightLoss = 'sounds/computerSorry.wav'
+	final static String bounce = 'pong/bounce.wav'
+	final static String paddleLeftLoss = 'pong/computerWhatAreYouDoing.wav'
+	final static String paddleRightLoss = 'pong/computerSorry.wav'
 	final static String skin = "skin/glassy-ui.json"
 
 //	final static String playingSong = 'music/Rolemusic_-_pl4y1ng.mp3'

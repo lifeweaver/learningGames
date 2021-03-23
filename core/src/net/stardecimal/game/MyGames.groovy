@@ -6,9 +6,9 @@ import net.stardecimal.game.loader.SdAssetManager
 import net.stardecimal.game.screens.EndScreen
 import net.stardecimal.game.screens.GameSelectionScreen
 import net.stardecimal.game.screens.MenuScreen
-import net.stardecimal.game.screens.PongScreen
+import net.stardecimal.game.pong.PongScreen
 import net.stardecimal.game.screens.PreferencesScreen
-import net.stardecimal.game.screens.WormScreen
+import net.stardecimal.game.worm.WormScreen
 
 class MyGames extends Game {
 //	private LoadingScreen loadingScreen

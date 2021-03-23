@@ -1,21 +1,11 @@
-package net.stardecimal.game.screens
+package net.stardecimal.game.worm
 
-import com.badlogic.ashley.core.Entity
-import com.badlogic.ashley.core.PooledEngine
+
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import net.stardecimal.game.GameScreen
-import net.stardecimal.game.KeyboardController
 import net.stardecimal.game.MyGames
-import net.stardecimal.game.WormFactory
-import net.stardecimal.game.entity.systems.PhysicsDebugSystem
-import net.stardecimal.game.entity.systems.PhysicsSystem
-import net.stardecimal.game.entity.systems.PongPlayerControlSystem
-import net.stardecimal.game.entity.systems.RenderingSystem
-import net.stardecimal.game.entity.systems.SteeringSystem
 
 class WormScreen extends ScreenAdapter implements GameScreen {
 

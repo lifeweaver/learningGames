@@ -1,4 +1,4 @@
-package net.stardecimal.game.bodies
+package net.stardecimal.game.pong.bodies
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.MathUtils
@@ -16,7 +16,7 @@ class PingPong extends Image {
 	World world
 
 	PingPong(World world1, float  pos_x, float pos_y, float width, float height, float angle) {
-		super(new Texture("pingPong.png"))
+		super(new Texture("pong/pingPong.png"))
 //		pos_x = SizingUtil.convertToWorld(pos_x)
 //		pos_y = SizingUtil.convertToWorld(pos_y)
 		width = SizingUtil.convertToWorld(width)

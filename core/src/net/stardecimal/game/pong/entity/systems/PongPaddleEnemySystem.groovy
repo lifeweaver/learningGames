@@ -1,10 +1,10 @@
-package net.stardecimal.game.entity.systems
+package net.stardecimal.game.pong.entity.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.MathUtils
-import net.stardecimal.game.PongFactory
+import net.stardecimal.game.pong.PongFactory
 import net.stardecimal.game.entity.components.EnemyComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent

@@ -1,11 +1,11 @@
-package net.stardecimal.game.entity.systems
+package net.stardecimal.game.pong.entity.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.math.Vector2
-import net.stardecimal.game.PongFactory
+import net.stardecimal.game.pong.PongFactory
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent

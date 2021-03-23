@@ -1,4 +1,4 @@
-package net.stardecimal.game.bodies
+package net.stardecimal.game.pong.bodies
 
 import com.badlogic.gdx.graphics.Texture
 
@@ -17,7 +17,7 @@ class Paddle extends Image {
 	World world
 
 	Paddle(World world1, float  pos_x, float pos_y, float width, float height, float angle) {
-		super(new Texture("paddle.png"))
+		super(new Texture("pong/paddle.png"))
 //		pos_x = SizingUtil.convertToWorld(pos_x)
 //		pos_y = SizingUtil.convertToWorld(pos_y)
 		width = SizingUtil.convertToWorld(width)

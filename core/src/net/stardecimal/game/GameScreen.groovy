@@ -8,6 +8,7 @@ import net.stardecimal.game.entity.systems.PhysicsDebugSystem
 import net.stardecimal.game.entity.systems.PhysicsSystem
 import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.entity.systems.SteeringSystem
+import net.stardecimal.game.pong.PongFactory
 
 trait GameScreen {
 	MyGames parent
