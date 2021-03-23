@@ -47,7 +47,7 @@ class Paddle extends Image {
 	void act(float delta) {
 		super.act(delta)
 
-		this.setRotation((float) body.angle*  MathUtils.radiansToDegrees)
+		this.setRotation((float) (body.angle *  MathUtils.radiansToDegrees))
 		this.setPosition(body.position.x-this.width/2 as float,body.position.y-this.height/2 as float)
 	}
 
