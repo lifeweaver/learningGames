@@ -8,14 +8,12 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import net.stardecimal.game.KeyboardController
-import net.stardecimal.game.PongLevelFactory
 import net.stardecimal.game.MyGames
-import net.stardecimal.game.entity.systems.BulletSystem
-import net.stardecimal.game.entity.systems.CollisionSystem
+import net.stardecimal.game.WormFactory
+import net.stardecimal.game.entity.systems.PingPongCollisionSystem
 import net.stardecimal.game.entity.systems.PhysicsDebugSystem
 import net.stardecimal.game.entity.systems.PhysicsSystem
 import net.stardecimal.game.entity.systems.PlayerControlSystem
-import net.stardecimal.game.entity.systems.PongPaddleEnemySystem
 import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.entity.systems.SteeringSystem
 
@@ -26,7 +24,7 @@ class WormScreen extends ScreenAdapter {
 	SpriteBatch batch
 	PooledEngine engine
 	Entity player
-//	PongLevelFactory levelFactory
+	WormFactory levelFactory
 
 	WormScreen(final MyGames game) {
 		this.parent = game
@@ -35,22 +33,22 @@ class WormScreen extends ScreenAdapter {
 		parent.assetManager.manager.finishLoading()
 		controller = new KeyboardController()
 		engine = new PooledEngine()
-//		levelFactory = new PongLevelFactory(engine, parent.assetManager) //TODO: new level factory, make abstract class?
+		levelFactory = new WormFactory(engine, parent.assetManager)
 
 		batch = new SpriteBatch()
 		RenderingSystem renderingSystem = new RenderingSystem(batch)
 		camera = renderingSystem.camera
 		batch.projectionMatrix = camera.combined
 
-//		engine.addSystem(new PhysicsSystem(levelFactory.world))
-//		engine.addSystem(renderingSystem)
-//		engine.addSystem(new PhysicsDebugSystem(levelFactory.world, renderingSystem.camera))
-//		engine.addSystem(new PlayerControlSystem(controller))
+		engine.addSystem(new PhysicsSystem(levelFactory.world))
+		engine.addSystem(renderingSystem)
+		engine.addSystem(new PhysicsDebugSystem(levelFactory.world, renderingSystem.camera))
+		engine.addSystem(new PlayerControlSystem(controller))
 
-//		engine.addSystem(new CollisionSystem(parent, levelFactory))
+//		engine.addSystem(new PingPongCollisionSystem(parent, levelFactory))
 //		engine.addSystem(new PongPaddleEnemySystem(levelFactory))
-//		engine.addSystem(new BulletSystem(parent, levelFactory))
-//		engine.addSystem(new SteeringSystem())
+//		engine.addSystem(new PingPongSystem(parent, levelFactory))
+		engine.addSystem(new SteeringSystem())
 
 		//TODO: used to be above the block above, any reason?
 //		player = levelFactory.createPlayer(camera)

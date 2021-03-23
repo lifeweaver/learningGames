@@ -5,7 +5,7 @@ import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.math.Vector2
-import net.stardecimal.game.PongLevelFactory
+import net.stardecimal.game.PongFactory
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
@@ -15,14 +15,14 @@ import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.loader.SdAssetManager
 
-class CollisionSystem extends IteratingSystem {
+class PingPongCollisionSystem extends IteratingSystem {
 
 	Sound bounce, paddleLeftLoss, paddleRightLoss
 	final MyGames parent
-	final PongLevelFactory levelFactory
+	final PongFactory levelFactory
 
 	@SuppressWarnings('unchecked')
-	CollisionSystem(MyGames game, PongLevelFactory lvlFactory) {
+	PingPongCollisionSystem(MyGames game, PongFactory lvlFactory) {
 		super(Family.all(CollisionComponent.class).get())
 		parent = game
 		levelFactory = lvlFactory

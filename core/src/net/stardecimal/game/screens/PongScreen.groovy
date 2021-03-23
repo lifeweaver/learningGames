@@ -8,10 +8,10 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import net.stardecimal.game.KeyboardController
-import net.stardecimal.game.PongLevelFactory
+import net.stardecimal.game.PongFactory
 import net.stardecimal.game.MyGames
-import net.stardecimal.game.entity.systems.BulletSystem
-import net.stardecimal.game.entity.systems.CollisionSystem
+import net.stardecimal.game.entity.systems.PingPongSystem
+import net.stardecimal.game.entity.systems.PingPongCollisionSystem
 import net.stardecimal.game.entity.systems.PongPaddleEnemySystem
 import net.stardecimal.game.entity.systems.PhysicsDebugSystem
 import net.stardecimal.game.entity.systems.PhysicsSystem
@@ -26,7 +26,7 @@ class PongScreen extends ScreenAdapter {
 	SpriteBatch batch
 	PooledEngine engine
 	Entity player
-	PongLevelFactory levelFactory
+	PongFactory levelFactory
 
 	PongScreen(final MyGames game) {
 		this.parent = game
@@ -35,7 +35,7 @@ class PongScreen extends ScreenAdapter {
 		parent.assetManager.manager.finishLoading()
 		controller = new KeyboardController()
 		engine = new PooledEngine()
-		levelFactory = new PongLevelFactory(engine, parent.assetManager)
+		levelFactory = new PongFactory(engine, parent.assetManager)
 
 		batch = new SpriteBatch()
 		RenderingSystem renderingSystem = new RenderingSystem(batch)
@@ -51,9 +51,9 @@ class PongScreen extends ScreenAdapter {
 		levelFactory.createPingPong()
 		levelFactory.createEnemy()
 
-		engine.addSystem(new CollisionSystem(parent, levelFactory))
+		engine.addSystem(new PingPongCollisionSystem(parent, levelFactory))
 		engine.addSystem(new PongPaddleEnemySystem(levelFactory))
-		engine.addSystem(new BulletSystem(parent, levelFactory))
+		engine.addSystem(new PingPongSystem(parent, levelFactory))
 		engine.addSystem(new SteeringSystem())
 
 		levelFactory.createFloor()

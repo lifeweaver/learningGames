@@ -24,34 +24,20 @@ import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
 
-class PongLevelFactory {
-	private BodyFactory bodyFactory
-	public World world
-	private PooledEngine engine
+class PongFactory implements LevelFactory {
 	private TextureRegion boundaryTex, paddleTex, pingPongTex, enemyScoreWallTex
-	Entity player
 	Entity enemyScoringWall
 	Entity enemyPaddle
 	Entity pingPong
 
-	PongLevelFactory(PooledEngine en, SdAssetManager assetManager) {
-		engine = en
+	PongFactory(PooledEngine en, SdAssetManager assetManager) {
+		init(en, assetManager)
+
+		//Specific textures
 		paddleTex = DFUtils.makeTextureRegion(1, 1, '#ffffff')
 		pingPongTex = DFUtils.makeTextureRegion(1, 1, '#ffffff')
 		boundaryTex = DFUtils.makeTextureRegion(RenderingSystem.getScreenSizeInMeters().x / RenderingSystem.PPM as float, 0.1f, '#ffffff')
 		enemyScoreWallTex = DFUtils.makeTextureRegion(0.1, 1, '#000000')
-
-		world = new World(new Vector2(0, 0), true)
-		world.setContactListener(new MyContactListener())
-		bodyFactory = BodyFactory.getInstance(world)
-	}
-
-	void resetWorld() {
-		Array<Body> bodies = new Array<>()
-		world.getBodies(bodies)
-		bodies.each {
-			world.destroyBody(it)
-		}
 	}
 
 	void createFloor(){
@@ -64,7 +50,6 @@ class PongLevelFactory {
 
 		position.position.set(screenSize.x / 2 as float, 0, 0)
 		texture.region = boundaryTex
-//		texture.offsetY = -0.4f
 		type.type = TypeComponent.SCENERY
 		sdBody.body = bodyFactory.makeBoxPolyBody(screenSize.x / RenderingSystem.PPM / 2 as float, 0.1f, screenSize.x / RenderingSystem.PPM as float, 0.1f, BodyFactory.STONE, BodyDef.BodyType.StaticBody)
 
@@ -88,7 +73,6 @@ class PongLevelFactory {
 
 		position.position.set(screenSize.x / 2 as float, screenSize.y, 0)
 		texture.region = boundaryTex
-//		texture.offsetY = -0.4f
 		type.type = TypeComponent.SCENERY
 		sdBody.body = bodyFactory.makeBoxPolyBody(screenSize.x / RenderingSystem.PPM / 2 as float, screenSize.y / RenderingSystem.PPM - 0.2 as float, screenSize.x, 0.1f, BodyFactory.STONE, BodyDef.BodyType.StaticBody)
 
@@ -121,12 +105,10 @@ class PongLevelFactory {
 		// set object position (x,y,z) z used to define draw order 0 first drawn
 		position.position.set(screenSize.x - 2 as float, screenSize.y / 2 as float,0)
 		texture.region = paddleTex
-//		texture.offsetY = 0.5f
 		type.type = TypeComponent.PLAYER
 		stateCom.set(StateComponent.STATE_NORMAL)
 		sdBody.body.setUserData(entity)
 		sdBody.body.sleepingAllowed = false
-
 		scom.body = sdBody.body
 
 		entity.add(sdBody)
@@ -140,7 +122,6 @@ class PongLevelFactory {
 
 		engine.addEntity(entity)
 		this.player = entity
-		println('player created')
 		return entity
 	}
 
@@ -165,13 +146,6 @@ class PongLevelFactory {
 		sdBody.body.setUserData(entity)
 		scom.body = sdBody.body
 
-//		scom.steeringBehavior = SteeringPresets.getWander(scom)
-//		scom.currentMode = SteeringComponent.SteeringState.WANDER
-
-//		SteeringComponent bulletScom = ((Entity) engine.getEntities().find {it.getComponent(TypeComponent).type == TypeComponent.BULLET}).getComponent(SteeringComponent)
-//		scom.steeringBehavior = SteeringPresets.getArrive(scom, bulletScom)
-//		scom.currentMode = SteeringComponent.SteeringState.ARRIVE
-
 		entity.add(sdBody)
 		entity.add(position)
 		entity.add(texture)
@@ -183,7 +157,6 @@ class PongLevelFactory {
 
 		engine.addEntity(entity)
 		enemyPaddle = entity
-		println('enemy created')
 		return entity
 	}
 
@@ -199,7 +172,6 @@ class PongLevelFactory {
 
 		position.position.set(0, screenSize.y / RenderingSystem.PPM / 2 as float, 0)
 		texture.region = enemyScoreWallTex
-//		texture.offsetY = -0.4f
 		type.type = TypeComponent.SCORE_WALL
 		sdBody.body = bodyFactory.makeBoxPolyBody(0, screenSize.y / RenderingSystem.PPM / 2 as float, 0.1f, screenSize.y, BodyFactory.STONE, BodyDef.BodyType.StaticBody)
 		scom.body = sdBody.body
@@ -263,7 +235,6 @@ class PongLevelFactory {
 
 		engine.addEntity(entity)
 		pingPong = entity
-		println("pingPong created - position: ${position.position}")
 		return entity
 	}
 }

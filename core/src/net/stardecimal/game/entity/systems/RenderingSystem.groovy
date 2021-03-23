@@ -14,7 +14,6 @@ import com.badlogic.gdx.physics.box2d.Fixture
 import com.badlogic.gdx.physics.box2d.PolygonShape
 import com.badlogic.gdx.physics.box2d.Shape
 import com.badlogic.gdx.utils.Array
-import net.stardecimal.game.PongLevelFactory
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TextureComponent
