@@ -6,7 +6,6 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
-import net.stardecimal.game.pong.PongFactory
 
 class WormScreen extends ScreenAdapter implements GameScreen {
 	WormFactory levelFactory

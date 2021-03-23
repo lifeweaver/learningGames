@@ -9,12 +9,12 @@ import net.stardecimal.game.entity.components.EnemyComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
 
-class PongPaddleEnemySystem extends IteratingSystem{
+class EnemyPaddleSystem extends IteratingSystem{
 
 	private PongFactory levelFactory
 
 	@SuppressWarnings("unchecked")
-	PongPaddleEnemySystem(PongFactory lvlf) {
+	EnemyPaddleSystem(PongFactory lvlf) {
 		super(Family.all(EnemyComponent.class).get())
 		levelFactory = lvlf
 	}

@@ -8,11 +8,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.utils.Array
 import net.stardecimal.game.BodyFactory
 import net.stardecimal.game.DFUtils
-import net.stardecimal.game.LevelFactory
+import net.stardecimal.game.DefaultLevelFactory
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.EnemyComponent
@@ -27,7 +26,7 @@ import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
 
-class PongFactory implements LevelFactory {
+class PongFactory implements DefaultLevelFactory {
 	private TextureRegion boundaryTex, paddleTex, pingPongTex, enemyScoreWallTex
 	Entity enemyScoringWall
 	Entity enemyPaddle

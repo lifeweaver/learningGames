@@ -15,14 +15,14 @@ import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.loader.SdAssetManager
 
-class PongCollisionSystem extends IteratingSystem {
+class CollisionSystem extends IteratingSystem {
 
 	Sound bounce, paddleLeftLoss, paddleRightLoss
 	final MyGames parent
 	final PongFactory levelFactory
 
 	@SuppressWarnings('unchecked')
-	PongCollisionSystem(MyGames game, PongFactory lvlFactory) {
+	CollisionSystem(MyGames game, PongFactory lvlFactory) {
 		super(Family.all(CollisionComponent.class).get())
 		parent = game
 		levelFactory = lvlFactory

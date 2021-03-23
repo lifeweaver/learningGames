@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.GL20
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.pong.entity.systems.PingPongSystem
-import net.stardecimal.game.pong.entity.systems.PongCollisionSystem
-import net.stardecimal.game.pong.entity.systems.PongPaddleEnemySystem
-import net.stardecimal.game.pong.entity.systems.PongPlayerControlSystem
+import net.stardecimal.game.pong.entity.systems.CollisionSystem
+import net.stardecimal.game.pong.entity.systems.EnemyPaddleSystem
+import net.stardecimal.game.pong.entity.systems.PlayerControlSystem
 
 
 class PongScreen extends ScreenAdapter implements GameScreen {
@@ -18,9 +18,9 @@ class PongScreen extends ScreenAdapter implements GameScreen {
 		init(game, PongFactory.class)
 		levelFactory = (PongFactory) lvlFactory
 
-		engine.addSystem(new PongPlayerControlSystem(controller))
-		engine.addSystem(new PongCollisionSystem(parent, levelFactory))
-		engine.addSystem(new PongPaddleEnemySystem(levelFactory))
+		engine.addSystem(new PlayerControlSystem(controller))
+		engine.addSystem(new CollisionSystem(parent, levelFactory))
+		engine.addSystem(new EnemyPaddleSystem(levelFactory))
 		engine.addSystem(new PingPongSystem(parent, levelFactory))
 
 		player = levelFactory.createPlayer(camera)

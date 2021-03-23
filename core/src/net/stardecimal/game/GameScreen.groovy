@@ -16,7 +16,7 @@ trait GameScreen {
 	SpriteBatch batch
 	PooledEngine engine
 	Entity player
-	LevelFactory lvlFactory
+	DefaultLevelFactory lvlFactory
 
 	void init(final MyGames game, Class instance) {
 		this.parent = game
@@ -25,7 +25,7 @@ trait GameScreen {
 		parent.assetManager.manager.finishLoading()
 		controller = new KeyboardController()
 		engine = new PooledEngine()
-		lvlFactory = (LevelFactory) instance.newInstance(engine, parent.assetManager)
+		lvlFactory = (DefaultLevelFactory) instance.newInstance(engine, parent.assetManager)
 
 		batch = new SpriteBatch()
 		RenderingSystem renderingSystem = new RenderingSystem(batch)

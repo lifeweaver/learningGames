@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.utils.Array
 import net.stardecimal.game.loader.SdAssetManager
 
-trait LevelFactory {
+trait DefaultLevelFactory {
 	BodyFactory bodyFactory
 	World world
 	PooledEngine engine
