@@ -8,7 +8,6 @@ import net.stardecimal.game.entity.systems.PhysicsDebugSystem
 import net.stardecimal.game.entity.systems.PhysicsSystem
 import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.entity.systems.SteeringSystem
-import net.stardecimal.game.pong.PongFactory
 
 trait GameScreen {
 	MyGames parent
@@ -42,7 +41,7 @@ trait GameScreen {
 	void reset() {
 		println('Resetting world')
 		engine.removeAllEntities()
-		levelFactory.resetWorld()
+		lvlFactory.resetWorld()
 
 		// reset controller controls (fixes bug where controller stuck on direction if died in that position)
 		controller.left = false
