@@ -8,11 +8,11 @@ import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
 
 class WormScreen extends ScreenAdapter implements GameScreen {
-	WormFactory levelFactory
+	LevelFactory levelFactory
 
 	WormScreen(final MyGames game) {
-		init(game, WormFactory.class)
-		levelFactory = (WormFactory) lvlFactory
+		init(game, LevelFactory.class)
+		levelFactory = (LevelFactory) lvlFactory
 
 //		engine.addSystem(new PingPongCollisionSystem(parent, levelFactory))
 //		engine.addSystem(new PongPaddleEnemySystem(levelFactory))
