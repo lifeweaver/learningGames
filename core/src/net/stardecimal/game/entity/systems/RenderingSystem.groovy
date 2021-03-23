@@ -5,7 +5,6 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.SortedIteratingSystem
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.ai.steer.behaviors.Interpose
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -15,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.Fixture
 import com.badlogic.gdx.physics.box2d.PolygonShape
 import com.badlogic.gdx.physics.box2d.Shape
 import com.badlogic.gdx.utils.Array
-import net.stardecimal.game.LevelFactory
+import net.stardecimal.game.PongLevelFactory
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TextureComponent
@@ -58,15 +57,13 @@ class RenderingSystem extends SortedIteratingSystem {
 	private Array<Entity> renderQueue // used to allow sorting of images allowing us to draw images on top of each other
 	private Comparator<Entity> comparator // to sort images based on the z position of the transformComponent
 	private OrthographicCamera cam
-	private LevelFactory levelFactory
 
 	@SuppressWarnings('unchecked')
-	RenderingSystem(SpriteBatch batch, LevelFactory lvlFactory) {
+	RenderingSystem(SpriteBatch batch) {
 		super(Family.all(TransformComponent.class, TextureComponent.class).get(), new ZComparator())
 		renderQueue = new Array<Entity>()
 
 		this.batch = batch
-		this.levelFactory = lvlFactory
 
 		cam = new OrthographicCamera(FRUSTUM_WIDTH, FRUSTUM_HEIGHT)
 		cam.position.set(FRUSTUM_WIDTH / 2f as float, FRUSTUM_HEIGHT / 2f as float, 0)

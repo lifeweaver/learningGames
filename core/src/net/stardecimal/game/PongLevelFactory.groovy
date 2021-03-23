@@ -24,7 +24,7 @@ import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
 
-class LevelFactory {
+class PongLevelFactory {
 	private BodyFactory bodyFactory
 	public World world
 	private PooledEngine engine
@@ -34,7 +34,7 @@ class LevelFactory {
 	Entity enemyPaddle
 	Entity pingPong
 
-	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
+	PongLevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		engine = en
 		paddleTex = DFUtils.makeTextureRegion(1, 1, '#ffffff')
 		pingPongTex = DFUtils.makeTextureRegion(1, 1, '#ffffff')

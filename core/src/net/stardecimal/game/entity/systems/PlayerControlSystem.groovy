@@ -4,9 +4,8 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.math.Vector2
 import net.stardecimal.game.KeyboardController
-import net.stardecimal.game.LevelFactory
+import net.stardecimal.game.PongLevelFactory
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
@@ -14,14 +13,11 @@ import net.stardecimal.game.entity.components.StateComponent
 
 class PlayerControlSystem extends IteratingSystem {
 	KeyboardController controller
-	LevelFactory lvlFactory
-
 
 	@SuppressWarnings("unchecked")
-	PlayerControlSystem(KeyboardController keyCon, LevelFactory levelFactory) {
+	PlayerControlSystem(KeyboardController keyCon) {
 		super(Family.all(PlayerComponent.class).get())
 		controller = keyCon
-		lvlFactory = levelFactory
 	}
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {

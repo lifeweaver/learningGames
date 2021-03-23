@@ -9,18 +9,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.loader.SdAssetManager
 
-class MenuScreen extends ScreenAdapter {
+class GameSelectionScreen extends ScreenAdapter {
 	MyGames parent
 	Stage stage
 	Skin skin
 //	TextureRegion background
 
-	MenuScreen(MyGames game) {
+	GameSelectionScreen(MyGames game) {
 		parent = game
 		stage = new Stage(new ScreenViewport())
 		parent.assetManager.queueAddSkin()
@@ -50,34 +49,34 @@ class MenuScreen extends ScreenAdapter {
 
 		stage.addActor(table)
 
-		TextButton newGame = new TextButton("New Game", skin)
-		TextButton preferences = new TextButton("Preferences", skin)
-		TextButton exit = new TextButton("Exit", skin)
+		TextButton pingPong = new TextButton("Ping Pong", skin)
+		TextButton worm = new TextButton("Worm", skin)
+		TextButton back = new TextButton("Back", skin)
 
-		table.add(newGame).fillX().uniformX()
+		table.add(pingPong).fillX().uniformX()
 		table.row().pad(10, 0, 10, 0)
-		table.add(preferences).fillX().uniformX()
+		table.add(worm).fillX().uniformX()
 		table.row()
-		table.add(exit).fillX().uniformX()
+		table.add(back).fillX().uniformX()
 
-		exit.addListener(new ChangeListener() {
+		back.addListener(new ChangeListener() {
 			@Override
-			void changed(ChangeEvent event, Actor actor) {
-				Gdx.app.exit()
+			void changed(ChangeListener.ChangeEvent event, Actor actor) {
+				parent.changeScreen(MyGames.MENU)
 			}
 		})
 
-		newGame.addListener(new ChangeListener() {
+		pingPong.addListener(new ChangeListener() {
 			@Override
-			void changed(ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.GAME_SELECTION)
+			void changed(ChangeListener.ChangeEvent event, Actor actor) {
+				parent.changeScreen(MyGames.PONG)
 			}
 		})
 
-		preferences.addListener(new ChangeListener() {
+		worm.addListener(new ChangeListener() {
 			@Override
-			void changed(ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.PREFERENCES)
+			void changed(ChangeListener.ChangeEvent event, Actor actor) {
+				parent.changeScreen(MyGames.WORM)
 			}
 		})
 	}

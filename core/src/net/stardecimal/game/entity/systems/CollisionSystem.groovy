@@ -5,7 +5,7 @@ import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.math.Vector2
-import net.stardecimal.game.LevelFactory
+import net.stardecimal.game.PongLevelFactory
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
@@ -19,10 +19,10 @@ class CollisionSystem extends IteratingSystem {
 
 	Sound bounce, paddleLeftLoss, paddleRightLoss
 	final MyGames parent
-	final LevelFactory levelFactory
+	final PongLevelFactory levelFactory
 
 	@SuppressWarnings('unchecked')
-	CollisionSystem(MyGames game, LevelFactory lvlFactory) {
+	CollisionSystem(MyGames game, PongLevelFactory lvlFactory) {
 		super(Family.all(CollisionComponent.class).get())
 		parent = game
 		levelFactory = lvlFactory
