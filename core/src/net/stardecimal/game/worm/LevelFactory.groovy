@@ -29,7 +29,7 @@ class LevelFactory implements DefaultLevelFactory {
 		//Specific textures
 		boundaryTex = DFUtils.makeTextureRegion(RenderingSystem.getScreenSizeInMeters().x / RenderingSystem.PPM as float, 0.1f, '#ffffff')
 		fruitTex  = DFUtils.makeTextureRegion(2, 2, '#ff0000')
-		wormTex  = DFUtils.makeTextureRegion(2, 2, '#7CFC00')
+		wormTex  = DFUtils.makeTextureRegion(1.5, 1.5, '#7CFC00')
 	}
 
 
@@ -46,7 +46,7 @@ class LevelFactory implements DefaultLevelFactory {
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
 
 		player.cam = cam
-		sdBody.body = bodyFactory.makeBoxPolyBody(screenSize.x / RenderingSystem.PPM / 2 as float, screenSize.y / RenderingSystem.PPM / 2 as float, 2, 2, BodyFactory.STONE, BodyDef.BodyType.DynamicBody, true)
+		sdBody.body = bodyFactory.makeBoxPolyBody(screenSize.x / RenderingSystem.PPM / 2 as float, screenSize.y / RenderingSystem.PPM / 2 as float, 1.5, 1.5, BodyFactory.STONE, BodyDef.BodyType.DynamicBody, true)
 
 		texture.region = wormTex
 		type.type = TypeComponent.PLAYER
