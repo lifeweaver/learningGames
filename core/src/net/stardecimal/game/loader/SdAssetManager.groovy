@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.loaders.ParticleEffectLoader
 import com.badlogic.gdx.assets.loaders.SkinLoader
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.ParticleEffect
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -25,8 +26,14 @@ class SdAssetManager {
 	final static String paddleRightLoss = 'pong/computerSorry.wav'
 	final static String skin = "skin/glassy-ui.json"
 
+	final static String fruit = "worm/fruit.png"
+
 //	final static String playingSong = 'music/Rolemusic_-_pl4y1ng.mp3'
 //
+
+	void queueAddImage() {
+		manager.load(fruit, Texture)
+	}
 
 //	void queueAddImages() {
 //		manager.load(gameImages, TextureAtlas.class)
