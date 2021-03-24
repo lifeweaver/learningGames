@@ -22,6 +22,7 @@ trait GameScreen {
 		this.parent = game
 
 		parent.assetManager.queueAddSounds()
+		parent.assetManager.queueAddImage()
 		parent.assetManager.manager.finishLoading()
 		controller = new KeyboardController()
 		engine = new PooledEngine()
@@ -34,7 +35,10 @@ trait GameScreen {
 
 		engine.addSystem(new PhysicsSystem(lvlFactory.world))
 		engine.addSystem(renderingSystem)
-		engine.addSystem(new PhysicsDebugSystem(lvlFactory.world, renderingSystem.camera))
+
+		if(System.getenv('debug') == 'true') {
+			engine.addSystem(new PhysicsDebugSystem(lvlFactory.world, renderingSystem.camera))
+		}
 		engine.addSystem(new SteeringSystem())
 	}
 
