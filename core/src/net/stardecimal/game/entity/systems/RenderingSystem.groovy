@@ -173,7 +173,8 @@ class RenderingSystem extends SortedIteratingSystem {
 			}
 		}
 
-		if (true) {
+		// Just some playing around, not sure where the white line comes from though, and why vertical in pong, and horizontal in worm???
+		if (false) {
 //			Interpose<Vector2> interposeSB = SteeringPresets.getInterpose(Mapper.sCom.get(levelFactory.enemyPaddle), Mapper.sCom.get(levelFactory.enemyScoringWall), Mapper.sCom.get(levelFactory.pingPong))
 			ShapeRenderer shapeRenderer = new ShapeRenderer()
 //			Vector2 point = new Vector2()
