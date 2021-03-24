@@ -104,8 +104,6 @@ class LevelFactory implements DefaultLevelFactory {
 		player.cam = cam
 		sdBody.body = bodyFactory.makeBoxPolyBody(screenSize.x / RenderingSystem.PPM - 2 as float, screenSize.y / RenderingSystem.PPM / 2 as float, 0.5f, 2, BodyFactory.STONE, BodyDef.BodyType.DynamicBody, true)
 
-		// set object position (x,y,z) z used to define draw order 0 first drawn
-		position.position.set(screenSize.x - 2 as float, screenSize.y / 2 as float,0)
 		texture.region = paddleTex
 		type.type = TypeComponent.PLAYER
 		stateCom.set(StateComponent.STATE_NORMAL)

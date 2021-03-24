@@ -56,7 +56,7 @@ class MyGames extends Game {
 
 			case WORM:
 				if(!wormScreen) {
-					wormScreen = new PongScreen(this)
+					wormScreen = new WormScreen(this)
 				} else {
 					wormScreen.resetWorld()
 				}
