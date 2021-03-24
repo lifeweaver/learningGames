@@ -19,6 +19,7 @@ trait DefaultLevelFactory {
 		engine = en
 		assetManager = am
 
+		// the y is gravity, normal is -9.8f I think.
 		world = new World(new Vector2(0, 0), true)
 		world.setContactListener(new MyContactListener())
 		bodyFactory = BodyFactory.getInstance(world)
