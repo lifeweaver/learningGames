@@ -6,6 +6,7 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
+import net.stardecimal.game.worm.entity.systems.PlayerControlSystem
 
 class WormScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
@@ -14,11 +15,13 @@ class WormScreen extends ScreenAdapter implements GameScreen {
 		init(game, LevelFactory.class)
 		levelFactory = (LevelFactory) lvlFactory
 
+		engine.addSystem(new PlayerControlSystem(controller))
 //		engine.addSystem(new PingPongCollisionSystem(parent, levelFactory))
 //		engine.addSystem(new PongPaddleEnemySystem(levelFactory))
 //		engine.addSystem(new PingPongSystem(parent, levelFactory))
 
-//		player = levelFactory.createPlayer(camera)
+		player = levelFactory.createPlayer(camera)
+		levelFactory.createBoundaries()
 //		levelFactory.createPingPong()
 //		levelFactory.createEnemy()
 //		levelFactory.createFloor()
