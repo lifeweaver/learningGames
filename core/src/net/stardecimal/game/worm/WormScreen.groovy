@@ -6,6 +6,7 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
+import net.stardecimal.game.worm.entity.systems.CollisionSystem
 import net.stardecimal.game.worm.entity.systems.PlayerControlSystem
 
 class WormScreen extends ScreenAdapter implements GameScreen {
@@ -16,17 +17,11 @@ class WormScreen extends ScreenAdapter implements GameScreen {
 		levelFactory = (LevelFactory) lvlFactory
 
 		engine.addSystem(new PlayerControlSystem(controller))
-//		engine.addSystem(new PingPongCollisionSystem(parent, levelFactory))
-//		engine.addSystem(new PongPaddleEnemySystem(levelFactory))
-//		engine.addSystem(new PingPongSystem(parent, levelFactory))
+		engine.addSystem(new CollisionSystem(parent, levelFactory))
 
 		player = levelFactory.createPlayer(camera)
 		levelFactory.createBoundaries()
-//		levelFactory.createPingPong()
-//		levelFactory.createEnemy()
-//		levelFactory.createFloor()
-//		levelFactory.createCeiling()
-//		levelFactory.createEnemyScoringWall()
+		levelFactory.createFruit()
 	}
 
 	void resetWorld() {
@@ -34,12 +29,9 @@ class WormScreen extends ScreenAdapter implements GameScreen {
 		parent.playerScore = 0
 		parent.enemyScore = 0
 
-//		player = levelFactory.createPlayer(camera)
-//		levelFactory.createEnemy()
-//		levelFactory.createPingPong()
-//		levelFactory.createFloor()
-//		levelFactory.createCeiling()
-//		levelFactory.createEnemyScoringWall()
+		player = levelFactory.createPlayer(camera)
+		levelFactory.createBoundaries()
+		levelFactory.createFruit()
 	}
 
 	@Override

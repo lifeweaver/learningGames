@@ -3,6 +3,7 @@ package net.stardecimal.game.worm
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
@@ -21,15 +22,16 @@ import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
 
 class LevelFactory implements DefaultLevelFactory {
-	private TextureRegion boundaryTex, fruitTex, wormTex
+	private TextureRegion boundaryTex, wormTex
+	private Texture fruitTex
 
 	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		init(en, assetManager)
 
 		//Specific textures
 		boundaryTex = DFUtils.makeTextureRegion(RenderingSystem.getScreenSizeInMeters().x / RenderingSystem.PPM as float, 0.1f, '#ffffff')
-		fruitTex  = DFUtils.makeTextureRegion(2, 2, '#ff0000')
 		wormTex  = DFUtils.makeTextureRegion(1.5, 1.5, '#7CFC00')
+		fruitTex = assetManager.manager.get(SdAssetManager.fruit)
 	}
 
 
@@ -69,6 +71,29 @@ class LevelFactory implements DefaultLevelFactory {
 		return entity
 	}
 
+	Entity createFruit() {
+		Entity entity = engine.createEntity()
+		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+		TransformComponent position = engine.createComponent(TransformComponent)
+		TextureComponent texture = engine.createComponent(TextureComponent)
+		TypeComponent type = engine.createComponent(TypeComponent)
+		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
+
+		sdBody.body = bodyFactory.makeCirclePolyBody(randomPos(0, screenSize.x) / RenderingSystem.PPM / 2 as float, randomPos(0, screenSize.y) / RenderingSystem.PPM / 2 as float,1.5f, BodyFactory.STONE, BodyDef.BodyType.DynamicBody,true)
+		texture.region = new TextureRegion(fruitTex)
+
+		type.type = TypeComponent.SCORE_WALL
+		sdBody.body.setUserData(entity)
+
+		entity.add(sdBody)
+		entity.add(position)
+		entity.add(texture)
+		entity.add(type)
+
+		engine.addEntity(entity)
+		return entity
+	}
+
 	void createBoundaries() {
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
 		float boundaryWidth = 0.1f
@@ -99,7 +124,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 		position.position.set(x, y, 0)
 		texture.region = boundaryTex
-		type.type = TypeComponent.SCORE_WALL
+		type.type = TypeComponent.SCENERY
 		sdBody.body = bodyFactory.makeBoxPolyBody(x, y, width, height, BodyFactory.STONE, BodyDef.BodyType.StaticBody)
 
 		entity.add(sdBody)
@@ -110,5 +135,15 @@ class LevelFactory implements DefaultLevelFactory {
 		sdBody.body.setUserData(entity)
 
 		engine.addEntity(entity)
+	}
+
+	static float randomPos(float corner1, corner2) {
+		Random rand = new Random()
+		if(corner1 == corner2) {
+			return corner1
+		}
+		float delta = corner2 - corner1 as float
+		float offset = rand.nextFloat() * delta as float
+		return corner1 + offset
 	}
 }

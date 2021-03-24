@@ -3,10 +3,10 @@ package net.stardecimal.game
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.audio.Music
 import net.stardecimal.game.loader.SdAssetManager
+import net.stardecimal.game.pong.PongScreen
 import net.stardecimal.game.screens.EndScreen
 import net.stardecimal.game.screens.GameSelectionScreen
 import net.stardecimal.game.screens.MenuScreen
-import net.stardecimal.game.pong.PongScreen
 import net.stardecimal.game.screens.PreferencesScreen
 import net.stardecimal.game.worm.WormScreen
 
