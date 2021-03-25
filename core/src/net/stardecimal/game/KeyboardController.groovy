@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2
 
 class KeyboardController implements InputProcessor {
 
-	boolean left, right, up, down
+	boolean left, right, up, down, esc
 	boolean isMouse1Down, isMouse2Down, isMouse3Down
 	boolean isDragged
 	Vector2 mouseLocation = new Vector2()
@@ -29,6 +29,10 @@ class KeyboardController implements InputProcessor {
 				break
 			case Input.Keys.DOWN:
 				down = true
+				keyProcessed = true
+				break
+			case Input.Keys.ESCAPE:
+				esc = true
 				keyProcessed = true
 		}
 
@@ -53,6 +57,10 @@ class KeyboardController implements InputProcessor {
 				break
 			case Input.Keys.DOWN:
 				down = false
+				keyProcessed = true
+				break
+			case Input.Keys.ESCAPE:
+				esc = false
 				keyProcessed = true
 		}
 

@@ -52,6 +52,7 @@ trait GameScreen {
 		controller.right = false
 		controller.up = false
 		controller.down = false
+		controller.esc = false
 		controller.isMouse1Down = false
 		controller.isMouse2Down = false
 		controller.isMouse3Down = false
