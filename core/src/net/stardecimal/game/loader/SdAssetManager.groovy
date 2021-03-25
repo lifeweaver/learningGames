@@ -27,12 +27,14 @@ class SdAssetManager {
 	final static String skin = "skin/glassy-ui.json"
 
 	final static String fruit = "worm/fruit.png"
+	final static String worm = "worm/worm.png"
 
 //	final static String playingSong = 'music/Rolemusic_-_pl4y1ng.mp3'
 //
 
-	void queueAddImage() {
+	void queueAddIndividualImages() {
 		manager.load(fruit, Texture)
+		manager.load(worm, Texture)
 	}
 
 //	void queueAddImages() {

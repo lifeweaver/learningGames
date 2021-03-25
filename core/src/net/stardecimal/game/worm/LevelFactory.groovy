@@ -27,15 +27,15 @@ import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
 
 class LevelFactory implements DefaultLevelFactory {
-	private TextureRegion boundaryTex, wormTex
-	private Texture fruitTex
+	private TextureRegion boundaryTex
+	private Texture fruitTex, wormTex
 
 	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		init(en, assetManager)
 
 		//Specific textures
 		boundaryTex = DFUtils.makeTextureRegion(RenderingSystem.getScreenSizeInMeters().x / RenderingSystem.PPM as float, 0.1f, '#ffffff')
-		wormTex  = DFUtils.makeTextureRegion(1.5, 1.5, '#7CFC00')
+		wormTex  = assetManager.manager.get(SdAssetManager.worm)
 		fruitTex = assetManager.manager.get(SdAssetManager.fruit)
 	}
 
@@ -53,9 +53,9 @@ class LevelFactory implements DefaultLevelFactory {
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
 
 		player.cam = cam
-		sdBody.body = bodyFactory.makeBoxPolyBody(screenSize.x / RenderingSystem.PPM / 2 as float, screenSize.y / RenderingSystem.PPM / 2 as float, 1.5, 1.5, BodyFactory.STONE, BodyDef.BodyType.DynamicBody, false)
+		sdBody.body = bodyFactory.makeBoxPolyBody(screenSize.x / RenderingSystem.PPM / 2 as float, screenSize.y / RenderingSystem.PPM / 2 as float, 1.5, 1.5, BodyFactory.STONE, BodyDef.BodyType.DynamicBody, true)
 
-		texture.region = wormTex
+		texture.region = new TextureRegion(wormTex)
 		type.type = TypeComponent.PLAYER
 		stateCom.set(StateComponent.STATE_NORMAL)
 		sdBody.body.setUserData(entity)
@@ -99,7 +99,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 		RopeJointDef rDef = new RopeJointDef(
 				bodyA: bodyA,
-				bodyB: bodyFactory.makeBoxPolyBody(bodyA.position.x, bodyA.position.y, 1.5, 1.5, BodyFactory.STONE, BodyDef.BodyType.DynamicBody, false),
+				bodyB: bodyFactory.makeBoxPolyBody(bodyA.position.x, bodyA.position.y, 1.5, 1.5, BodyFactory.STONE, BodyDef.BodyType.DynamicBody, true),
 				collideConnected: true,
 				maxLength: 1 / RenderingSystem.PPM
 		)

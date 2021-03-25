@@ -22,7 +22,7 @@ trait GameScreen {
 		this.parent = game
 
 		parent.assetManager.queueAddSounds()
-		parent.assetManager.queueAddImage()
+		parent.assetManager.queueAddIndividualImages()
 		parent.assetManager.manager.finishLoading()
 		controller = new KeyboardController()
 		engine = new PooledEngine()
