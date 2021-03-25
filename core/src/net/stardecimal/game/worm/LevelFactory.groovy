@@ -6,11 +6,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
+import com.badlogic.gdx.physics.box2d.JointEdge
+import com.badlogic.gdx.physics.box2d.joints.RopeJointDef
+import com.badlogic.gdx.utils.Array
 import net.stardecimal.game.BodyFactory
 import net.stardecimal.game.DFUtils
 import net.stardecimal.game.DefaultLevelFactory
 import net.stardecimal.game.entity.components.CollisionComponent
+import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.StateComponent
@@ -48,7 +53,7 @@ class LevelFactory implements DefaultLevelFactory {
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
 
 		player.cam = cam
-		sdBody.body = bodyFactory.makeBoxPolyBody(screenSize.x / RenderingSystem.PPM / 2 as float, screenSize.y / RenderingSystem.PPM / 2 as float, 1.5, 1.5, BodyFactory.STONE, BodyDef.BodyType.DynamicBody, true)
+		sdBody.body = bodyFactory.makeBoxPolyBody(screenSize.x / RenderingSystem.PPM / 2 as float, screenSize.y / RenderingSystem.PPM / 2 as float, 1.5, 1.5, BodyFactory.STONE, BodyDef.BodyType.DynamicBody, false)
 
 		texture.region = wormTex
 		type.type = TypeComponent.PLAYER
@@ -69,6 +74,38 @@ class LevelFactory implements DefaultLevelFactory {
 		engine.addEntity(entity)
 		this.player = entity
 		return entity
+	}
+
+	void addSegment() {
+		Body playerBody = Mapper.bCom.get(player).body
+		Body bodyA = Mapper.bCom.get(player).body
+
+		//Get the last joint on the body
+		Array<JointEdge> jointList = playerBody.getJointList()
+		JointEdge jointEdge
+
+		while(jointList && !jointList.empty) {
+			jointEdge = jointList.last()
+			if(jointList.toString() != jointEdge.joint.bodyB.getJointList().toString()) {
+				jointList = jointEdge.joint.bodyB.getJointList()
+			} else {
+				jointList = null
+			}
+		}
+
+		if(jointEdge) {
+			bodyA = jointEdge.joint.bodyB
+		}
+
+		RopeJointDef rDef = new RopeJointDef(
+				bodyA: bodyA,
+				bodyB: bodyFactory.makeBoxPolyBody(bodyA.position.x, bodyA.position.y, 1.5, 1.5, BodyFactory.STONE, BodyDef.BodyType.DynamicBody, false),
+				collideConnected: true,
+				maxLength: 1 / RenderingSystem.PPM
+		)
+		rDef.localAnchorA.set(0, -15 / RenderingSystem.PPM as float)
+		rDef.localAnchorB.set(0, 15 / RenderingSystem.PPM as float)
+		world.createJoint(rDef)
 	}
 
 	Entity createFruit() {

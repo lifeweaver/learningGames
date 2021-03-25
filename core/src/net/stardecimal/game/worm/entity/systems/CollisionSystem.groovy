@@ -55,6 +55,7 @@ class CollisionSystem extends IteratingSystem {
 							Mapper.bCom.get(collidedEntity).isDead = true
 							parent.playerScore += 1
 							levelFactory.createFruit()
+							levelFactory.addSegment()
 							break
 					}
 					cc.collisionEntity = null // collision handled reset component
