@@ -6,6 +6,7 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
+import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.worm.entity.systems.CollisionSystem
 import net.stardecimal.game.worm.entity.systems.PlayerControlSystem
 
@@ -18,6 +19,7 @@ class WormScreen extends ScreenAdapter implements GameScreen {
 
 		engine.addSystem(new PlayerControlSystem(controller))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))
+		engine.getSystem(RenderingSystem).addTiledMapBackground(levelFactory.createGrid())
 
 		player = levelFactory.createPlayer(camera)
 		levelFactory.createBoundaries()

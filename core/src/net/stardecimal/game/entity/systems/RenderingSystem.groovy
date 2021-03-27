@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.maps.tiled.TiledMap
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Fixture
 import com.badlogic.gdx.physics.box2d.PolygonShape
@@ -56,6 +58,8 @@ class RenderingSystem extends SortedIteratingSystem {
 	private Array<Entity> renderQueue // used to allow sorting of images allowing us to draw images on top of each other
 	private Comparator<Entity> comparator // to sort images based on the z position of the transformComponent
 	private OrthographicCamera cam
+	private TiledMap background
+	private OrthogonalTiledMapRenderer backgroundRenderer
 
 	@SuppressWarnings('unchecked')
 	RenderingSystem(SpriteBatch batch) {
@@ -66,6 +70,11 @@ class RenderingSystem extends SortedIteratingSystem {
 
 		cam = new OrthographicCamera(FRUSTUM_WIDTH, FRUSTUM_HEIGHT)
 		cam.position.set(FRUSTUM_WIDTH / 2f as float, FRUSTUM_HEIGHT / 2f as float, 0)
+	}
+
+	void addTiledMapBackground(TiledMap map) {
+		background = map
+		backgroundRenderer = new OrthogonalTiledMapRenderer(background)
 	}
 
 	@Override
@@ -82,6 +91,11 @@ class RenderingSystem extends SortedIteratingSystem {
 
 		// update camera and sprite batch
 		cam.update()
+		if(backgroundRenderer) {
+			backgroundRenderer.setView(cam)
+			backgroundRenderer.render()
+		}
+
 		batch.setProjectionMatrix(cam.combined)
 		batch.enableBlending()
 		batch.begin()
