@@ -116,7 +116,7 @@ class KeyboardController implements InputProcessor {
 	}
 
 	@Override
-	boolean scrolled(int amount) {
+	boolean scrolled(float amountX, float amountY) {
 		return false
 	}
 }
