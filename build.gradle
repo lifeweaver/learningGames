@@ -20,12 +20,12 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = "worm"
-        gdxVersion = '1.9.8'
+        appName = "myGames"
+        gdxVersion = '1.9.14'
         roboVMVersion = '2.3.3'
         box2DLightsVersion = '1.4'
-        ashleyVersion = '1.7.0'
-        aiVersion = '1.8.0'
+        ashleyVersion = '1.7.4'
+        aiVersion = '1.8.2'
     }
 
     repositories {
