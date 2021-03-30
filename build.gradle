@@ -35,6 +35,13 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
+
+    dependencies {
+        implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
+        implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+        implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
+        implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    }
 }
 
 project(":desktop") {
@@ -48,7 +55,6 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.ashley:ashley:${ashleyVersion}"
         compile "com.badlogicgames.gdx:gdx-ai:${aiVersion}"
-        implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
     }
 }
 
@@ -61,7 +67,6 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.ashley:ashley:${ashleyVersion}"
         compile "com.badlogicgames.gdx:gdx-ai:${aiVersion}"
-        implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
     }
 }
 
