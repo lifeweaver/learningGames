@@ -26,6 +26,7 @@ allprojects {
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.4'
         aiVersion = '1.8.2'
+        groovyVersion = '3.0.6'
     }
 
     repositories {
@@ -37,28 +38,30 @@ allprojects {
 }
 
 project(":desktop") {
-    apply plugin: "java"
-
+    apply plugin: 'java'
+    apply plugin: 'groovy'
 
     dependencies {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.ashley:ashley:1.7.0"
-        compile "com.badlogicgames.gdx:gdx-ai:1.8.0"
+        compile "com.badlogicgames.ashley:ashley:${ashleyVersion}"
+        compile "com.badlogicgames.gdx:gdx-ai:${aiVersion}"
+        implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
     }
 }
 
 project(":core") {
-    apply plugin: "java"
-
+    apply plugin: 'java'
+    apply plugin: 'groovy'
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        compile "com.badlogicgames.ashley:ashley:1.7.0"
-        compile "com.badlogicgames.gdx:gdx-ai:1.8.0"
+        compile "com.badlogicgames.ashley:ashley:${ashleyVersion}"
+        compile "com.badlogicgames.gdx:gdx-ai:${aiVersion}"
+        implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
     }
 }
 
