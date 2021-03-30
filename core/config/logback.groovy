@@ -24,7 +24,9 @@ appender("FILE", FileAppender) {
 
 
 appender("STDOUT", ConsoleAppender) {
-
+	encoder(PatternLayoutEncoder) {
+		pattern = "%-4relative - %msg%n"
+	}
 }
 
 
