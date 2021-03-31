@@ -19,6 +19,7 @@ class BodyFactory {
 	static final int RUBBER = 2
 	static final int STONE = 3
 	static final int PING_PONG = 4
+	static final int NOTHING = 5
 
 	BodyFactory(World world) {
 		this.world = world
@@ -32,7 +33,7 @@ class BodyFactory {
 		return thisInstance
 	}
 
-	static FixtureDef makeFixture(int material, Shape shape) {
+	static FixtureDef makeFixture(int material, Shape shape, boolean isSensor=false) {
 		FixtureDef fixtureDef = new FixtureDef()
 		fixtureDef.shape = shape
 
@@ -62,23 +63,21 @@ class BodyFactory {
 				fixtureDef.friction = 0f
 				fixtureDef.restitution = 1f
 				break
+			case NOTHING:
+				fixtureDef.density = 0
+				fixtureDef.friction = 0
+				fixtureDef.restitution = 0
+				break
 			default:
 				fixtureDef.density = 7f
 				fixtureDef.friction = 0.5f
 				fixtureDef.restitution = 0.3f
 		}
+		fixtureDef.isSensor = isSensor
 		return fixtureDef
 	}
 
-	Body makeCirclePolyBody(float posX, float posY, float radius, int material) {
-		return makeCirclePolyBody(posX, posY, radius, material, BodyDef.BodyType.DynamicBody, false)
-	}
-
-	Body makeCirclePolyBody(float posX, float posY, float radius, int material, BodyDef.BodyType bodyType) {
-		return makeCirclePolyBody(posX, posY, radius, material, bodyType, false)
-	}
-
-	Body makeCirclePolyBody(float posX, float posY, float radius, int material, BodyDef.BodyType bodyType, boolean fixedRotation) {
+	Body makeCirclePolyBody(float posX, float posY, float radius, int material, BodyDef.BodyType bodyType, boolean fixedRotation=false, boolean isSensor=false) {
 		BodyDef boxBodyDef = new BodyDef()
 		boxBodyDef.type = bodyType
 		boxBodyDef.position.x = posX
@@ -88,20 +87,12 @@ class BodyFactory {
 		Body boxBody = world.createBody(boxBodyDef)
 		CircleShape circleShape = new CircleShape()
 		circleShape.setRadius(radius / 2 as float)
-		boxBody.createFixture(makeFixture(material, circleShape))
+		boxBody.createFixture(makeFixture(material, circleShape, isSensor))
 		circleShape.dispose()
 		return boxBody
 	}
 
-	Body makeBoxPolyBody(float posX, float posY, float width, float height, int material) {
-		return makeBoxPolyBody(posX, posY, width, height, material, BodyDef.BodyType.DynamicBody, false)
-	}
-
-	Body makeBoxPolyBody(float posX, float posY, float width, float height, int material, BodyDef.BodyType bodyType) {
-		return makeBoxPolyBody(posX, posY, width, height, material, bodyType, false)
-	}
-
-	Body makeBoxPolyBody(float posX, float posY, float width, float height, int material, BodyDef.BodyType bodyType, boolean fixedRotation) {
+	Body makeBoxPolyBody(float posX, float posY, float width, float height, int material, BodyDef.BodyType bodyType, boolean fixedRotation=false, boolean isSensor=false) {
 		// create a definition
 		BodyDef boxBodyDef = new BodyDef()
 		boxBodyDef.type = bodyType
@@ -113,7 +104,7 @@ class BodyFactory {
 		Body boxBody = world.createBody(boxBodyDef)
 		PolygonShape poly = new PolygonShape()
 		poly.setAsBox(width / 2 as float, height / 2 as float)
-		boxBody.createFixture(makeFixture(material, poly))
+		boxBody.createFixture(makeFixture(material, poly, isSensor))
 		poly.dispose()
 
 		return boxBody
