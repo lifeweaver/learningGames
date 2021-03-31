@@ -28,7 +28,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class LevelFactory implements DefaultLevelFactory {
-	private TextureRegion boundaryTex, wormTailTex, cellBackground
+	private TextureRegion wormTailTex, cellBackground
 	private Texture fruitTex, wormTex
 	private TiledMap background
 	private static final Logger log = LoggerFactory.getLogger(LevelFactory)
@@ -37,7 +37,6 @@ class LevelFactory implements DefaultLevelFactory {
 		init(en, assetManager)
 
 		//Specific textures
-		boundaryTex = DFUtils.makeTextureRegion(RenderingSystem.getScreenSizeInMeters().x / RenderingSystem.PPM as float, 0.1f, '#ffffff')
 		wormTex  = assetManager.manager.get(SdAssetManager.worm)
 		fruitTex = assetManager.manager.get(SdAssetManager.fruit)
 		wormTailTex = DFUtils.makeTextureRegion(2, 2, '#00137F')
@@ -280,58 +279,5 @@ class LevelFactory implements DefaultLevelFactory {
 		background = map
 
 		return map
-	}
-
-	void createBoundaries() {
-		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
-		float boundaryWidth = 0.1f
-
-		//Floor
-		createBoundary(new Vector2(screenSize.x, 0.1f), screenSize.x, boundaryWidth)
-
-		//Ceiling
-		createBoundary(new Vector2(screenSize.x, screenSize.y * 2 as float), screenSize.x, boundaryWidth)
-
-		//Right wall
-		createBoundary(new Vector2(screenSize.x * 2 as float, screenSize.y * 2 as float), boundaryWidth, screenSize.y)
-
-		//Left wall
-		createBoundary(new Vector2(0, 0), boundaryWidth, screenSize.y)
-	}
-
-	void createBoundary(Vector2 pos, float width, float height) {
-		Entity entity = engine.createEntity()
-		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
-		TransformComponent position = engine.createComponent(TransformComponent)
-		TextureComponent texture = engine.createComponent(TextureComponent)
-		TypeComponent type = engine.createComponent(TypeComponent)
-
-		//Divide by the PPM then by 22 unless they are zero
-		float x = pos.x != 0 ? pos.x / RenderingSystem.PPM / 2 as float : pos.x
-		float y = pos.y != 0 ? pos.y / RenderingSystem.PPM / 2 as float : pos.y
-
-		position.position.set(x, y, 0)
-		texture.region = boundaryTex
-		type.type = TypeComponent.SCENERY
-		sdBody.body = bodyFactory.makeBoxPolyBody(x, y, width, height, BodyFactory.STONE, BodyDef.BodyType.StaticBody)
-
-		entity.add(sdBody)
-		entity.add(texture)
-		entity.add(position)
-		entity.add(type)
-
-		sdBody.body.setUserData(entity)
-
-		engine.addEntity(entity)
-	}
-
-	static float randomPos(float corner1, corner2) {
-		Random rand = new Random()
-		if(corner1 == corner2) {
-			return corner1
-		}
-		float delta = corner2 - corner1 as float
-		float offset = rand.nextFloat() * delta as float
-		return corner1 + offset
 	}
 }
