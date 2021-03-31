@@ -1,5 +1,6 @@
 package net.stardecimal.game.worm.entity.systems
 
+import com.badlogic.ashley.core.ComponentMapper
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
@@ -8,10 +9,11 @@ import com.badlogic.gdx.math.Vector2
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
-import net.stardecimal.game.entity.components.PlayerComponent
+import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.loader.SdAssetManager
 import net.stardecimal.game.worm.LevelFactory
+import net.stardecimal.game.worm.entity.components.PlayerComponent
 
 class CollisionSystem extends IteratingSystem {
 
@@ -39,7 +41,7 @@ class CollisionSystem extends IteratingSystem {
 
 		// do player collisions
 		if (thisType.type == TypeComponent.PLAYER) {
-			PlayerComponent pl = Mapper.playerCom.get(entity)
+			SdBodyComponent body = Mapper.bCom.get(entity)
 			if(collidedEntity) {
 				TypeComponent type = Mapper.typeCom.get(collidedEntity)
 				if (type) {
@@ -55,7 +57,8 @@ class CollisionSystem extends IteratingSystem {
 							Mapper.bCom.get(collidedEntity).isDead = true
 							parent.playerScore += 1
 							levelFactory.createFruit()
-							levelFactory.addSegment()
+							PlayerComponent playerComponent = ComponentMapper.getFor(PlayerComponent.class).get(entity)
+							playerComponent.length = playerComponent.length + 1
 							break
 					}
 					cc.collisionEntity = null // collision handled reset component

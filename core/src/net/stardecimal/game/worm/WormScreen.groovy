@@ -17,9 +17,9 @@ class WormScreen extends ScreenAdapter implements GameScreen {
 		init(game, LevelFactory.class)
 		levelFactory = (LevelFactory) lvlFactory
 
-		engine.addSystem(new PlayerControlSystem(controller))
+		engine.addSystem(new PlayerControlSystem(controller, levelFactory))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))
-		engine.getSystem(RenderingSystem).addTiledMapBackground(levelFactory.createGrid())
+		engine.getSystem(RenderingSystem).addTiledMapBackground(levelFactory.generateBackground())
 
 		player = levelFactory.createPlayer(camera)
 		levelFactory.createBoundaries()
