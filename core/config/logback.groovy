@@ -31,5 +31,5 @@ appender("STDOUT", ConsoleAppender) {
 
 
 
-root(INFO, ["FILE", "STDOUT"])
+root(DEBUG, ["FILE", "STDOUT"])
 scan()
