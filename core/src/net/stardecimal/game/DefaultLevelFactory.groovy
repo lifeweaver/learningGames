@@ -42,21 +42,25 @@ trait DefaultLevelFactory {
 		}
 	}
 
-	void createBoundaries() {
+	void createBoundaries(boolean floor=true, boolean ceiling=true, boolean rightWall=true, boolean leftWall=true) {
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
 		float boundaryWidth = 0.1f
 
-		//Floor
-		createBoundary(new Vector2(screenSize.x, 0.1f), screenSize.x, boundaryWidth)
+		if(floor) {
+			createBoundary(new Vector2(screenSize.x, 0.1f), screenSize.x, boundaryWidth)
+		}
 
-		//Ceiling
-		createBoundary(new Vector2(screenSize.x, screenSize.y * 2 as float), screenSize.x, boundaryWidth)
+		if(ceiling) {
+			createBoundary(new Vector2(screenSize.x, screenSize.y * 2 as float), screenSize.x, boundaryWidth)
+		}
 
-		//Right wall
-		createBoundary(new Vector2(screenSize.x * 2 as float, screenSize.y * 2 as float), boundaryWidth, screenSize.y)
+		if(rightWall) {
+			createBoundary(new Vector2(screenSize.x * 2 as float, screenSize.y * 2 as float), boundaryWidth, screenSize.y)
+		}
 
-		//Left wall
-		createBoundary(new Vector2(0, 0), boundaryWidth, screenSize.y)
+		if(leftWall) {
+			createBoundary(new Vector2(0, 0), boundaryWidth, screenSize.y)
+		}
 	}
 
 	void createBoundary(Vector2 pos, float width, float height) {
