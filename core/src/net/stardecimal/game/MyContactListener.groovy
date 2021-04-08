@@ -34,7 +34,6 @@ class MyContactListener implements ContactListener {
 		if(fb.body.userData instanceof Entity) {
 			Entity colEnt = fb.body.userData as Entity
 
-			Mapper.collisionCom
 			CollisionComponent col = Mapper.collisionCom.get(entity)
 			CollisionComponent colb = Mapper.collisionCom.get(colEnt)
 
