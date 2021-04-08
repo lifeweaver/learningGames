@@ -2,6 +2,7 @@ package net.stardecimal.game
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.audio.Music
+import net.stardecimal.game.breakout.BreakoutScreen
 import net.stardecimal.game.loader.SdAssetManager
 import net.stardecimal.game.pong.PongScreen
 import net.stardecimal.game.screens.EndScreen
@@ -20,6 +21,7 @@ class MyGames extends Game {
 	private EndScreen endScreen
 	private AppPreferences appPreferences
 	private WormScreen wormScreen
+	private BreakoutScreen breakoutScreen
 	SdAssetManager assetManager = new SdAssetManager()
 
 	final static int MENU = 0
@@ -28,6 +30,7 @@ class MyGames extends Game {
 	final static int ENDGAME = 3
 	final static int GAME_SELECTION = 4
 	final static int WORM = 5
+	final static int BREAKOUT = 6
 	int playerScore = 0
 	int enemyScore = 0
 	Music playingSong
@@ -62,6 +65,16 @@ class MyGames extends Game {
 				}
 
 				this.setScreen(wormScreen)
+				break
+
+			case BREAKOUT:
+				if(!breakoutScreen) {
+					breakoutScreen = new BreakoutScreen(this)
+				} else {
+					breakoutScreen.resetWorld()
+				}
+
+				this.setScreen(breakoutScreen)
 				break
 
 			case GAME_SELECTION:

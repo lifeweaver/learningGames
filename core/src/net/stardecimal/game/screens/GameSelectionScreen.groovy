@@ -51,12 +51,15 @@ class GameSelectionScreen extends ScreenAdapter {
 
 		TextButton pingPong = new TextButton("Ping Pong", skin)
 		TextButton worm = new TextButton("Worm", skin)
+		TextButton breakout = new TextButton("Breakout", skin)
 		TextButton back = new TextButton("Back", skin)
 
 		table.add(pingPong).fillX().uniformX()
-		table.row().pad(10, 0, 10, 0)
+		table.row().pad(5, 0, 5, 0)
 		table.add(worm).fillX().uniformX()
 		table.row()
+		table.add(breakout).fillX().uniformX()
+		table.row().pad(5, 0, 5, 0)
 		table.add(back).fillX().uniformX()
 
 		back.addListener(new ChangeListener() {
@@ -77,6 +80,13 @@ class GameSelectionScreen extends ScreenAdapter {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
 				parent.changeScreen(MyGames.WORM)
+			}
+		})
+
+		breakout.addListener(new ChangeListener() {
+			@Override
+			void changed(ChangeListener.ChangeEvent event, Actor actor) {
+				parent.changeScreen(MyGames.BREAKOUT)
 			}
 		})
 	}
