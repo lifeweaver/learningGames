@@ -7,10 +7,14 @@ import com.badlogic.gdx.utils.Pool
 class SdBodyComponent implements Component, Pool.Poolable{
 	Body body
 	boolean isDead = false
+	float width = 0
+	float height = 0
 
 	@Override
 	void reset() {
 		body = null
 		isDead = false
+		width = 0
+		height = 0
 	}
 }
