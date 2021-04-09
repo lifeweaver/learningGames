@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array
 import net.stardecimal.game.BodyFactory
 import net.stardecimal.game.DFUtils
 import net.stardecimal.game.DefaultLevelFactory
+import net.stardecimal.game.breakout.entity.components.PowerUpComponent
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
@@ -27,7 +28,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class LevelFactory implements DefaultLevelFactory {
-	TextureRegion pingPongTex, defaultBoxTex, explodeBoxTex, doubleBoxTex, paddleTex
+	TextureRegion pingPongTex, defaultBoxTex, explodeBoxTex, doubleBoxTex, powerUpBoxTex, paddleTex
 	Entity pingPong
 	private static final Logger log = LoggerFactory.getLogger(LevelFactory)
 	List<Entity> boxes = []
@@ -43,6 +44,7 @@ class LevelFactory implements DefaultLevelFactory {
 		defaultBoxTex = DFUtils.makeTextureRegion(2, 1, '#ffffff')
 		explodeBoxTex = DFUtils.makeTextureRegion(2, 1, '#ff0000')
 		doubleBoxTex = DFUtils.makeTextureRegion(2, 1, '#808080')
+		powerUpBoxTex = DFUtils.makeTextureRegion(2, 1, '#D4AF37')
 		log.info("level factory initialized")
 	}
 
@@ -101,6 +103,7 @@ class LevelFactory implements DefaultLevelFactory {
 		TypeComponent type = engine.createComponent(TypeComponent)
 		CollisionComponent colComp = engine.createComponent(CollisionComponent)
 		BulletComponent bul = engine.createComponent(BulletComponent)
+		PowerUpComponent powerUp = engine.createComponent(PowerUpComponent)
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
 		SteeringComponent scom = engine.createComponent(SteeringComponent)
 
@@ -125,7 +128,7 @@ class LevelFactory implements DefaultLevelFactory {
 		entity.add(stateCom)
 		entity.add(type)
 		entity.add(scom)
-
+		entity.add(powerUp)
 
 		engine.addEntity(entity)
 		pingPong = entity
@@ -149,7 +152,6 @@ class LevelFactory implements DefaultLevelFactory {
 		TextureComponent texture = engine.createComponent(TextureComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)
-//		CollisionComponent colComp = engine.createComponent(CollisionComponent)
 
 		sdBody.width = 2
 		sdBody.height = 1
@@ -171,12 +173,14 @@ class LevelFactory implements DefaultLevelFactory {
 		} else if(typeChance <= 20) {
 			texture.region = doubleBoxTex
 			type.type = TypeComponent.ENEMY_DOUBLE
+		} else if(typeChance >= 95) {
+			texture.region = powerUpBoxTex
+			type.type = TypeComponent.POWER_UP
 		} else {
 			texture.region = defaultBoxTex
 			type.type = TypeComponent.ENEMY
 		}
 
-//		entity.add(colComp)
 		entity.add(sdBody)
 		entity.add(texture)
 		entity.add(position)

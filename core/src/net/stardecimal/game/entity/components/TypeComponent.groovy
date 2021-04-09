@@ -13,6 +13,7 @@ class TypeComponent implements Component, Pool.Poolable {
 	static final int SCORE_WALL  = 6
 	static final int ENEMY_EXPLODE  = 7
 	static final int ENEMY_DOUBLE  = 8
+	static final int POWER_UP  = 9
 
 	int type = OTHER
 

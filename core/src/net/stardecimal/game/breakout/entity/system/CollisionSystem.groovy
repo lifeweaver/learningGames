@@ -1,11 +1,13 @@
 package net.stardecimal.game.breakout.entity.system
 
+import com.badlogic.ashley.core.ComponentMapper
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.math.Vector2
 import net.stardecimal.game.MyGames
+import net.stardecimal.game.breakout.entity.components.PowerUpComponent
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
@@ -43,7 +45,8 @@ class CollisionSystem extends IteratingSystem {
 		Entity collidedEntity = cc.collisionEntity
 		int collidedType = 10000
 		if(collidedEntity) {
-			collidedType = Mapper.typeCom.get(collidedEntity).type
+			TypeComponent thisType = Mapper.typeCom.get(collidedEntity)
+			collidedType = thisType ? thisType.type : collidedType
 		}
 
 		// do player collisions
@@ -77,12 +80,19 @@ class CollisionSystem extends IteratingSystem {
 			if (collidedEntity) {
 				BulletComponent bullet = Mapper.bulletCom.get(entity)
 				SdBodyComponent collidedBodyCom = Mapper.bCom.get(collidedEntity)
-				Vector2 collidedBodyPosition = collidedBodyCom.body.position
+				Vector2 collidedBodyPosition = collidedBodyCom?.body?.position
+				PowerUpComponent powerUp = ComponentMapper.getFor(PowerUpComponent.class).get(entity)
 
 				switch (collidedType) {
+					case TypeComponent.POWER_UP:
+						powerUp.noBounceCount = 10
+						collidedBodyCom.isDead = true
+						boxBounce(bullet, powerUp)
+						break
+
 					case TypeComponent.ENEMY:
 						collidedBodyCom.isDead = true
-						boxBounce(bullet)
+						boxBounce(bullet, powerUp)
 						break
 
 					case TypeComponent.ENEMY_DOUBLE:
@@ -90,14 +100,18 @@ class CollisionSystem extends IteratingSystem {
 						thisType.type = TypeComponent.ENEMY
 						TextureComponent texCom = Mapper.texCom.get(collidedEntity)
 						texCom.region = levelFactory.defaultBoxTex
-						boxBounce(bullet)
+						boxBounce(bullet, powerUp)
 						break
 
 					case TypeComponent.ENEMY_EXPLODE:
 						//Move logic to function so it handles an explosion exploding another explode block, if you want to get that fancy
-						def blockTypes = [TypeComponent.ENEMY, TypeComponent.ENEMY_DOUBLE, TypeComponent.ENEMY_EXPLODE]
+						def blockTypes = [TypeComponent.ENEMY, TypeComponent.ENEMY_DOUBLE, TypeComponent.ENEMY_EXPLODE, TypeComponent.POWER_UP]
 						List<Entity> blocks = engine.entities.findAll {Entity thisEntity ->
 							blockTypes.contains(Mapper.typeCom.get(thisEntity).type)
+						}
+
+						if(!collidedBodyPosition) {
+							break
 						}
 
 						//boxes on each side
@@ -124,10 +138,14 @@ class CollisionSystem extends IteratingSystem {
 						}
 
 						collidedBodyCom.isDead = true
-						boxBounce(bullet)
+						boxBounce(bullet, powerUp)
 						break
 
 					default:
+						if(!collidedBodyPosition) {
+							break
+						}
+
 						println('ping pong hit type: ' + collidedType)
 						bounce.play()
 						Vector2 newT = null
@@ -170,12 +188,17 @@ class CollisionSystem extends IteratingSystem {
 		return false
 	}
 
-	void boxBounce(BulletComponent bullet) {
+	void boxBounce(BulletComponent bullet, PowerUpComponent powerUp) {
 		parent.playerScore += 1
 
-		Vector2 newT = hitY(bullet.xVel, bullet.yVel)
-		bullet.xVel = newT.x
-		bullet.yVel = newT.y
+		if(powerUp.noBounceCount < 1) {
+			Vector2 newT = hitY(bullet.xVel, bullet.yVel)
+			bullet.xVel = newT.x
+			bullet.yVel = newT.y
+		} else {
+			powerUp.noBounceCount = powerUp.noBounceCount - 1
+		}
+
 	}
 
 	Vector2 hitX(float x, float y) {
