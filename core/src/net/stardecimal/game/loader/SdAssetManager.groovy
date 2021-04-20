@@ -29,12 +29,17 @@ class SdAssetManager {
 	final static String fruit = "worm/fruit.png"
 	final static String worm = "worm/worm.png"
 
+	final static String city = "missile_command/city.png"
+	final static String defenderMissile = "missile_command/defenderMissile.png"
+
 //	final static String playingSong = 'music/Rolemusic_-_pl4y1ng.mp3'
 //
 
 	void queueAddIndividualImages() {
 		manager.load(fruit, Texture)
 		manager.load(worm, Texture)
+		manager.load(city, Texture)
+		manager.load(defenderMissile, Texture)
 	}
 
 //	void queueAddImages() {

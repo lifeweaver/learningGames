@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -17,7 +18,6 @@ class GameSelectionScreen extends ScreenAdapter {
 	MyGames parent
 	Stage stage
 	Skin skin
-//	TextureRegion background
 
 	GameSelectionScreen(MyGames game) {
 		parent = game
@@ -25,7 +25,6 @@ class GameSelectionScreen extends ScreenAdapter {
 		parent.assetManager.queueAddSkin()
 		parent.assetManager.manager.finishLoading()
 		skin = parent.assetManager.manager.get(SdAssetManager.skin)
-//		background = DFUtils.makeTextureRegion(5f, 5f, '#000000')
 	}
 
 	@Override
@@ -45,22 +44,29 @@ class GameSelectionScreen extends ScreenAdapter {
 				fillParent: true,
 				debug: false
 		)
-//		table.background = new TiledDrawable(background)
+		Table innerTable = new Table()
+		ScrollPane scroll = new ScrollPane(innerTable)
+		table.add(scroll)
+		table.row()
 
 		stage.addActor(table)
 
 		TextButton pingPong = new TextButton("Ping Pong", skin)
 		TextButton worm = new TextButton("Worm", skin)
 		TextButton breakout = new TextButton("Breakout", skin)
+		TextButton missileCommand = new TextButton("Missile Command", skin)
 		TextButton back = new TextButton("Back", skin)
 
-		table.add(pingPong).fillX().uniformX()
-		table.row().pad(5, 0, 5, 0)
-		table.add(worm).fillX().uniformX()
-		table.row()
-		table.add(breakout).fillX().uniformX()
-		table.row().pad(5, 0, 5, 0)
-		table.add(back).fillX().uniformX()
+		innerTable.add(pingPong).fillX().uniformX()
+		innerTable.row().pad(5, 0, 5, 0)
+		innerTable.add(worm).fillX().uniformX()
+		innerTable.row()
+		innerTable.add(breakout).fillX().uniformX()
+		innerTable.row().pad(5, 0, 5, 0)
+		innerTable.add(missileCommand).fillX().uniformX()
+		innerTable.row().pad(5, 0, 5, 0)
+		innerTable.add(back).fillX().uniformX()
+		table.layout()
 
 		back.addListener(new ChangeListener() {
 			@Override
@@ -87,6 +93,13 @@ class GameSelectionScreen extends ScreenAdapter {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
 				parent.changeScreen(MyGames.BREAKOUT)
+			}
+		})
+
+		missileCommand.addListener(new ChangeListener() {
+			@Override
+			void changed(ChangeListener.ChangeEvent event, Actor actor) {
+				parent.changeScreen(MyGames.MISSILE_COMMAND)
 			}
 		})
 	}
