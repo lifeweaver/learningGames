@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.audio.Music
 import net.stardecimal.game.breakout.BreakoutScreen
 import net.stardecimal.game.loader.SdAssetManager
+import net.stardecimal.game.missilecommand.MissileCommandScreen
 import net.stardecimal.game.pong.PongScreen
 import net.stardecimal.game.screens.EndScreen
 import net.stardecimal.game.screens.GameSelectionScreen
@@ -22,6 +23,7 @@ class MyGames extends Game {
 	private AppPreferences appPreferences
 	private WormScreen wormScreen
 	private BreakoutScreen breakoutScreen
+	private MissileCommandScreen missileCommandScreen
 	SdAssetManager assetManager = new SdAssetManager()
 
 	final static int MENU = 0
@@ -31,6 +33,7 @@ class MyGames extends Game {
 	final static int GAME_SELECTION = 4
 	final static int WORM = 5
 	final static int BREAKOUT = 6
+	final static int MISSILE_COMMAND = 7
 	int playerScore = 0
 	int enemyScore = 0
 	Music playingSong
@@ -75,6 +78,16 @@ class MyGames extends Game {
 				}
 
 				this.setScreen(breakoutScreen)
+				break
+
+			case MISSILE_COMMAND:
+				if(!missileCommandScreen) {
+					missileCommandScreen = new MissileCommandScreen(this)
+				} else {
+					missileCommandScreen.resetWorld()
+				}
+
+				this.setScreen(missileCommandScreen)
 				break
 
 			case GAME_SELECTION:
