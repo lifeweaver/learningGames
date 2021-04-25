@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import net.stardecimal.game.entity.systems.ParticleEffectSystem
 import net.stardecimal.game.entity.systems.PhysicsDebugSystem
 import net.stardecimal.game.entity.systems.PhysicsSystem
 import net.stardecimal.game.entity.systems.RenderingSystem
@@ -31,6 +32,8 @@ trait GameScreen {
 		batch = new SpriteBatch()
 		RenderingSystem renderingSystem = new RenderingSystem(batch)
 		camera = renderingSystem.camera
+		//Make sure the ParticleEffectSystem is added after the RenderingSystem so particles are drawn on top of images
+		engine.addSystem(new ParticleEffectSystem(batch, camera))
 		batch.projectionMatrix = camera.combined
 
 		engine.addSystem(new PhysicsSystem(lvlFactory.world))
