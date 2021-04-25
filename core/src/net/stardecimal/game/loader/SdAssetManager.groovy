@@ -31,15 +31,17 @@ class SdAssetManager {
 
 	final static String city = "missile_command/city.png"
 	final static String defenderMissile = "missile_command/defenderMissile.png"
+	final static String enemyMissileTrail = "missile_command/enemyMissileTrail.pe"
 
 //	final static String playingSong = 'music/Rolemusic_-_pl4y1ng.mp3'
 //
 
-	void queueAddIndividualImages() {
+	void queueAddIndividualAssets() {
 		manager.load(fruit, Texture)
 		manager.load(worm, Texture)
 		manager.load(city, Texture)
 		manager.load(defenderMissile, Texture)
+		manager.load(enemyMissileTrail, ParticleEffect)
 	}
 
 //	void queueAddImages() {
