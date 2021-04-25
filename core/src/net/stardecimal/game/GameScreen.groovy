@@ -31,6 +31,7 @@ trait GameScreen {
 
 		batch = new SpriteBatch()
 		RenderingSystem renderingSystem = new RenderingSystem(batch)
+		renderingSystem.addTiledMapBackground(lvlFactory.generateBackground())
 		camera = renderingSystem.camera
 		//Make sure the ParticleEffectSystem is added after the RenderingSystem so particles are drawn on top of images
 		engine.addSystem(new ParticleEffectSystem(batch, camera))

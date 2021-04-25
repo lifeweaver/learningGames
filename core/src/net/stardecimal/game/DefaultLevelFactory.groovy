@@ -3,6 +3,7 @@ package net.stardecimal.game
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
@@ -90,6 +91,8 @@ trait DefaultLevelFactory {
 
 		engine.addEntity(entity)
 	}
+
+	abstract TiledMap generateBackground()
 
 	static float randomPos(float corner1, corner2) {
 		Random rand = new Random()

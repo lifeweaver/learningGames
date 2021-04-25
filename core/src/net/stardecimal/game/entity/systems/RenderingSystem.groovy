@@ -73,8 +73,10 @@ class RenderingSystem extends SortedIteratingSystem {
 	}
 
 	void addTiledMapBackground(TiledMap map) {
-		background = map
-		backgroundRenderer = new OrthogonalTiledMapRenderer(background)
+		if(map) {
+			background = map
+			backgroundRenderer = new OrthogonalTiledMapRenderer(background)
+		}
 	}
 
 	@Override
