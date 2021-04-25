@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Pool
 
 class TransformComponent implements Component, Pool.Poolable {
-	final Vector3 position = new Vector3()
-	final Vector2 scale = new Vector2(1.0f, 1.0f)
+	Vector3 position = new Vector3()
+	Vector2 scale = new Vector2(1.0f, 1.0f)
 	float rotation = 0.0f
 	boolean isHidden = false
 
@@ -15,5 +15,7 @@ class TransformComponent implements Component, Pool.Poolable {
 	void reset() {
 		rotation = 0.0f
 		isHidden = false
+		position = new Vector3()
+		scale = new Vector2(1.0f, 1.0f)
 	}
 }
