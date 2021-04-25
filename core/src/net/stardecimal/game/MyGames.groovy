@@ -1,7 +1,9 @@
 package net.stardecimal.game
 
 import com.badlogic.gdx.Game
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
+import com.badlogic.gdx.graphics.GL20
 import net.stardecimal.game.breakout.BreakoutScreen
 import net.stardecimal.game.loader.SdAssetManager
 import net.stardecimal.game.missilecommand.MissileCommandScreen
@@ -121,6 +123,9 @@ class MyGames extends Game {
 
 	@Override
 	void render () {
+		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		super.render()
 	}
 

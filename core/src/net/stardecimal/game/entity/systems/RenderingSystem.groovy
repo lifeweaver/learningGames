@@ -64,6 +64,7 @@ class RenderingSystem extends SortedIteratingSystem {
 	@SuppressWarnings('unchecked')
 	RenderingSystem(SpriteBatch batch) {
 		super(Family.all(TransformComponent.class, TextureComponent.class).get(), new ZComparator())
+		priority = 9
 		renderQueue = new Array<Entity>()
 
 		this.batch = batch
@@ -75,7 +76,7 @@ class RenderingSystem extends SortedIteratingSystem {
 	void addTiledMapBackground(TiledMap map) {
 		if(map) {
 			background = map
-			backgroundRenderer = new OrthogonalTiledMapRenderer(background)
+			backgroundRenderer = new OrthogonalTiledMapRenderer(background, batch)
 		}
 	}
 
@@ -99,7 +100,7 @@ class RenderingSystem extends SortedIteratingSystem {
 		}
 
 		batch.setProjectionMatrix(cam.combined)
-		batch.enableBlending()
+//		batch.enableBlending()
 		batch.begin()
 
 		renderQueue.each { Entity entity ->

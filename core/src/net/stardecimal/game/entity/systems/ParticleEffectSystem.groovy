@@ -19,6 +19,7 @@ class ParticleEffectSystem extends IteratingSystem {
 	@SuppressWarnings("unchecked")
 	ParticleEffectSystem(SpriteBatch sb, OrthographicCamera cam) {
 		super(Family.all(ParticleEffectComponent.class).get())
+		priority = 10
 		renderQueue = new Array<Entity>()
 		batch = sb
 		camera = cam
@@ -28,7 +29,7 @@ class ParticleEffectSystem extends IteratingSystem {
 	void update(float deltaTime) {
 		super.update(deltaTime)
 		batch.setProjectionMatrix(camera.combined)
-		batch.enableBlending()
+//		batch.enableBlending()
 		// Render PE
 		if(shouldRender) {
 			batch.begin()
