@@ -22,10 +22,12 @@ trait DefaultLevelFactory {
 	SdAssetManager assetManager
 	Entity player
 	TextureRegion boundaryTex
+	ParticleEffectManager pem
 
 	void init(PooledEngine en, SdAssetManager am) {
 		engine = en
 		assetManager = am
+		pem = new ParticleEffectManager()
 
 		// the y is gravity, normal is -9.8f I think.
 		world = new World(new Vector2(0, 0), true)

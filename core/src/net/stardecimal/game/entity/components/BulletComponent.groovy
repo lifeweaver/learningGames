@@ -1,6 +1,7 @@
 package net.stardecimal.game.entity.components
 
 import com.badlogic.ashley.core.Component
+import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
 
 class BulletComponent implements Component, Pool.Poolable {
@@ -10,6 +11,7 @@ class BulletComponent implements Component, Pool.Poolable {
 	public float yVel = 0
 	public boolean isDead = false
 	public Owner owner = Owner.NONE
+	Entity particleEffect = null
 
 	@Override
 	void reset() {
@@ -17,5 +19,6 @@ class BulletComponent implements Component, Pool.Poolable {
 		xVel = 0
 		yVel = 0
 		isDead = false
+		particleEffect = null
 	}
 }
