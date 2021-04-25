@@ -30,7 +30,7 @@ class ParticleEffectSystem extends IteratingSystem {
 		batch.setProjectionMatrix(camera.combined)
 		batch.enableBlending()
 		// Render PE
-		if(shouldRender){
+		if(shouldRender) {
 			batch.begin()
 			for (Entity entity : renderQueue) {
 				ParticleEffectComponent pec = Mapper.peCom.get(entity)
