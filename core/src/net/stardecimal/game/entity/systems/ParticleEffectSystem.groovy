@@ -44,12 +44,12 @@ class ParticleEffectSystem extends IteratingSystem {
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
 		ParticleEffectComponent pec = Mapper.peCom.get(entity)
-		if(pec.isDead){
+		if(pec.isDead) {
 			pec.timeTilDeath -= deltaTime
 		}
 
 		// Move PE if attached
-		if(pec.isAttached){
+		if(pec.isAttached) {
 			pec.particleEffect.setPosition(
 					pec.attachedBody.getPosition().x + pec.xOffset as float,
 					pec.attachedBody.getPosition().y + pec.yOffset as float)
