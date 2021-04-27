@@ -27,6 +27,7 @@ allprojects {
         ashleyVersion = '1.7.4'
         aiVersion = '1.8.2'
         groovyVersion = '3.0.6'
+        logbackVersion = '1.2.3'
     }
 
     repositories {
@@ -39,8 +40,8 @@ allprojects {
     dependencies {
         implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
         implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
-        implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
-        implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+        implementation group: 'ch.qos.logback', name: 'logback-core', version: "$logbackVersion"
+        implementation group: 'ch.qos.logback', name: 'logback-classic', version: "$logbackVersion"
     }
 }
 
