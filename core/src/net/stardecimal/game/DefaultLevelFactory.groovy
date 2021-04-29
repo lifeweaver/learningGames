@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.utils.Array
+import net.stardecimal.game.entity.components.ParticleEffectComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TextureComponent
 import net.stardecimal.game.entity.components.TransformComponent
@@ -102,5 +103,45 @@ trait DefaultLevelFactory {
 		float delta = corner2 - corner1 as float
 		float offset = rand.nextFloat() * delta as float
 		return corner1 + offset
+	}
+
+
+	/**
+	 * Make particle effect at xy
+	 * @param x
+	 * @param y
+	 * @param CollisionComponent
+	 * @return the Particle Effect Entity
+	 */
+	Entity makeParticleEffect(int type, float x, float y) {
+		Entity entPE = engine.createEntity()
+		ParticleEffectComponent pec = engine.createComponent(ParticleEffectComponent.class)
+		pec.particleEffect = pem.getPooledParticleEffect(type)
+		pec.particleEffect.setPosition(x, y)
+		entPE.add(pec)
+		engine.addEntity(entPE)
+		return entPE
+	}
+
+	/**
+	 * Attache particle effect to body from body component with offsets
+	 * @param type the type of particle effect to show
+	 * @param sdBody the bodycomponent with the body to attach to
+	 * @param xo x offset
+	 * @param yo y offset
+	 * @return the Particle Effect Entity
+	 */
+	Entity makeParticleEffect(int type, SdBodyComponent sdBody, float xo=0, float yo=0) {
+		Entity entPE = engine.createEntity()
+		ParticleEffectComponent pec = engine.createComponent(ParticleEffectComponent.class)
+		pec.particleEffect = pem.getPooledParticleEffect(type)
+		pec.particleEffect.setPosition(sdBody.body.position.x, sdBody.body.position.y)
+		pec.xOffset = xo
+		pec.yOffset = yo
+		pec.isAttached = true
+		pec.attachedBody = sdBody.body
+		entPE.add(pec)
+		engine.addEntity(entPE)
+		return entPE
 	}
 }

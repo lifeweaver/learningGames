@@ -32,6 +32,8 @@ class SdAssetManager {
 	final static String city = "missile_command/city.png"
 	final static String defenderMissile = "missile_command/defenderMissile.png"
 	final static String enemyMissileTrail = "missile_command/enemyMissileTrail.pe"
+	final static String explosion = "missile_command/explosion.png"
+	final static String explosionParticle = "missile_command/explosion.pe"
 
 //	final static String playingSong = 'music/Rolemusic_-_pl4y1ng.mp3'
 //
@@ -42,6 +44,8 @@ class SdAssetManager {
 		manager.load(city, Texture)
 		manager.load(defenderMissile, Texture)
 		manager.load(enemyMissileTrail, ParticleEffect)
+		manager.load(explosion, Texture)
+		manager.load(explosionParticle, ParticleEffect)
 	}
 
 //	void queueAddImages() {

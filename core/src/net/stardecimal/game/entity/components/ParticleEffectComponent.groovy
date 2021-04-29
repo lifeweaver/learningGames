@@ -11,8 +11,7 @@ class ParticleEffectComponent implements Component, Pool.Poolable {
 	boolean isAttached = false
 	float xOffset = 0
 	float yOffset = 0
-//	float timeTilDeath = 0.5f // add a 1 second delay
-	float timeTilDeath = 10f // add a 1 second delay
+	float timeTilDeath = 0.5f // add a 1 second delay
 	boolean isDead = false
 	Body attachedBody
 

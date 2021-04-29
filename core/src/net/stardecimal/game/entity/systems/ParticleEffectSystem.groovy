@@ -5,9 +5,11 @@ import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.utils.Array
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.ParticleEffectComponent
+import net.stardecimal.game.entity.components.SdBodyComponent
 
 class ParticleEffectSystem extends IteratingSystem {
 	private static final boolean shouldRender = true
@@ -15,14 +17,16 @@ class ParticleEffectSystem extends IteratingSystem {
 	private Array<Entity> renderQueue
 	private SpriteBatch batch
 	private OrthographicCamera camera
+	private World world
 
 	@SuppressWarnings("unchecked")
-	ParticleEffectSystem(SpriteBatch sb, OrthographicCamera cam) {
+	ParticleEffectSystem(SpriteBatch sb, OrthographicCamera cam, World wd) {
 		super(Family.all(ParticleEffectComponent.class).get())
 		priority = 10
 		renderQueue = new Array<Entity>()
 		batch = sb
 		camera = cam
+		world = wd
 	}
 
 	@Override
@@ -57,6 +61,12 @@ class ParticleEffectSystem extends IteratingSystem {
 		}
 		// free PE if completed
 		if(pec.particleEffect.isComplete() || pec.timeTilDeath <= 0) {
+			SdBodyComponent sdBody = Mapper.bCom.get(entity)
+
+			//If there is a body, destroy it before removing the entity
+			if(sdBody) {
+				world.destroyBody(sdBody.body)
+			}
 			getEngine().removeEntity(entity)
 		}else{
 			renderQueue.add(entity)

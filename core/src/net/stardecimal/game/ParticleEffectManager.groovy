@@ -15,6 +15,7 @@ class ParticleEffectManager {
 	static final int WATER = 1
 	static final int FIRE = 2
 	static final int CONTRAIL = 3
+	static final int EXPLOSION = 4
 
 	// create intmaps for effects and pools
 	private IntMap<ParticleEffect> partyEffects

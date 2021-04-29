@@ -17,6 +17,7 @@ class TypeComponent implements Component, Pool.Poolable {
 	static final int CITY  = 10
 	static final int DEFENDER_MISSILE  = 11
 	static final int EXPLOSION  = 12
+	static final int DEFAULT = 999
 
 	int type = OTHER
 

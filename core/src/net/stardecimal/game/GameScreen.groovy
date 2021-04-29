@@ -33,7 +33,7 @@ trait GameScreen {
 		RenderingSystem renderingSystem = new RenderingSystem(batch)
 		renderingSystem.addTiledMapBackground(lvlFactory.generateBackground())
 		camera = renderingSystem.camera
-		engine.addSystem(new ParticleEffectSystem(batch, camera))
+		engine.addSystem(new ParticleEffectSystem(batch, camera, lvlFactory.world))
 		batch.projectionMatrix = camera.combined
 
 		engine.addSystem(new PhysicsSystem(lvlFactory.world))
