@@ -19,6 +19,7 @@ class PhysicsDebugSystem extends IteratingSystem {
 		debugRenderer = new Box2DDebugRenderer()
 		this.world = world
 		this.camera = camera
+		this.priority = 999
 	}
 
 	@Override
