@@ -10,8 +10,12 @@ import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
 
 class MyContactListener implements ContactListener {
+	boolean isDebugOn = false
 
 	MyContactListener() {
+		if(System.getenv('debug') == 'true') {
+			isDebugOn = true
+		}
 	}
 
 	@Override
@@ -33,6 +37,9 @@ class MyContactListener implements ContactListener {
 	private void entityCollision(Entity entity, Fixture fb) {
 		if(fb.body.userData instanceof Entity) {
 			Entity colEnt = fb.body.userData as Entity
+			if(isDebugOn) {
+				println("entity.type: ${Mapper.typeCom.get(entity)?.type}, colEnt.type: ${Mapper.typeCom.get(colEnt)?.type}")
+			}
 
 			CollisionComponent col = Mapper.collisionCom.get(entity)
 			CollisionComponent colb = Mapper.collisionCom.get(colEnt)
