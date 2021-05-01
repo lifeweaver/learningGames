@@ -16,8 +16,11 @@ import net.stardecimal.game.entity.components.TransformComponent
 import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 trait DefaultLevelFactory {
+	static final Logger log = LoggerFactory.getLogger(DefaultLevelFactory)
 	BodyFactory bodyFactory
 	World world
 	PooledEngine engine
@@ -80,7 +83,7 @@ trait DefaultLevelFactory {
 
 		position.position.set(x, y, 0)
 		texture.region = boundaryTex
-		type.type = TypeComponent.SCENERY
+		type.type = TypeComponent.TYPES.SCENERY
 		sdBody.body = bodyFactory.makeBoxPolyBody(x, y, width, height, BodyFactory.STONE, BodyDef.BodyType.StaticBody)
 
 		entity.add(sdBody)
@@ -143,5 +146,43 @@ trait DefaultLevelFactory {
 		entPE.add(pec)
 		engine.addEntity(entPE)
 		return entPE
+	}
+
+	Array<Body> circleRayCast(Vector2 center, float radius) {
+		final int RAY_COUNT = 30
+		Array<SeeThroughRayCastCallback> rayCasts = new Array<SeeThroughRayCastCallback>()
+		Array<Body> rayCastBodies = new Array<Body>()
+		Vector2 direction = new Vector2()
+
+		//Start with zero degrees
+		direction.set(1, 0)
+		float rotateAngle = 360 / RAY_COUNT
+
+		RAY_COUNT.times {
+			float x1 = center.x
+			float y1 = center.y
+			float x2 = x1 + direction.x as float
+			float y2 = y1 + direction.y as float
+			float newRadius = radius as float
+			Vector2 endPoint = new Vector2(x2, y2)
+					.sub(x1, y1)
+					.nor()
+					.scl(newRadius)
+					.add(x1, y1)
+
+			SeeThroughRayCastCallback ray = new SeeThroughRayCastCallback(rayCastBodies, endPoint)
+			world.rayCast(ray, new Vector2(x1, y1), new Vector2(endPoint))
+			rayCasts.add(ray)
+			direction.rotateDeg(rotateAngle)
+		}
+
+		if(rayCasts && !rayCasts.first().collisionBodies.isEmpty()) {
+//			log.debug("rayCasts: ${rayCasts}, jtest: ${Integer.toHexString(rayCasts.first().collisionBodies.first().hashCode())}")
+		}
+		if(rayCastBodies && !rayCastBodies.isEmpty()) {
+//			log.debug("rayCastBodies: ${rayCastBodies}, jtest2: ${Integer.toHexString(rayCastBodies.first().hashCode())}")
+		}
+
+		return rayCastBodies
 	}
 }
