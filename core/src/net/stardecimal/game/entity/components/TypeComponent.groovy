@@ -37,7 +37,7 @@ class TypeComponent implements Component, Pool.Poolable {
 	]
 
 	static String getTypeName(int type) {
-		return TYPES.find {it.value = type}?.key ?: null
+		return TYPES.find {it.value == type}?.key ?: null
 	}
 
 	int type = OTHER
@@ -45,6 +45,5 @@ class TypeComponent implements Component, Pool.Poolable {
 	@Override
 	void reset() {
 		type = OTHER
-		TYPES.find {it.value = 11}.key
 	}
 }
