@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.utils.Pool
 
 class TypeComponent implements Component, Pool.Poolable {
-	//TODO stop using the direct ints, instead do TypeComponent.TYPES.PLAYER
 	static final int PLAYER  = 0
 	static final int ENEMY   = 1
 	static final int SCENERY = 2
