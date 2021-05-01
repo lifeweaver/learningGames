@@ -8,14 +8,14 @@ import com.badlogic.gdx.physics.box2d.Fixture
 import com.badlogic.gdx.physics.box2d.Manifold
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
+import net.stardecimal.game.entity.components.TypeComponent
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class MyContactListener implements ContactListener {
-	boolean isDebugOn = false
+	private static final Logger log = LoggerFactory.getLogger(this)
 
 	MyContactListener() {
-		if(System.getenv('debug') == 'true') {
-			isDebugOn = true
-		}
 	}
 
 	@Override
@@ -37,9 +37,7 @@ class MyContactListener implements ContactListener {
 	private void entityCollision(Entity entity, Fixture fb) {
 		if(fb.body.userData instanceof Entity) {
 			Entity colEnt = fb.body.userData as Entity
-			if(isDebugOn) {
-				println("entity.type: ${Mapper.typeCom.get(entity)?.type}, colEnt.type: ${Mapper.typeCom.get(colEnt)?.type}")
-			}
+			log.debug("entity${Integer.toHexString(entity.hashCode())}.type: ${TypeComponent.getTypeName(Mapper.typeCom.get(entity)?.type)}, colEnt${Integer.toHexString(colEnt.hashCode())}.type: ${TypeComponent.getTypeName(Mapper.typeCom.get(colEnt)?.type)}")
 
 			CollisionComponent col = Mapper.collisionCom.get(entity)
 			CollisionComponent colb = Mapper.collisionCom.get(colEnt)
@@ -54,6 +52,13 @@ class MyContactListener implements ContactListener {
 
 	@Override
 	void endContact(Contact contact) {
+		//Should I remove the CollisionsComponent.collisionEntity so I can use it to keep track of what is touching what?
+		//How about something touching multiple things?
+		//This method would only work for one object, I probably need a list and I just add or remove entities to that list
+		//So I know which entities are touching each other. I'd also probably have to check if they are dead.
+		//Especially since the entities are reused.
+		//Turns out you should use a sensor to keep track of what is currently touching? http://www.iforce2d.net/b2dtut/sensors
+		//Use a Set, when storing the objects, it should keep you from adding duplicates
 	}
 
 	@Override
