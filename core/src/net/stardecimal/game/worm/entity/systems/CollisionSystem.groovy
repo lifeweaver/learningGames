@@ -40,17 +40,17 @@ class CollisionSystem extends IteratingSystem {
 		Entity collidedEntity = cc.collisionEntity
 
 		// do player collisions
-		if (thisType.type == TypeComponent.PLAYER) {
+		if (thisType.type == TypeComponent.TYPES.PLAYER) {
 			SdBodyComponent body = Mapper.bCom.get(entity)
 			if(collidedEntity) {
 				TypeComponent type = Mapper.typeCom.get(collidedEntity)
 				if (type) {
 					switch (type.type) {
-						case TypeComponent.SCENERY:
+						case TypeComponent.TYPES.SCENERY:
 							println('player hit scenery')
 							//TODO: end game
 							break
-						case TypeComponent.SCORE_WALL:
+						case TypeComponent.TYPES.SCORE_WALL:
 							//TODO: different sound
 							bounce.play()
 							println('Player ate fruit!')

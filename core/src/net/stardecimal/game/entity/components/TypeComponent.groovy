@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.utils.Pool
 
 class TypeComponent implements Component, Pool.Poolable {
+	//TODO stop using the direct ints, instead do TypeComponent.TYPES.PLAYER
 	static final int PLAYER  = 0
 	static final int ENEMY   = 1
 	static final int SCENERY = 2
@@ -19,10 +20,32 @@ class TypeComponent implements Component, Pool.Poolable {
 	static final int EXPLOSION  = 12
 	static final int DEFAULT = 999
 
+	static final TYPES = [
+			PLAYER: PLAYER,
+			ENEMY: ENEMY,
+			SCENERY: SCENERY,
+			OTHER: OTHER,
+			SPRING: SPRING,
+			BULLET: BULLET,
+			SCORE_WALL: SCORE_WALL,
+			ENEMY_EXPLODE: ENEMY_EXPLODE,
+			ENEMY_DOUBLE: ENEMY_DOUBLE,
+			POWER_UP: POWER_UP,
+			CITY: CITY,
+			DEFENDER_MISSILE: DEFENDER_MISSILE,
+			EXPLOSION: EXPLOSION,
+			DEFAULT: DEFAULT
+	]
+
+	static String getTypeName(int type) {
+		return TYPES.find {it.value = type}?.key ?: null
+	}
+
 	int type = OTHER
 
 	@Override
 	void reset() {
 		type = OTHER
+		TYPES.find {it.value = 11}.key
 	}
 }

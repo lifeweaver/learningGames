@@ -40,16 +40,16 @@ class CollisionSystem extends IteratingSystem {
 		Entity collidedEntity = cc.collisionEntity
 
 		// do player collisions
-		if (thisType.type == TypeComponent.PLAYER) {
+		if (thisType.type == TypeComponent.TYPES.PLAYER) {
 			PlayerComponent pl = Mapper.playerCom.get(entity)
 			if(collidedEntity) {
 				TypeComponent type = Mapper.typeCom.get(collidedEntity)
 				if (type) {
 					switch (type.type) {
-						case TypeComponent.SCENERY:
+						case TypeComponent.TYPES.SCENERY:
 							println('player hit scenery')
 							break
-						case TypeComponent.BULLET:
+						case TypeComponent.TYPES.BULLET:
 							bounce.play()
 							println('Player bounced ping pong!')
 							BulletComponent bullet = Mapper.bulletCom.get(collidedEntity)
@@ -78,15 +78,15 @@ class CollisionSystem extends IteratingSystem {
 					println('type == null => I should check it out')
 				}
 			}
-		} else if (thisType.type == TypeComponent.ENEMY) {
+		} else if (thisType.type == TypeComponent.TYPES.ENEMY) {
 			if (collidedEntity) {
 				TypeComponent type = Mapper.typeCom.get(collidedEntity)
 				if (type != null) {
 					switch (type.type) {
-						case TypeComponent.SCENERY:
+						case TypeComponent.TYPES.SCENERY:
 							println("enemy hit scenery")
 							break
-						case TypeComponent.BULLET:
+						case TypeComponent.TYPES.BULLET:
 							bounce.play()
 							println('enemy bounced ping pong!')
 							BulletComponent bullet = Mapper.bulletCom.get(collidedEntity)
@@ -107,15 +107,15 @@ class CollisionSystem extends IteratingSystem {
 					println("type == null")
 				}
 			}
-		} else if(thisType.type == TypeComponent.BULLET) {
+		} else if(thisType.type == TypeComponent.TYPES.BULLET) {
 			if(collidedEntity) {
 				TypeComponent type = Mapper.typeCom.get(collidedEntity)
 				if(type) {
 					switch (type.type) {
-//						case TypeComponent.SCENERY:
+//						case TypeComponent.TYPES.SCENERY:
 //							println('ping pong hi scenery')
 //							break
-						case TypeComponent.SCORE_WALL:
+						case TypeComponent.TYPES.SCORE_WALL:
 							BulletComponent bullet = Mapper.bulletCom.get(entity)
 							bullet.isDead = true
 							println('player scored')

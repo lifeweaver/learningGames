@@ -70,7 +70,7 @@ class LevelFactory implements DefaultLevelFactory {
 		)
 
 		texture.region = new TextureRegion(wormTex)
-		type.type = TypeComponent.PLAYER
+		type.type = TypeComponent.TYPES.PLAYER
 		stateCom.set(StateComponent.STATE_NORMAL)
 		sdBody.body.setUserData(entity)
 		sdBody.body.sleepingAllowed = false
@@ -248,7 +248,7 @@ class LevelFactory implements DefaultLevelFactory {
 		)
 		texture.region = new TextureRegion(fruitTex)
 
-		type.type = TypeComponent.SCORE_WALL
+		type.type = TypeComponent.TYPES.SCORE_WALL
 		sdBody.body.setUserData(entity)
 
 		entity.add(sdBody)

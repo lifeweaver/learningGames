@@ -53,7 +53,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 		position.position.set(screenSize.x / 2 as float, 0, 0)
 		texture.region = boundaryTex
-		type.type = TypeComponent.SCENERY
+		type.type = TypeComponent.TYPES.SCENERY
 		sdBody.body = bodyFactory.makeBoxPolyBody(screenSize.x / RenderingSystem.PPM / 2 as float, 0.1f, screenSize.x / RenderingSystem.PPM as float, 0.1f, BodyFactory.STONE, BodyDef.BodyType.StaticBody)
 
 		entity.add(sdBody)
@@ -76,7 +76,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 		position.position.set(screenSize.x / 2 as float, screenSize.y, 0)
 		texture.region = boundaryTex
-		type.type = TypeComponent.SCENERY
+		type.type = TypeComponent.TYPES.SCENERY
 		sdBody.body = bodyFactory.makeBoxPolyBody(screenSize.x / RenderingSystem.PPM / 2 as float, screenSize.y / RenderingSystem.PPM - 0.2 as float, screenSize.x, 0.1f, BodyFactory.STONE, BodyDef.BodyType.StaticBody)
 
 		entity.add(sdBody)
@@ -106,7 +106,7 @@ class LevelFactory implements DefaultLevelFactory {
 		sdBody.body = bodyFactory.makeBoxPolyBody(screenSize.x / RenderingSystem.PPM - 2 as float, screenSize.y / RenderingSystem.PPM / 2 as float, 0.5f, 2, BodyFactory.STONE, BodyDef.BodyType.DynamicBody, true)
 
 		texture.region = paddleTex
-		type.type = TypeComponent.PLAYER
+		type.type = TypeComponent.TYPES.PLAYER
 		stateCom.set(StateComponent.STATE_NORMAL)
 		sdBody.body.setUserData(entity)
 		sdBody.body.sleepingAllowed = false
@@ -142,7 +142,7 @@ class LevelFactory implements DefaultLevelFactory {
 		position.position.set(2, screenSize.y / RenderingSystem.PPM / 2 as float,0)
 		texture.region = paddleTex
 		enemy.xPosCenter = 2
-		type.type = TypeComponent.ENEMY
+		type.type = TypeComponent.TYPES.ENEMY
 		stateCom.set(StateComponent.STATE_NORMAL)
 		sdBody.body.setUserData(entity)
 		scom.body = sdBody.body
@@ -173,7 +173,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 		position.position.set(0, screenSize.y / RenderingSystem.PPM / 2 as float, 0)
 		texture.region = enemyScoreWallTex
-		type.type = TypeComponent.SCORE_WALL
+		type.type = TypeComponent.TYPES.SCORE_WALL
 		sdBody.body = bodyFactory.makeBoxPolyBody(0, screenSize.y / RenderingSystem.PPM / 2 as float, 0.1f, screenSize.y, BodyFactory.STONE, BodyDef.BodyType.StaticBody)
 		scom.body = sdBody.body
 
@@ -195,7 +195,7 @@ class LevelFactory implements DefaultLevelFactory {
 		world.getBodies(bodies)
 
 		def pingPongs = engine.entities.findAll {Entity entity ->
-			Mapper.typeCom.get(entity).type == TypeComponent.BULLET && Mapper.bulletCom.get(entity) && !Mapper.bulletCom.get(entity).isDead
+			Mapper.typeCom.get(entity).type == TypeComponent.TYPES.BULLET && Mapper.bulletCom.get(entity) && !Mapper.bulletCom.get(entity).isDead
 		}
 		if(pingPongs.size() > 0) {
 			return null
@@ -217,7 +217,7 @@ class LevelFactory implements DefaultLevelFactory {
 		position.position.set(screenSize.x / RenderingSystem.PPM / 2 as float, screenSize.y / RenderingSystem.PPM / 2 as float,0)
 		texture.region = pingPongTex
 
-		type.type = TypeComponent.BULLET
+		type.type = TypeComponent.TYPES.BULLET
 		sdBody.body.setUserData(entity)
 		bul.xVel = 15f
 		bul.yVel = 0

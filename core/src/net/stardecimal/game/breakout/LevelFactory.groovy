@@ -65,7 +65,7 @@ class LevelFactory implements DefaultLevelFactory {
 		sdBody.body = bodyFactory.makeBoxPolyBody(screenSize.x / RenderingSystem.PPM / 2 as float, 0 / RenderingSystem.PPM + 2 as float, 2, 0.5f, BodyFactory.STONE, BodyDef.BodyType.DynamicBody, true)
 
 		texture.region = paddleTex
-		type.type = TypeComponent.PLAYER
+		type.type = TypeComponent.TYPES.PLAYER
 		stateCom.set(StateComponent.STATE_NORMAL)
 		sdBody.body.setUserData(entity)
 		sdBody.body.sleepingAllowed = false
@@ -90,7 +90,7 @@ class LevelFactory implements DefaultLevelFactory {
 		world.getBodies(bodies)
 
 		def pingPongs = engine.entities.findAll {Entity entity ->
-			Mapper.typeCom.get(entity).type == TypeComponent.BULLET && Mapper.bulletCom.get(entity) && !Mapper.bulletCom.get(entity).isDead
+			Mapper.typeCom.get(entity).type == TypeComponent.TYPES.BULLET && Mapper.bulletCom.get(entity) && !Mapper.bulletCom.get(entity).isDead
 		}
 		if(pingPongs.size() > 0) {
 			return null
@@ -114,7 +114,7 @@ class LevelFactory implements DefaultLevelFactory {
 		sdBody.body.setBullet(true) // increase physics computation to limit body travelling through other objects
 		texture.region = pingPongTex
 
-		type.type = TypeComponent.BULLET
+		type.type = TypeComponent.TYPES.BULLET
 		sdBody.body.setUserData(entity)
 		bul.xVel = 0
 		bul.yVel = 15f
@@ -170,16 +170,16 @@ class LevelFactory implements DefaultLevelFactory {
 		int typeChance = rand.nextInt(100)
 		if(typeChance <= 5) {
 			texture.region = explodeBoxTex
-			type.type = TypeComponent.ENEMY_EXPLODE
+			type.type = TypeComponent.TYPES.ENEMY_EXPLODE
 		} else if(typeChance <= 20) {
 			texture.region = doubleBoxTex
-			type.type = TypeComponent.ENEMY_DOUBLE
+			type.type = TypeComponent.TYPES.ENEMY_DOUBLE
 		} else if(typeChance >= 95) {
 			texture.region = powerUpBoxTex
-			type.type = TypeComponent.POWER_UP
+			type.type = TypeComponent.TYPES.POWER_UP
 		} else {
 			texture.region = defaultBoxTex
-			type.type = TypeComponent.ENEMY
+			type.type = TypeComponent.TYPES.ENEMY
 		}
 
 		entity.add(sdBody)

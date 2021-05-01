@@ -50,10 +50,10 @@ class CollisionSystem extends IteratingSystem {
 		}
 
 		// do player collisions
-		if (type == TypeComponent.PLAYER) {
+		if (type == TypeComponent.TYPES.PLAYER) {
 			if (collidedEntity) {
 				switch (collidedType) {
-					case TypeComponent.BULLET:
+					case TypeComponent.TYPES.BULLET:
 						bounce.play()
 						BulletComponent bullet = Mapper.bulletCom.get(collidedEntity)
 						SdBodyComponent bulletBodyCom = Mapper.bCom.get(collidedEntity)
@@ -76,7 +76,7 @@ class CollisionSystem extends IteratingSystem {
 				}
 				cc.collisionEntity = null // collision handled reset component
 			}
-		} else if (type == TypeComponent.BULLET) {
+		} else if (type == TypeComponent.TYPES.BULLET) {
 			if (collidedEntity) {
 				BulletComponent bullet = Mapper.bulletCom.get(entity)
 				SdBodyComponent collidedBodyCom = Mapper.bCom.get(collidedEntity)
@@ -84,28 +84,28 @@ class CollisionSystem extends IteratingSystem {
 				PowerUpComponent powerUp = ComponentMapper.getFor(PowerUpComponent.class).get(entity)
 
 				switch (collidedType) {
-					case TypeComponent.POWER_UP:
+					case TypeComponent.TYPES.POWER_UP:
 						powerUp.noBounceCount = 10
 						collidedBodyCom.isDead = true
 						boxBounce(bullet, powerUp)
 						break
 
-					case TypeComponent.ENEMY:
+					case TypeComponent.TYPES.ENEMY:
 						collidedBodyCom.isDead = true
 						boxBounce(bullet, powerUp)
 						break
 
-					case TypeComponent.ENEMY_DOUBLE:
+					case TypeComponent.TYPES.ENEMY_DOUBLE:
 						TypeComponent thisType = Mapper.typeCom.get(collidedEntity)
-						thisType.type = TypeComponent.ENEMY
+						thisType.type = TypeComponent.TYPES.ENEMY
 						TextureComponent texCom = Mapper.texCom.get(collidedEntity)
 						texCom.region = levelFactory.defaultBoxTex
 						boxBounce(bullet, powerUp)
 						break
 
-					case TypeComponent.ENEMY_EXPLODE:
+					case TypeComponent.TYPES.ENEMY_EXPLODE:
 						//Move logic to function so it handles an explosion exploding another explode block, if you want to get that fancy
-						def blockTypes = [TypeComponent.ENEMY, TypeComponent.ENEMY_DOUBLE, TypeComponent.ENEMY_EXPLODE, TypeComponent.POWER_UP]
+						def blockTypes = [TypeComponent.TYPES.ENEMY, TypeComponent.TYPES.ENEMY_DOUBLE, TypeComponent.TYPES.ENEMY_EXPLODE, TypeComponent.TYPES.POWER_UP]
 						List<Entity> blocks = engine.entities.findAll {Entity thisEntity ->
 							blockTypes.contains(Mapper.typeCom.get(thisEntity).type)
 						}
