@@ -1,9 +1,11 @@
 package net.stardecimal.game
 
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.CircleShape
+import com.badlogic.gdx.physics.box2d.EdgeShape
 import com.badlogic.gdx.physics.box2d.FixtureDef
 import com.badlogic.gdx.physics.box2d.PolygonShape
 import com.badlogic.gdx.physics.box2d.Shape
@@ -77,6 +79,32 @@ class BodyFactory {
 		return fixtureDef
 	}
 
+	// https://rotatingcanvas.com/edge-shape-in-box2d/
+	Body makeEdgeBody(float startPosX, float startPosY, float endPosX, float endPosY, BodyDef.BodyType bodyType) {
+		BodyDef boxBodyDef = new BodyDef()
+		boxBodyDef.type = bodyType
+
+		//CALCULATE CENTER OF LINE SEGMENT
+		float posX =(startPosX+endPosX) / 2f as float
+		float posY =(startPosY+endPosY) / 2f as float
+		
+		//CALCULATE LENGTH OF LINE SEGMENT
+		float len = (float) Math.sqrt((startPosX - endPosX) * (startPosX - endPosX) + (startPosY - endPosY) * (startPosY - endPosY))
+
+		boxBodyDef.position.set(posX, posY);
+		boxBodyDef.angle = 0
+
+		Body boxBody = world.createBody(boxBodyDef)
+
+		//ADD EDGE FIXTURE TO BODY
+		makeEdgeShape(boxBody, len ,1 ,0 ,1)
+
+		//CALCULATE ANGLE OF THE LINE SEGMENT
+		boxBody.setTransform(posX, posY, MathUtils.atan2(endPosY - startPosY as float, endPosX - startPosX as float))
+
+		return boxBody
+	}
+
 	Body makeCirclePolyBody(float posX, float posY, float radius, int material, BodyDef.BodyType bodyType, boolean fixedRotation=false, boolean isSensor=false) {
 		BodyDef boxBodyDef = new BodyDef()
 		boxBodyDef.type = bodyType
@@ -90,6 +118,22 @@ class BodyFactory {
 		boxBody.createFixture(makeFixture(material, circleShape, isSensor))
 		circleShape.dispose()
 		return boxBody
+	}
+
+	private static void makeEdgeShape(Body body, float len, float density, float restitution, float friction) {
+		FixtureDef fixtureDef = new FixtureDef()
+		fixtureDef.density = density
+		fixtureDef.restitution = restitution
+		fixtureDef.friction = friction
+
+		EdgeShape edgeShape = new EdgeShape()
+
+		//SETTING THE POINTS AS OFFSET DISTANCE FROM CENTER
+		edgeShape.set(-len / 2f as float, 0, len / 2f as float, 0)
+		fixtureDef.shape = edgeShape
+
+		body.createFixture(fixtureDef)
+		fixtureDef.shape.dispose()
 	}
 
 	Body makeBoxPolyBody(float posX, float posY, float width, float height, int material, BodyDef.BodyType bodyType, boolean fixedRotation=false, boolean isSensor=false) {
