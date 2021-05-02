@@ -116,11 +116,12 @@ trait DefaultLevelFactory {
 	 * @param CollisionComponent
 	 * @return the Particle Effect Entity
 	 */
-	Entity makeParticleEffect(int type, float x, float y) {
+	Entity makeParticleEffect(int type, float x, float y, boolean killOnParentBodyDeath=false) {
 		Entity entPE = engine.createEntity()
 		ParticleEffectComponent pec = engine.createComponent(ParticleEffectComponent.class)
 		pec.particleEffect = pem.getPooledParticleEffect(type)
 		pec.particleEffect.setPosition(x, y)
+		pec.killOnParentBodyDeath = killOnParentBodyDeath
 		entPE.add(pec)
 		engine.addEntity(entPE)
 		return entPE
@@ -134,7 +135,7 @@ trait DefaultLevelFactory {
 	 * @param yo y offset
 	 * @return the Particle Effect Entity
 	 */
-	Entity makeParticleEffect(int type, SdBodyComponent sdBody, float xo=0, float yo=0) {
+	Entity makeParticleEffect(int type, SdBodyComponent sdBody, float xo=0, float yo=0, boolean killOnParentBodyDeath=false) {
 		Entity entPE = engine.createEntity()
 		ParticleEffectComponent pec = engine.createComponent(ParticleEffectComponent.class)
 		pec.particleEffect = pem.getPooledParticleEffect(type)
@@ -143,6 +144,7 @@ trait DefaultLevelFactory {
 		pec.yOffset = yo
 		pec.isAttached = true
 		pec.attachedBody = sdBody.body
+		pec.killOnParentBodyDeath = killOnParentBodyDeath
 		entPE.add(pec)
 		engine.addEntity(entPE)
 		return entPE

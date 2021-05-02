@@ -59,8 +59,9 @@ class ParticleEffectSystem extends IteratingSystem {
 					pec.attachedBody.getPosition().x + pec.xOffset as float,
 					pec.attachedBody.getPosition().y + pec.yOffset as float)
 		}
+
 		// free PE if completed
-		if(pec.particleEffect.isComplete() || pec.timeTilDeath <= 0) {
+		if(pec.particleEffect.isComplete() || pec.timeTilDeath <= 0 || (pec.attachedBody && Mapper.bCom.get(pec.attachedBody.userData as Entity).isDead && pec.killOnParentBodyDeath)) {
 			SdBodyComponent sdBody = Mapper.bCom.get(entity)
 
 			//If there is a body, destroy it before removing the entity
