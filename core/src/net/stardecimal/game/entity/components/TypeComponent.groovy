@@ -1,6 +1,7 @@
 package net.stardecimal.game.entity.components
 
 import com.badlogic.ashley.core.Component
+import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
 
 class TypeComponent implements Component, Pool.Poolable {
@@ -26,6 +27,15 @@ class TypeComponent implements Component, Pool.Poolable {
 
 	static String getTypeName(int type) {
 		return TYPES.find {it.value == type}?.key ?: null
+	}
+
+	static String getTypeName(Entity entity) {
+		TypeComponent entityType = Mapper.typeCom.get(entity)
+		if(entityType) {
+			return TYPES.find {it.value == entityType.type}?.key ?: null
+		}
+
+		return "No TypeComponent found"
 	}
 
 	int type = TYPES.OTHER
