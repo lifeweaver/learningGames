@@ -10,6 +10,8 @@ class TransformComponent implements Component, Pool.Poolable {
 	Vector2 scale = new Vector2(1.0f, 1.0f)
 	float rotation = 0.0f
 	boolean isHidden = false
+	boolean flipX = false
+	boolean flipY = false
 
 	@Override
 	void reset() {
@@ -17,5 +19,7 @@ class TransformComponent implements Component, Pool.Poolable {
 		isHidden = false
 		position = new Vector3()
 		scale = new Vector2(1.0f, 1.0f)
+		flipX = false
+		flipY = false
 	}
 }

@@ -168,22 +168,31 @@ class RenderingSystem extends SortedIteratingSystem {
 
 				float originX = width / 2f as float
 				float originY = height / 2f as float
+				float drawX = t.position.x - originX + tex.offsetX as float
+				float drawY = t.position.y - originY + tex.offsetY as float
 
 //				println("${Mapper.typeCom.get(entity).type} position: x: ${t.position.x}, y: ${t.position.y}")
 				if(tex.region) {
 					batch.draw(
 							tex.region,
-							t.position.x - originX + tex.offsetX as float,
-							t.position.y - originY + tex.offsetY as float,
-							originX, originY, width, height,
+							t.flipX ? drawX + width as float : drawX,
+							t.flipY ? drawY + height as float : drawY,
+							originX,
+							originY,
+							t.flipX ? -width : width,
+							t.flipY ? -height : height,
 							pixelsToMeters(t.scale.x), pixelsToMeters(t.scale.y),
 							t.rotation
 					)
 				} else {
 					batch.draw(
-							tex.texture, t.position.x - originX + tex.offsetX as float,
-							t.position.y - originY + tex.offsetY as float,
-							originX, originY, width, height,
+							tex.texture,
+							t.flipX ? drawX + width as float : drawX,
+							t.flipY ? drawY + height as float : drawY,
+							originX,
+							originY,
+							t.flipX ? -width : width,
+							t.flipY ? -height : height,
 							pixelsToMeters(t.scale.x), pixelsToMeters(t.scale.y)
 					)
 				}
