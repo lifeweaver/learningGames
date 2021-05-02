@@ -67,7 +67,7 @@ class CollisionSystem extends IteratingSystem {
 					break
 
 				default:
-					log.debug("bullet collided with something: ${type.type}")
+					log.debug("bullet collided with something: ${TypeComponent.getTypeName(type.type)}")
 			}
 
 			cc.collisionEntity = null // collision handled reset component
