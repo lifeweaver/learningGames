@@ -43,10 +43,8 @@ class LevelFactory implements DefaultLevelFactory {
 	def defenderMissiles
 
 	//TODO:
-	//explosions at missile spawn - sigh
 	//add bomberPlane?
 		//fire missiles
-		//Sometimes not affected by explosion
 	//add satellite
 	//add smartBomb
 	//Missile splitting
@@ -368,8 +366,25 @@ class LevelFactory implements DefaultLevelFactory {
 		entity.add(type)
 		engine.addEntity(entity)
 
+		//RayCast method to catch everything on the edges
 		Array<Body> entitiesHitByExplosion = circleRayCast(boomCenter, explosionRange / 2 as float)
 		entitiesHitByExplosion.each {
+			if(it?.userData instanceof Entity) {
+				Entity ent = it.userData as Entity
+				Mapper.bCom.get(ent).isDead = true
+			}
+		}
+
+		//AABB method to catch ones the RayCast missed. Like completely overlapping?
+		float radius = explosionRange / 2 as float
+		Vector2 lower = new Vector2(boomCenter)
+		Vector2 upper = new Vector2(boomCenter)
+
+		lower.sub(radius, radius)
+		upper.add(radius, radius)
+
+		def entitiesInTheExplosion = aabb(lower, upper)
+		entitiesInTheExplosion.each {
 			if(it?.userData instanceof Entity) {
 				Entity ent = it.userData as Entity
 				Mapper.bCom.get(ent).isDead = true
@@ -505,16 +520,17 @@ class LevelFactory implements DefaultLevelFactory {
 		)
 		sdBody.body.setUserData(entity)
 
-		//Velocity?
-		sdBody.body.setLinearVelocity(sdBody.body.linearVelocity.x, MathUtils.lerp(sdBody.body.linearVelocity.y, -10f, 0.2f))
-
 		//Starting point specific settings
 		if(randX == 0) {
 			texture.region = new TextureRegion(bomberPlaneTex)
 			position.flipX = true
+
+			//Velocity
 			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, 7, 1f), 0)
 		} else {
 			texture.region = new TextureRegion(bomberPlaneTex)
+
+			//Velocity
 			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, -7, 1f), 0)
 		}
 
