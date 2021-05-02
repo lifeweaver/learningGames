@@ -187,4 +187,11 @@ trait DefaultLevelFactory {
 
 		return rayCastBodies
 	}
+
+	Array<Body> aabb(Vector2 lower, Vector2 upper) {
+		AllAABBQueryCallback aabbQueryCallback = new AllAABBQueryCallback()
+		world.QueryAABB(aabbQueryCallback, lower.x, lower.y, upper.x, upper.y)
+
+		return aabbQueryCallback.collisionBodies
+	}
 }
