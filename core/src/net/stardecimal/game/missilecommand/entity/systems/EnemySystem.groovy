@@ -23,6 +23,7 @@ class EnemySystem extends IntervalSystem {
 		super(interval)
 		levelFactory = lvlf
 		processing = false
+		priority = 20
 	}
 
 	@Override
@@ -34,36 +35,40 @@ class EnemySystem extends IntervalSystem {
 
 		//Spawn a bomber plane every 10 missiles
 		if(missilesSpawned % 10 == 0) {
-			Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
-			float maxX = screenSize.x / RenderingSystem.PPM as float
-			float maxY = screenSize.y / RenderingSystem.PPM as float
-			List<Entity> bomberPlanes = engine.getEntities().findAll {
-				Mapper.typeCom.get(it)?.type == TypeComponent.TYPES.BOMBER_PLANE
-			}
-
-			//Kill any bomber planes outside the screen
-			bomberPlanes.each {
-				SdBodyComponent sdBody = Mapper.bCom.get(it)
-				Vector2 pos = sdBody.body.position
-				if(pos.x < 0 || pos.y < 0 || pos.x > maxX || pos.y > maxY) {
-					sdBody.isDead = true
-				}
-			}
-
-			//Only leave alive bomber planes in list
-			bomberPlanes.removeAll {
-				Mapper.bCom.get(it).isDead
-			}
-
-			//Don't spawn a bomber plane if one already exists
-			if(bomberPlanes.isEmpty()) {
-				levelFactory.createBomberPlane()
-			}
+			processBombers()
 		}
 
 		//Spawn a satellite plane every 15 missiles
 		if(missilesSpawned % 15 == 0) {
 
+		}
+	}
+
+	void processBombers() {
+		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
+		float maxX = screenSize.x / RenderingSystem.PPM as float
+		float maxY = screenSize.y / RenderingSystem.PPM as float
+		List<Entity> bomberPlanes = engine.getEntities().findAll {
+			Mapper.typeCom.get(it)?.type == TypeComponent.TYPES.BOMBER_PLANE
+		}
+
+		//Kill any bomber planes outside the screen
+		bomberPlanes.each {
+			SdBodyComponent sdBody = Mapper.bCom.get(it)
+			Vector2 pos = sdBody.body.position
+			if(pos.x < 0 || pos.y < 0 || pos.x > maxX || pos.y > maxY) {
+				sdBody.isDead = true
+			}
+		}
+
+		//Only leave alive bomber planes in list
+		bomberPlanes.removeAll {
+			Mapper.bCom.get(it).isDead
+		}
+
+		//Don't spawn a bomber plane if one already exists
+		if(bomberPlanes.isEmpty()) {
+			levelFactory.createBomberPlane()
 		}
 	}
 }
