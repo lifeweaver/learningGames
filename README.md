@@ -1,4 +1,6 @@
-# Each branch is a new game I'm learning to make in order to learn certain concepts, see https://www.gamedev.net/articles/programming/general-and-gameplay-programming/your-first-step-to-game-development-starts-here-r2976/
+# Learning how to make games
+
+Each branch is a new game I'm learning to make in order to learn certain concepts, see https://www.gamedev.net/articles/programming/general-and-gameplay-programming/your-first-step-to-game-development-starts-here-r2976/
 
 Basically:
 
