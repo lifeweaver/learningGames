@@ -41,10 +41,9 @@ class LevelFactory implements DefaultLevelFactory {
 	private float defenderMissileHeight = 0.75
 	RandomXS128 rand = new RandomXS128()
 	def defenderMissiles
+	final short enemyGroup = -1
 
 	//TODO:
-	//add bomberPlane?
-		//fire missiles
 	//add satellite
 	//add smartBomb
 	//Missile splitting
@@ -340,7 +339,7 @@ class LevelFactory implements DefaultLevelFactory {
 		ParticleEffectComponent pec = engine.createComponent(ParticleEffectComponent)
 		CollisionComponent colComp = engine.createComponent(CollisionComponent)
 
-		float explosionRange = 5
+		float explosionRange = 3
 		sdBody.width = explosionRange
 		sdBody.height = explosionRange
 		sdBody.body = bodyFactory.makeCirclePolyBody(
@@ -442,7 +441,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 	// If spawnPoint is passed in, that is where the missile should spawn
 	// Used by the bomber plane and the satellite, and maybe the missile splitting
-	Entity createEnemyMissile(Vector2 spawnPoint=null) {
+	Entity createEnemyMissile(Vector2 startPosOverride=null, float angleOverride=0) {
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)
@@ -454,23 +453,27 @@ class LevelFactory implements DefaultLevelFactory {
 		EnemyComponent ecom = engine.createComponent(EnemyComponent)
 
 		float randX, y
-		if(spawnPoint) {
-			randX = spawnPoint.x
-			y = spawnPoint.y
+		if(startPosOverride) {
+			randX = startPosOverride.x
+			y = startPosOverride.y
 		} else {
 			randX = rand.nextInt(screenSize.x / RenderingSystem.PPM as int)
 			y = screenSize.y / RenderingSystem.PPM as float
 		}
 
 		sdBody.body = bodyFactory.makeCirclePolyBody(randX, y,0.2f, BodyFactory.PING_PONG, BodyDef.BodyType.DynamicBody,true)
+		sdBody.body.fixtureList.first().filterData.groupIndex = enemyGroup
 		sdBody.body.setBullet(true) // increase physics computation to limit body travelling through other objects
 		position.position.set(sdBody.body.position.x, sdBody.body.position.y,0)
 
-		float[] angles = getMinAndMaxAngles(screenSize, sdBody.body.position)
-		float minAngle = angles[0]
-		float maxAngle = angles[1]
-		float randAngle = rand.nextInt(maxAngle - minAngle as int) + minAngle as float
-//		log.debug("start: ${sdBody.body.position}, randAngle: ${randAngle}, minAngle: ${minAngle}, maxAngle: ${maxAngle}")
+		float randAngle = angleOverride
+		if(!angleOverride) {
+			float[] angles = getMinAndMaxAngles(screenSize, sdBody.body.position)
+			float minAngle = angles[0]
+			float maxAngle = angles[1]
+			randAngle = rand.nextInt(maxAngle - minAngle as int) + minAngle as float
+//			log.debug("start: ${sdBody.body.position}, randAngle: ${randAngle}, minAngle: ${minAngle}, maxAngle: ${maxAngle}")
+		}
 
 		texture.region = missileTex
 		type.type = TypeComponent.TYPES.BULLET
@@ -518,6 +521,7 @@ class LevelFactory implements DefaultLevelFactory {
 				BodyFactory.STONE,
 				BodyDef.BodyType.KinematicBody
 		)
+		sdBody.body.fixtureList.first().filterData.groupIndex = enemyGroup
 		sdBody.body.setUserData(entity)
 
 		//Starting point specific settings
