@@ -3,6 +3,7 @@ package net.stardecimal.game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Cursor
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -135,8 +136,15 @@ class DFUtils {
 		return frames
 	}
 
+	//Use for going up?
 	static float vectorToAngle (Vector2 vector) {
 		return (float)Math.atan2(-vector.x, vector.y)
+	}
+
+	//Use for going down? vectorToAngle didn't work for the bomber plane's missile, I'm  not sure why, but this does.
+	//And if I used this for aiming the defender missiles, then the angle is wrong.
+	static float vectorToAngle2 (Vector2 vector) {
+		return (float)Math.atan2(-vector.y, vector.x)
 	}
 
 	static Vector2 angleToVector (Vector2 outVector, float angle) {
@@ -167,4 +175,31 @@ class DFUtils {
 		return aimTo(shooter, new Vector2(target.x,target.y))
 	}
 
+
+	//Method I found in particle park
+	static Pixmap textureRegionToPixmap(TextureRegion textureRegion) {
+		Texture texture = textureRegion.getTexture();
+		if (!texture.getTextureData().isPrepared()) {
+			texture.getTextureData().prepare();
+		}
+
+		Pixmap pixmap = texture.getTextureData().consumePixmap();
+		Pixmap returnValue = new Pixmap(textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), Pixmap.Format.RGBA8888);
+		returnValue.setBlending(Pixmap.Blending.None);
+
+		for(int x = 0; x < textureRegion.getRegionWidth(); ++x) {
+			for(int y = 0; y < textureRegion.getRegionHeight(); ++y) {
+				int colorInt = pixmap.getPixel(textureRegion.getRegionX() + x, textureRegion.getRegionY() + y);
+				returnValue.drawPixel(x, y, colorInt);
+			}
+		}
+
+		pixmap.dispose();
+		return returnValue;
+	}
+
+	//Method I found in particle park
+	static Cursor textureRegionToCursor(TextureRegion textureRegion, int xHotspot, int yHotspot) {
+		return Gdx.graphics.newCursor(textureRegionToPixmap(textureRegion), xHotspot, yHotspot);
+	}
 }
