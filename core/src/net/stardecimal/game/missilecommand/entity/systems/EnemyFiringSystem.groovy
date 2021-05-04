@@ -15,16 +15,16 @@ import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.missilecommand.LevelFactory
 import net.stardecimal.game.missilecommand.entity.components.EnemyComponent
 
-class EnemyBomberPlaneSystem extends IteratingSystem {
+class EnemyFiringSystem extends IteratingSystem {
 	private LevelFactory levelFactory
-	private Array<Entity> bomberQueue
+	private Array<Entity> enemyQueue
 	static final ComponentMapper<EnemyComponent> enemyCom = ComponentMapper.getFor(EnemyComponent.class)
 
 	@SuppressWarnings("unchecked")
-	EnemyBomberPlaneSystem(LevelFactory lvlFactory){
+	EnemyFiringSystem(LevelFactory lvlFactory){
 		super(Family.all(EnemyComponent.class).get())
 		this.levelFactory = lvlFactory
-		bomberQueue = new Array<Entity>()
+		enemyQueue = new Array<Entity>()
 		priority = levelFactory.engine.getSystem(EnemySystem).priority + 1
 	}
 
@@ -32,7 +32,7 @@ class EnemyBomberPlaneSystem extends IteratingSystem {
 	void update(float deltaTime) {
 		super.update(deltaTime)
 
-		bomberQueue.each {
+		enemyQueue.each {
 			EnemyComponent ecom = enemyCom.get(it)
 			if(ecom.fireDelay > 0) {
 				ecom.fireDelay = ecom.fireDelay - deltaTime as float
@@ -66,7 +66,7 @@ class EnemyBomberPlaneSystem extends IteratingSystem {
 
 		}
 
-		bomberQueue.clear()
+		enemyQueue.clear()
 	}
 
 	private static boolean shouldFire(Body body) {
@@ -76,8 +76,8 @@ class EnemyBomberPlaneSystem extends IteratingSystem {
 
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
-		if(entity && Mapper.typeCom.get(entity).type == TypeComponent.TYPES.BOMBER_PLANE) {
-			bomberQueue.add(entity)
+		if(entity && [TypeComponent.TYPES.BOMBER_PLANE, TypeComponent.TYPES.SATELLITE].contains(Mapper.typeCom.get(entity).type)) {
+			enemyQueue.add(entity)
 		}
 	}
 }

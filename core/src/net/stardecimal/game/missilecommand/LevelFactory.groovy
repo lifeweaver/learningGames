@@ -45,7 +45,6 @@ class LevelFactory implements DefaultLevelFactory {
 	final short enemyGroup = -1
 
 	//TODO:
-	//add satellite
 	//add smartBomb
 	//Missile splitting
 	//Missiles in the center are supposed to be faster, only ones that can easily kill smart bombs? might do
@@ -540,6 +539,57 @@ class LevelFactory implements DefaultLevelFactory {
 		}
 
 		type.type = TypeComponent.TYPES.BOMBER_PLANE
+
+		entity.add(sdBody)
+		entity.add(position)
+		entity.add(texture)
+		entity.add(type)
+		entity.add(ecom)
+
+		engine.addEntity(entity)
+	}
+
+	void createSatellite() {
+		Entity entity = engine.createEntity()
+		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+		TransformComponent position = engine.createComponent(TransformComponent)
+		TextureComponent texture = engine.createComponent(TextureComponent)
+		TypeComponent type = engine.createComponent(TypeComponent)
+		EnemyComponent ecom = engine.createComponent(EnemyComponent)
+		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
+		float maxX = screenSize.x / RenderingSystem.PPM as float
+
+		float randX = rand.nextInt(maxX as int) > 20 ? maxX : 0
+		float randY = rand.nextInt(5) + 25
+
+		sdBody.width = 2
+		sdBody.height = 2
+		sdBody.body = bodyFactory.makeBoxPolyBody(
+				randX,
+				randY,
+				sdBody.width,
+				sdBody.height,
+				BodyFactory.STONE,
+				BodyDef.BodyType.KinematicBody
+		)
+		sdBody.body.fixtureList.first().filterData.groupIndex = enemyGroup
+		sdBody.body.setUserData(entity)
+
+		//Starting point specific settings
+		if(randX == 0) {
+			texture.region = new TextureRegion(satelliteTex)
+			position.flipX = true
+
+			//Velocity
+			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, 7, 1f), 0)
+		} else {
+			texture.region = new TextureRegion(satelliteTex)
+
+			//Velocity
+			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, -7, 1f), 0)
+		}
+
+		type.type = TypeComponent.TYPES.SATELLITE
 
 		entity.add(sdBody)
 		entity.add(position)

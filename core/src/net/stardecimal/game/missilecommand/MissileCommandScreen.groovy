@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.missilecommand.entity.systems.CollisionSystem
-import net.stardecimal.game.missilecommand.entity.systems.EnemyBomberPlaneSystem
+import net.stardecimal.game.missilecommand.entity.systems.EnemyFiringSystem
 import net.stardecimal.game.missilecommand.entity.systems.EnemySystem
 import net.stardecimal.game.missilecommand.entity.systems.MissileSystem
 import net.stardecimal.game.missilecommand.entity.systems.PlayerControlSystem
@@ -22,7 +22,7 @@ class MissileCommandScreen extends ScreenAdapter implements GameScreen {
 		engine.addSystem(new PlayerControlSystem(controller, levelFactory, camera))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))
 		engine.addSystem(new EnemySystem(levelFactory, initialEnemyMissileSpawnInterval))
-		engine.addSystem(new EnemyBomberPlaneSystem(levelFactory))
+		engine.addSystem(new EnemyFiringSystem(levelFactory))
 		engine.addSystem(new MissileSystem(game, levelFactory))
 
 

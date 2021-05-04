@@ -34,26 +34,26 @@ class EnemySystem extends IntervalSystem {
 		}
 
 		//Spawn a bomber plane every 10 missiles
-		if(missilesSpawned % 10 == 0) {
-			processBombers()
+		if(missilesSpawned % 7 == 0) {
+			processEnemy(TypeComponent.TYPES.BOMBER_PLANE)
 		}
 
 		//Spawn a satellite plane every 15 missiles
-		if(missilesSpawned % 15 == 0) {
-
+		if(missilesSpawned % 10 == 0) {
+			processEnemy(TypeComponent.TYPES.SATELLITE)
 		}
 	}
 
-	void processBombers() {
+	void processEnemy(int type) {
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
 		float maxX = screenSize.x / RenderingSystem.PPM as float
 		float maxY = screenSize.y / RenderingSystem.PPM as float
-		List<Entity> bomberPlanes = engine.getEntities().findAll {
-			Mapper.typeCom.get(it)?.type == TypeComponent.TYPES.BOMBER_PLANE
+		List<Entity> enemies = engine.getEntities().findAll {
+			Mapper.typeCom.get(it)?.type == type
 		}
 
-		//Kill any bomber planes outside the screen
-		bomberPlanes.each {
+		//Kill any enemy outside the screen
+		enemies.each {
 			SdBodyComponent sdBody = Mapper.bCom.get(it)
 			Vector2 pos = sdBody.body.position
 			if(pos.x < 0 || pos.y < 0 || pos.x > maxX || pos.y > maxY) {
@@ -61,14 +61,18 @@ class EnemySystem extends IntervalSystem {
 			}
 		}
 
-		//Only leave alive bomber planes in list
-		bomberPlanes.removeAll {
+		//Only leave alive enemies in list
+		enemies.removeAll {
 			Mapper.bCom.get(it).isDead
 		}
 
-		//Don't spawn a bomber plane if one already exists
-		if(bomberPlanes.isEmpty()) {
-			levelFactory.createBomberPlane()
+		//Don't spawn a enemy if one already exists
+		if(enemies.isEmpty()) {
+			if(type == TypeComponent.TYPES.BOMBER_PLANE) {
+				levelFactory.createBomberPlane()
+			} else if(type ==  TypeComponent.TYPES.SATELLITE) {
+				levelFactory.createSatellite()
+			}
 		}
 	}
 }
