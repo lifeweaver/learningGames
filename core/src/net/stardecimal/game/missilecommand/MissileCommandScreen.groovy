@@ -30,6 +30,7 @@ class MissileCommandScreen extends ScreenAdapter implements GameScreen {
 		levelFactory.createDefenderMissiles()
 		levelFactory.createGroundBarrier()
 		levelFactory.createPlayer(camera)
+		levelFactory.createCrosshair()
 //		levelFactory.initScore()
 		levelFactory.startMissileBarrage()
 	}

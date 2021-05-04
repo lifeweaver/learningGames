@@ -2,6 +2,7 @@ package net.stardecimal.game.missilecommand
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -35,7 +36,7 @@ import net.stardecimal.game.missilecommand.entity.components.EnemyComponent
 import net.stardecimal.game.missilecommand.entity.systems.EnemySystem
 
 class LevelFactory implements DefaultLevelFactory {
-	private Texture cityTex, defenderMissileTex, explosionTex, bomberPlaneTex, satelliteTex, smartBombTex
+	private Texture cityTex, defenderMissileTex, explosionTex, bomberPlaneTex, satelliteTex, smartBombTex, crosshairsTex
 	private TextureRegion cellBackground, cellBackgroundRed, missileTex, nothingTex
 	private float defenderMissileWidth = 0.5
 	private float defenderMissileHeight = 0.75
@@ -47,7 +48,6 @@ class LevelFactory implements DefaultLevelFactory {
 	//add satellite
 	//add smartBomb
 	//Missile splitting
-	//Add crosshair on mouse position
 	//Missiles in the center are supposed to be faster, only ones that can easily kill smart bombs? might do
 	//Sound effects
 	//Pause Menu
@@ -64,6 +64,7 @@ class LevelFactory implements DefaultLevelFactory {
 		bomberPlaneTex = assetManager.manager.get(SdAssetManager.bomberPlane)
 		satelliteTex = assetManager.manager.get(SdAssetManager.satellite)
 		smartBombTex = assetManager.manager.get(SdAssetManager.smartBomb)
+		crosshairsTex = assetManager.manager.get(SdAssetManager.crosshairs)
 		cellBackground =  DFUtils.makeTextureRegion(2, 2, '#000000')
 		cellBackgroundRed =  DFUtils.makeTextureRegion(2, 2, '#ff0000')
 		missileTex = DFUtils.makeTextureRegion(1, 1, '#ffffff')
@@ -547,6 +548,10 @@ class LevelFactory implements DefaultLevelFactory {
 		entity.add(ecom)
 
 		engine.addEntity(entity)
+	}
+
+	void createCrosshair() {
+		Gdx.graphics.setCursor(DFUtils.textureRegionToCursor(new TextureRegion(crosshairsTex), 0, 0))
 	}
 
 	void initScore() {

@@ -178,19 +178,19 @@ class DFUtils {
 
 	//Method I found in particle park
 	static Pixmap textureRegionToPixmap(TextureRegion textureRegion) {
-		Texture texture = textureRegion.getTexture();
+		Texture texture = textureRegion.getTexture()
 		if (!texture.getTextureData().isPrepared()) {
-			texture.getTextureData().prepare();
+			texture.getTextureData().prepare()
 		}
 
-		Pixmap pixmap = texture.getTextureData().consumePixmap();
-		Pixmap returnValue = new Pixmap(textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), Pixmap.Format.RGBA8888);
-		returnValue.setBlending(Pixmap.Blending.None);
+		Pixmap pixmap = texture.getTextureData().consumePixmap()
+		Pixmap returnValue = new Pixmap(textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), Pixmap.Format.RGBA8888)
+		returnValue.setBlending(Pixmap.Blending.None)
 
 		for(int x = 0; x < textureRegion.getRegionWidth(); ++x) {
 			for(int y = 0; y < textureRegion.getRegionHeight(); ++y) {
-				int colorInt = pixmap.getPixel(textureRegion.getRegionX() + x, textureRegion.getRegionY() + y);
-				returnValue.drawPixel(x, y, colorInt);
+				int colorInt = pixmap.getPixel(textureRegion.getRegionX() + x, textureRegion.getRegionY() + y)
+				returnValue.drawPixel(x, y, colorInt)
 			}
 		}
 
@@ -200,6 +200,6 @@ class DFUtils {
 
 	//Method I found in particle park
 	static Cursor textureRegionToCursor(TextureRegion textureRegion, int xHotspot, int yHotspot) {
-		return Gdx.graphics.newCursor(textureRegionToPixmap(textureRegion), xHotspot, yHotspot);
+		return Gdx.graphics.newCursor(textureRegionToPixmap(textureRegion), xHotspot, yHotspot)
 	}
 }
