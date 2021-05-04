@@ -530,12 +530,12 @@ class LevelFactory implements DefaultLevelFactory {
 			position.flipX = true
 
 			//Velocity
-			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, 7, 1f), 0)
+			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, 5, 1f), 0)
 		} else {
 			texture.region = new TextureRegion(bomberPlaneTex)
 
 			//Velocity
-			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, -7, 1f), 0)
+			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, -5, 1f), 0)
 		}
 
 		type.type = TypeComponent.TYPES.BOMBER_PLANE

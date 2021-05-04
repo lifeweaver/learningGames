@@ -8,7 +8,7 @@ class EnemyComponent implements Component, Pool.Poolable {
 	float missilesFired = 0
 	float lastTimeFired = 0
 	float fireDelay = 0
-	final float firingDelay = 3
+	final float firingDelay = 4
 
 	@Override
 	void reset() {
