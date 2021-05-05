@@ -15,13 +15,13 @@ import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.missilecommand.LevelFactory
 import net.stardecimal.game.missilecommand.entity.components.EnemyComponent
 
-class EnemyFiringSystem extends IteratingSystem {
+class EnemySystem extends IteratingSystem {
 	private LevelFactory levelFactory
 	private Array<Entity> enemyQueue
 	static final ComponentMapper<EnemyComponent> enemyCom = ComponentMapper.getFor(EnemyComponent.class)
 
 	@SuppressWarnings("unchecked")
-	EnemyFiringSystem(LevelFactory lvlFactory){
+	EnemySystem(LevelFactory lvlFactory){
 		super(Family.all(EnemyComponent.class).get())
 		this.levelFactory = lvlFactory
 		enemyQueue = new Array<Entity>()
