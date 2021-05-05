@@ -33,7 +33,7 @@ import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
 import net.stardecimal.game.missilecommand.entity.components.EnemyComponent
-import net.stardecimal.game.missilecommand.entity.systems.EnemySystem
+import net.stardecimal.game.missilecommand.entity.systems.EnemySpawningSystem
 
 class LevelFactory implements DefaultLevelFactory {
 	private Texture cityTex, defenderMissileTex, explosionTex, bomberPlaneTex, satelliteTex, smartBombTex, crosshairsTex
@@ -46,9 +46,12 @@ class LevelFactory implements DefaultLevelFactory {
 
 	//TODO:
 	//add smartBomb
+	//add scoring
+	//Sound effects
+	//Add end game
+	//enhance boom, wait 1/2 second, look for more things?
 	//Missile splitting
 	//Missiles in the center are supposed to be faster, only ones that can easily kill smart bombs? might do
-	//Sound effects
 	//Pause Menu
 	//Switch from using camera directly to viewport? https://github.com/libgdx/libgdx/wiki/Viewports
 	// something else
@@ -394,7 +397,7 @@ class LevelFactory implements DefaultLevelFactory {
 	}
 
 	void startMissileBarrage() {
-		engine.getSystem(EnemySystem).processing = true
+		engine.getSystem(EnemySpawningSystem).processing = true
 	}
 
 	static float[] getMinAndMaxAngles(Vector2 screenSize, Vector2 startPos) {
@@ -590,6 +593,43 @@ class LevelFactory implements DefaultLevelFactory {
 		}
 
 		type.type = TypeComponent.TYPES.SATELLITE
+
+		entity.add(sdBody)
+		entity.add(position)
+		entity.add(texture)
+		entity.add(type)
+		entity.add(ecom)
+
+		engine.addEntity(entity)
+	}
+
+	void createSmartBomb() {
+		Entity entity = engine.createEntity()
+		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+		TransformComponent position = engine.createComponent(TransformComponent)
+		TextureComponent texture = engine.createComponent(TextureComponent)
+		TypeComponent type = engine.createComponent(TypeComponent)
+		EnemyComponent ecom = engine.createComponent(EnemyComponent)
+		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
+		float maxX = screenSize.x / RenderingSystem.PPM as float
+
+		float randX = rand.nextInt(maxX as int) > 20 ? maxX : 0
+		float randY = rand.nextInt(5) + 25
+
+		sdBody.width = 0.5f
+		sdBody.height = 0.5f
+		sdBody.body = bodyFactory.makeBoxPolyBody(
+				randX,
+				randY,
+				sdBody.width,
+				sdBody.height,
+				BodyFactory.STONE,
+				BodyDef.BodyType.KinematicBody
+		)
+		sdBody.body.fixtureList.first().filterData.groupIndex = enemyGroup
+		sdBody.body.setUserData(entity)
+		texture.region = new TextureRegion(smartBombTex)
+		type.type = TypeComponent.TYPES.SMART_BOMB
 
 		entity.add(sdBody)
 		entity.add(position)

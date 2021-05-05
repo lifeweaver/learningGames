@@ -25,7 +25,7 @@ class EnemyFiringSystem extends IteratingSystem {
 		super(Family.all(EnemyComponent.class).get())
 		this.levelFactory = lvlFactory
 		enemyQueue = new Array<Entity>()
-		priority = levelFactory.engine.getSystem(EnemySystem).priority + 1
+		priority = levelFactory.engine.getSystem(EnemySpawningSystem).priority + 1
 	}
 
 	@Override

@@ -11,14 +11,14 @@ import net.stardecimal.game.missilecommand.LevelFactory
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class EnemySystem extends IntervalSystem {
+class EnemySpawningSystem extends IntervalSystem {
 	private LevelFactory levelFactory
 	float missilesToSpawn = 1
 	private static final Logger log = LoggerFactory.getLogger(LevelFactory)
 	float missilesSpawned = 0
 
 	@SuppressWarnings("unchecked")
-	EnemySystem(LevelFactory lvlf, float interval) {
+	EnemySpawningSystem(LevelFactory lvlf, float interval) {
 		//Interval in seconds
 		super(interval)
 		levelFactory = lvlf
@@ -33,14 +33,19 @@ class EnemySystem extends IntervalSystem {
 			levelFactory.createEnemyMissile()
 		}
 
-		//Spawn a bomber plane every 10 missiles
+		//Spawn a bomber plane every 7 missiles
 		if(missilesSpawned % 7 == 0) {
 			processEnemy(TypeComponent.TYPES.BOMBER_PLANE)
 		}
 
-		//Spawn a satellite plane every 15 missiles
+		//Spawn a satellite every 10 missiles
 		if(missilesSpawned % 10 == 0) {
 			processEnemy(TypeComponent.TYPES.SATELLITE)
+		}
+
+		//Spawn a smart bomb every 15 missiles
+		if(missilesSpawned % 15 == 0) {
+//			processEnemy(TypeComponent.TYPES.SMART_BOMB)
 		}
 	}
 
@@ -70,8 +75,10 @@ class EnemySystem extends IntervalSystem {
 		if(enemies.isEmpty()) {
 			if(type == TypeComponent.TYPES.BOMBER_PLANE) {
 				levelFactory.createBomberPlane()
-			} else if(type ==  TypeComponent.TYPES.SATELLITE) {
+			} else if(type == TypeComponent.TYPES.SATELLITE) {
 				levelFactory.createSatellite()
+			} else if(type == TypeComponent.TYPES.SMART_BOMB) {
+				levelFactory.createSmartBomb()
 			}
 		}
 	}
