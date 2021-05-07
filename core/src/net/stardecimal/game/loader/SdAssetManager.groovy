@@ -56,8 +56,6 @@ class SdAssetManager {
 		manager.load(satellite, Texture)
 		manager.load(smartBomb, Texture)
 		manager.load(crosshairs, Texture)
-		manager.load(boom, Sound)
-		manager.load(targeting_beep, Sound)
 	}
 
 //	void queueAddImages() {
@@ -81,9 +79,11 @@ class SdAssetManager {
 //	}
 
 	void queueAddSounds() {
-		manager.load(bounce, Sound.class)
-		manager.load(paddleLeftLoss, Sound.class)
-		manager.load(paddleRightLoss, Sound.class)
+		manager.load(bounce, Sound)
+		manager.load(paddleLeftLoss, Sound)
+		manager.load(paddleRightLoss, Sound)
+		manager.load(boom, Sound)
+		manager.load(targeting_beep, Sound)
 	}
 
 	void queueAddMusic() {
