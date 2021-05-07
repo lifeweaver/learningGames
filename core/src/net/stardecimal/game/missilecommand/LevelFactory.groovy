@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ai.steer.SteeringBehavior
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -30,6 +31,7 @@ import net.stardecimal.game.entity.components.ParticleEffectComponent
 import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.SdLocation
+import net.stardecimal.game.entity.components.SoundEffectComponent
 import net.stardecimal.game.entity.components.StateComponent
 import net.stardecimal.game.entity.components.SteeringComponent
 import net.stardecimal.game.entity.components.TextureComponent
@@ -43,6 +45,7 @@ import net.stardecimal.game.missilecommand.entity.systems.EnemySpawningSystem
 class LevelFactory implements DefaultLevelFactory {
 	private Texture cityTex, defenderMissileTex, explosionTex, bomberPlaneTex, satelliteTex, smartBombTex, crosshairsTex
 	private TextureRegion cellBackground, cellBackgroundRed, missileTex, nothingTex
+	Sound boom, targeting_beep
 	private float defenderMissileWidth = 0.5
 	private float defenderMissileHeight = 0.75
 	RandomXS128 rand = new RandomXS128()
@@ -71,6 +74,8 @@ class LevelFactory implements DefaultLevelFactory {
 		cellBackgroundRed =  DFUtils.makeTextureRegion(2, 2, '#ff0000')
 		missileTex = DFUtils.makeTextureRegion(1, 1, '#ffffff')
 		nothingTex = DFUtils.makeTextureRegion(0,0,'#000000')
+		boom = assetManager.manager.get(SdAssetManager.boom)
+		targeting_beep = assetManager.manager.get(SdAssetManager.targeting_beep)
 		pem.addParticleEffect(ParticleEffectManager.CONTRAIL, assetManager.manager.get(SdAssetManager.enemyMissileTrail))
 		pem.addParticleEffect(ParticleEffectManager.EXPLOSION, assetManager.manager.get(SdAssetManager.explosionParticle))
 		defenderMissiles = new ArrayList<Entity>()
@@ -394,6 +399,7 @@ class LevelFactory implements DefaultLevelFactory {
 			}
 		}
 
+		boom.play()
 		return entity
 	}
 
@@ -614,6 +620,7 @@ class LevelFactory implements DefaultLevelFactory {
 		CollisionComponent colComp = engine.createComponent(CollisionComponent)
 		SteeringComponent scom = engine.createComponent(SteeringComponent)
 		StateComponent stateCom = engine.createComponent(StateComponent)
+		SoundEffectComponent soundCom = engine.createComponent(SoundEffectComponent)
 
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
 		double maxX = screenSize.x / RenderingSystem.PPM
@@ -641,6 +648,11 @@ class LevelFactory implements DefaultLevelFactory {
 		scom.maxLinearSpeed = 10f
 		scom.steeringBehavior = steeringBehavior
 
+		soundCom.soundEffect = targeting_beep
+		soundCom.looping = true
+		soundCom.play()
+
+		entity.add(soundCom)
 		entity.add(colComp)
 		entity.add(sdBody)
 		entity.add(position)

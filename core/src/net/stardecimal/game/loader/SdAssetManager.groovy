@@ -38,6 +38,8 @@ class SdAssetManager {
 	final static String satellite = "missile_command/satellite.png"
 	final static String smartBomb = "missile_command/smartBomb.png"
 	final static String crosshairs = "missile_command/crosshairs.png"
+	final static String boom = "missile_command/boom.wav"
+	final static String targeting_beep = "missile_command/targeting_beep.wav"
 
 //	final static String playingSong = 'music/Rolemusic_-_pl4y1ng.mp3'
 //
@@ -54,6 +56,8 @@ class SdAssetManager {
 		manager.load(satellite, Texture)
 		manager.load(smartBomb, Texture)
 		manager.load(crosshairs, Texture)
+		manager.load(boom, Sound)
+		manager.load(targeting_beep, Sound)
 	}
 
 //	void queueAddImages() {
