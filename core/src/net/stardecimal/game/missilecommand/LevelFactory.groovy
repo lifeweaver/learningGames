@@ -54,10 +54,6 @@ class LevelFactory implements DefaultLevelFactory {
 
 	//TODO:
 	//add scoring
-	//Sound effects
-	//enhance boom, wait 1/2 second, look for more things?
-	//Missile splitting
-	//Missiles in the center are supposed to be faster, only ones that can easily kill smart bombs? might do
 
 	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		init(en, assetManager)
@@ -667,6 +663,32 @@ class LevelFactory implements DefaultLevelFactory {
 
 	void createCrosshair() {
 		Gdx.graphics.setCursor(DFUtils.textureRegionToCursor(new TextureRegion(crosshairsTex), 0, 0))
+	}
+
+	List<Entity> findTargets() {
+		List<Entity> targets = engine.getEntities().findAll {
+			Mapper.typeCom.get(it)?.type == TypeComponent.TYPES.CITY || Mapper.typeCom.get(it)?.type == TypeComponent.TYPES.DEFENDER_MISSILE
+		}
+		Collections.shuffle(targets)
+
+		return (List<Entity>) targets
+	}
+
+	Entity launchEnemyMissile(Vector2 startPos) {
+		List<Entity> targets = findTargets()
+
+		if(targets.size()) {
+			Entity target = targets.first() as Entity
+			Vector2 missileStart = new Vector2(startPos.x, startPos.y)
+			Vector2 targetPos = Mapper.bCom.get(target).body.position
+			Vector2 aimedVector = DFUtils.aimTo(missileStart, targetPos)
+			float angleDeg = DFUtils.vectorToAngle2(aimedVector) * MathUtils.radiansToDegrees as float
+//						    println("missileStart: ${missileStart}, target: ${targetPos}, angle: ${angleDeg}")
+
+			return createEnemyMissile(missileStart, angleDeg)
+		}
+
+		return null
 	}
 
 	void initScore() {

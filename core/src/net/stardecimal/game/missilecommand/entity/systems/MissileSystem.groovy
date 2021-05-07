@@ -1,5 +1,6 @@
 package net.stardecimal.game.missilecommand.entity.systems
 
+import com.badlogic.ashley.core.ComponentMapper
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
@@ -9,12 +10,15 @@ import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.ParticleEffectComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
+import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.missilecommand.LevelFactory
+import net.stardecimal.game.missilecommand.entity.components.EnemyComponent
 
 class MissileSystem extends IteratingSystem {
 	private LevelFactory levelFactory
 	private MyGames parent
+	static final ComponentMapper<EnemyComponent> enemyCom = ComponentMapper.getFor(EnemyComponent.class)
 
 	@SuppressWarnings("unchecked")
 	MissileSystem(MyGames parent, LevelFactory lvlFactory){
@@ -51,6 +55,34 @@ class MissileSystem extends IteratingSystem {
 			bullet.yVel = 0
 			bullet.isDead = true
 			levelFactory.createBoom(new Vector2(b2body.body.position.x, b2body.body.position.y))
+		}
+
+
+		//Controls the chance of an  Enemy Missile splitting
+		if(Mapper.typeCom.get(entity).type == TypeComponent.TYPES.BULLET) {
+			EnemyComponent eCom = enemyCom.get(entity)
+			if(!eCom.hasSplit) {
+				if(eCom.splitCheckCoolDown <= 0) {
+					//Calculate chance to split
+					float test = levelFactory.rand.nextFloat()
+					if(test > 0.92) {
+						//Split into 3 missiles
+						3.times {
+							Entity newMissile = levelFactory.launchEnemyMissile(b2body.body.position)
+							if(newMissile) {
+								enemyCom.get(newMissile).hasSplit = true
+							}
+						}
+
+						//Kill old missile
+						bullet.isDead = true
+					} else {
+						eCom.splitCheckCoolDown = eCom.splitCheckInterval
+					}
+				} else {
+					eCom.splitCheckCoolDown = eCom.splitCheckCoolDown - deltaTime as float
+				}
+			}
 		}
 
 //		check if bullet is dead

@@ -78,21 +78,13 @@ class EnemySpawningSystem extends IntervalSystem {
 			} else if(type == TypeComponent.TYPES.SATELLITE) {
 				levelFactory.createSatellite()
 			} else if(type == TypeComponent.TYPES.SMART_BOMB) {
-				List<Entity> targets = findTargets()
+				List<Entity> targets = levelFactory.findTargets()
 
 				if(targets.size()) {
-					Collections.shuffle(targets)
 					Entity target = targets.first() as Entity
 					levelFactory.createSmartBomb(target)
 				}
-
 			}
-		}
-	}
-
-	private List<Entity> findTargets() {
-		return engine.getEntities().findAll {
-			Mapper.typeCom.get(it)?.type == TypeComponent.TYPES.CITY || Mapper.typeCom.get(it)?.type == TypeComponent.TYPES.DEFENDER_MISSILE
 		}
 	}
 }

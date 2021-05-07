@@ -11,6 +11,9 @@ class EnemyComponent implements Component, Pool.Poolable {
 	float fireDelay = 0
 	final float firingDelay = 4
 	Entity target = null
+	boolean hasSplit = false
+	float splitCheckInterval = 1
+	float splitCheckCoolDown = splitCheckInterval
 
 	@Override
 	void reset() {
@@ -18,5 +21,8 @@ class EnemyComponent implements Component, Pool.Poolable {
 		missilesFired = 0
 		fireDelay = 0
 		target = null
+		hasSplit = false
+		splitCheckInterval = 1
+		splitCheckCoolDown = splitCheckInterval
 	}
 }

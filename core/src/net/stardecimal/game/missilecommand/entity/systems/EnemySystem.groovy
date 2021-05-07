@@ -80,31 +80,14 @@ class EnemySystem extends IteratingSystem {
 						ecom.lastTimeFired = System.currentTimeMillis()
 						ecom.missilesFired++
 						ecom.fireDelay = ecom.firingDelay
-						List<Entity> targets = findTargets()
 
-						if(targets.size()) {
-							Collections.shuffle(targets)
-							Entity target = targets.first() as Entity
-							Vector2 missileStart = new Vector2(sdBody.body.position.x, sdBody.body.position.y)
-							Vector2 targetPos = Mapper.bCom.get(target).body.position
-							Vector2 aimedVector = DFUtils.aimTo(missileStart, targetPos)
-							float angleDeg = DFUtils.vectorToAngle2(aimedVector) * MathUtils.radiansToDegrees as float
-//						    println("missileStart: ${missileStart}, target: ${targetPos}, angle: ${angleDeg}")
-
-							levelFactory.createEnemyMissile(missileStart, angleDeg)
-						}
+						levelFactory.launchEnemyMissile(sdBody.body.position)
 					}
 				}
 			}
 		}
 
 		enemyQueue.clear()
-	}
-
-	private List<Entity> findTargets() {
-		return engine.getEntities().findAll {
-			Mapper.typeCom.get(it)?.type == TypeComponent.TYPES.CITY || Mapper.typeCom.get(it)?.type == TypeComponent.TYPES.DEFENDER_MISSILE
-		}
 	}
 
 	private Entity closestThreat(Vector2 target, int type=TypeComponent.TYPES.EXPLOSION) {
