@@ -40,6 +40,15 @@ class MyGames extends Game {
 	int enemyScore = 0
 	Music playingSong
 
+	//TODO
+	//Add end game
+	//Pause Menu
+	//stop using .finishLoading() and have a progress screen with a loading bar.
+	//Additionally you can automate your resource loading via:
+	//https://github.com/raeleus/Java-Poet-and-libGDX-Example/wiki
+	//Switch from using camera directly to viewport? https://github.com/libgdx/libgdx/wiki/Viewports
+	// something else
+
 	void changeScreen(int screen) {
 		switch(screen) {
 			case MENU:
