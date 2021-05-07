@@ -662,7 +662,7 @@ class LevelFactory implements DefaultLevelFactory {
 	}
 
 	void createCrosshair() {
-		Gdx.graphics.setCursor(DFUtils.textureRegionToCursor(new TextureRegion(crosshairsTex), 0, 0))
+		Gdx.graphics.setCursor(DFUtils.textureRegionToCursor(new TextureRegion(crosshairsTex), crosshairsTex.width / 2 as int, crosshairsTex.height / 2 as int))
 	}
 
 	List<Entity> findTargets() {
