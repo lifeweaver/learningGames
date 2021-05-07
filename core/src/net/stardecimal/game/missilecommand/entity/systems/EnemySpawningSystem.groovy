@@ -45,7 +45,7 @@ class EnemySpawningSystem extends IntervalSystem {
 
 		//Spawn a smart bomb every 15 missiles
 		if(missilesSpawned % 15 == 0) {
-//			processEnemy(TypeComponent.TYPES.SMART_BOMB)
+			processEnemy(TypeComponent.TYPES.SMART_BOMB)
 		}
 	}
 
@@ -78,8 +78,21 @@ class EnemySpawningSystem extends IntervalSystem {
 			} else if(type == TypeComponent.TYPES.SATELLITE) {
 				levelFactory.createSatellite()
 			} else if(type == TypeComponent.TYPES.SMART_BOMB) {
-				levelFactory.createSmartBomb()
+				List<Entity> targets = findTargets()
+
+				if(targets.size()) {
+					Collections.shuffle(targets)
+					Entity target = targets.first() as Entity
+					levelFactory.createSmartBomb(target)
+				}
+
 			}
+		}
+	}
+
+	private List<Entity> findTargets() {
+		return engine.getEntities().findAll {
+			Mapper.typeCom.get(it)?.type == TypeComponent.TYPES.CITY || Mapper.typeCom.get(it)?.type == TypeComponent.TYPES.DEFENDER_MISSILE
 		}
 	}
 }

@@ -3,6 +3,7 @@ package net.stardecimal.game.missilecommand
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.ai.steer.SteeringBehavior
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -21,12 +22,16 @@ import net.stardecimal.game.BodyFactory
 import net.stardecimal.game.DFUtils
 import net.stardecimal.game.DefaultLevelFactory
 import net.stardecimal.game.ParticleEffectManager
+import net.stardecimal.game.ai.SteeringPresets
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.ParticleEffectComponent
 import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
+import net.stardecimal.game.entity.components.SdLocation
+import net.stardecimal.game.entity.components.StateComponent
+import net.stardecimal.game.entity.components.SteeringComponent
 import net.stardecimal.game.entity.components.TextureComponent
 import net.stardecimal.game.entity.components.TransformComponent
 import net.stardecimal.game.entity.components.TypeComponent
@@ -45,16 +50,11 @@ class LevelFactory implements DefaultLevelFactory {
 	final short enemyGroup = -1
 
 	//TODO:
-	//add smartBomb
 	//add scoring
 	//Sound effects
-	//Add end game
 	//enhance boom, wait 1/2 second, look for more things?
 	//Missile splitting
 	//Missiles in the center are supposed to be faster, only ones that can easily kill smart bombs? might do
-	//Pause Menu
-	//Switch from using camera directly to viewport? https://github.com/libgdx/libgdx/wiki/Viewports
-	// something else
 
 	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		init(en, assetManager)
@@ -359,6 +359,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 		pec.particleEffect = pem.getPooledParticleEffect(ParticleEffectManager.EXPLOSION)
 		pec.particleEffect.setPosition(sdBody.body.position.x, sdBody.body.position.y)
+		pec.particleEffect.scaleEffect(explosionRange, 1)
 		pec.isAttached = true
 		pec.attachedBody = sdBody.body
 
@@ -603,39 +604,51 @@ class LevelFactory implements DefaultLevelFactory {
 		engine.addEntity(entity)
 	}
 
-	void createSmartBomb() {
+	void createSmartBomb(Entity target) {
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)
 		TextureComponent texture = engine.createComponent(TextureComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
 		EnemyComponent ecom = engine.createComponent(EnemyComponent)
-		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
-		float maxX = screenSize.x / RenderingSystem.PPM as float
+		CollisionComponent colComp = engine.createComponent(CollisionComponent)
+		SteeringComponent scom = engine.createComponent(SteeringComponent)
+		StateComponent stateCom = engine.createComponent(StateComponent)
 
-		float randX = rand.nextInt(maxX as int) > 20 ? maxX : 0
-		float randY = rand.nextInt(5) + 25
+		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
+		double maxX = screenSize.x / RenderingSystem.PPM
+		float randX = rand.nextInt(maxX as int)
 
 		sdBody.width = 0.5f
 		sdBody.height = 0.5f
 		sdBody.body = bodyFactory.makeBoxPolyBody(
 				randX,
-				randY,
+				screenSize.y / RenderingSystem.PPM as float,
 				sdBody.width,
 				sdBody.height,
 				BodyFactory.STONE,
-				BodyDef.BodyType.KinematicBody
+				BodyDef.BodyType.DynamicBody
 		)
 		sdBody.body.fixtureList.first().filterData.groupIndex = enemyGroup
 		sdBody.body.setUserData(entity)
 		texture.region = new TextureRegion(smartBombTex)
 		type.type = TypeComponent.TYPES.SMART_BOMB
 
+		stateCom.state = StateComponent.STATE_NORMAL
+		ecom.target = target
+		scom.body = sdBody.body
+		SteeringBehavior<Vector2> steeringBehavior = SteeringPresets.getArrive(scom, new SdLocation(position: Mapper.bCom.get(target).body.position, orientation: 0))
+		scom.maxLinearSpeed = 10f
+		scom.steeringBehavior = steeringBehavior
+
+		entity.add(colComp)
 		entity.add(sdBody)
 		entity.add(position)
 		entity.add(texture)
 		entity.add(type)
 		entity.add(ecom)
+		entity.add(scom)
+		entity.add(stateCom)
 
 		engine.addEntity(entity)
 	}
