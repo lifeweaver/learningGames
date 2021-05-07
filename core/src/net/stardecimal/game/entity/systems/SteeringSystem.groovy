@@ -6,13 +6,16 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.ai.GdxAI
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SteeringComponent
-import net.stardecimal.game.entity.components.TypeComponent
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class SteeringSystem extends IteratingSystem {
+	Logger log
 
 	@SuppressWarnings("unchecked")
 	SteeringSystem() {
 		super(Family.all(SteeringComponent.class).get())
+		log = LoggerFactory.getLogger(SteeringSystem)
 	}
 
 
@@ -25,10 +28,9 @@ class SteeringSystem extends IteratingSystem {
 
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
-		SteeringComponent steer = Mapper.sCom.get(entity)
-		if(!Mapper.bCom.get(entity).isDead && steer.position.x) {
-
-			steer.update(deltaTime)
+		SteeringComponent sCom = Mapper.sCom.get(entity)
+		if(!Mapper.bCom.get(entity).isDead && sCom.steeringBehavior) {
+			sCom.update(deltaTime)
 		}
 	}
 }

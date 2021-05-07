@@ -5,13 +5,12 @@ import com.badlogic.gdx.ai.steer.Steerable
 import com.badlogic.gdx.ai.steer.SteeringAcceleration
 import com.badlogic.gdx.ai.steer.SteeringBehavior
 import com.badlogic.gdx.ai.utils.Location
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.utils.Pool
 import net.stardecimal.game.DFUtils
 
-class SteeringComponent implements Steerable<Vector2>, Component, Pool.Poolable{
+class SteeringComponent implements Steerable<Vector2>, Component, Pool.Poolable {
 
 	static enum SteeringState {WANDER,SEEK,FLEE,ARRIVE,NONE,INTERPOSE} 	// a list of possible behaviours
 	SteeringState currentMode = SteeringState.WANDER 	// stores which state the entity is currently in
@@ -21,7 +20,7 @@ class SteeringComponent implements Steerable<Vector2>, Component, Pool.Poolable{
 	float maxLinearSpeed = 1.5f	// stores the max speed the entity can go
 	float maxLinearAcceleration = 5f	// stores the max acceleration
 	float maxAngularSpeed = 50f		// the max turning speed
-	float maxAngularAcceleration = 5f// the max turning acceleration
+	float maxAngularAcceleration = 5f // the max turning acceleration
 	float zeroThreshold = 0.1f	// how accurate should checks be (0.0000001f will mean the entity must get within 0.0000001f of
 	// target location. This will cause problems as our entities travel pretty fast and can easily over or undershoot this.)
 	SteeringBehavior<Vector2> steeringBehavior // stores the action behaviour
@@ -36,7 +35,16 @@ class SteeringComponent implements Steerable<Vector2>, Component, Pool.Poolable{
 		currentMode = SteeringState.NONE
 		body = null
 		steeringBehavior = null
-
+		steeringOutput.linear = new Vector2()
+		steeringOutput.angular = 0f
+		maxLinearSpeed = 1.5f
+		maxLinearAcceleration = 5f
+		maxAngularSpeed = 50f
+		maxAngularAcceleration = 5f
+		zeroThreshold = 0.1f
+		boundingRadius = 1f
+		tagged = true
+		independentFacing = true
 	}
 
 	boolean isIndependentFacing () {
@@ -73,10 +81,11 @@ class SteeringComponent implements Steerable<Vector2>, Component, Pool.Poolable{
 		// Update position and linear velocity.
 		if (!steering.linear.isZero()) {
 			// this method internally scales the force by deltaTime
-			Vector2 force = steering.linear.scl(deltaTime)
+//			Vector2 force = steering.linear.scl(deltaTime)
 
-			body.applyForceToCenter(force, true)
-
+			//TODO: figure out why the the applyForceToCenter doesn't work
+//			body.applyForceToCenter(force, true)
+			body.setLinearVelocity(steering.linear.x, steering.linear.y)
 			anyAccelerations = true
 		}
 
@@ -113,10 +122,9 @@ class SteeringComponent implements Steerable<Vector2>, Component, Pool.Poolable{
 		}
 	}
 
-
 	@Override
 	Vector2 getPosition() {
-		return body?.position
+		return body.position
 	}
 
 	@Override

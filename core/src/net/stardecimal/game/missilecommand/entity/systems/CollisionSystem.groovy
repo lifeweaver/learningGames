@@ -34,7 +34,8 @@ class CollisionSystem extends IteratingSystem {
 		if(collidedEntity) {
 			switch(thisType.type) {
 				case TypeComponent.TYPES.BULLET:
-					handleBullet(entity, collidedEntity, cc)
+				case TypeComponent.TYPES.SMART_BOMB:
+					handleNormal(entity, collidedEntity, cc)
 					break
 
 				case TypeComponent.TYPES.EXPLOSION:
@@ -42,12 +43,12 @@ class CollisionSystem extends IteratingSystem {
 					break
 
 				default:
-					log.debug("Unhandled type: ${thisType.type}, collidedEntity: ${collidedEntity}, entityProps: ${entity.properties}")
+					log.debug("Unhandled type: ${TypeComponent.getTypeName(thisType.type)}, collidedEntity: ${collidedEntity}, entityProps: ${entity.properties}")
 			}
 		}
 	}
 
-	void handleBullet(Entity entity, Entity collidedEntity, CollisionComponent cc) {
+	void handleNormal(Entity entity, Entity collidedEntity, CollisionComponent cc) {
 		SdBodyComponent body = Mapper.bCom.get(entity)
 		TypeComponent type = Mapper.typeCom.get(collidedEntity)
 		Vector2 boom = new Vector2(body.body.position.x, body.body.position.y)
