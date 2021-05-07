@@ -34,8 +34,8 @@ class PlayerControlSystem extends IteratingSystem {
 		StateComponent state = Mapper.stateCom.get(entity)
 		Vector2 velocity = playerBody.body.linearVelocity
 
-		if((velocity.y != 0 || velocity.x != 0) && state.get() != StateComponent.STATE_MOVING){
-			state.set(StateComponent.STATE_MOVING)
+		if((velocity.y != 0 || velocity.x != 0) && state.state != StateComponent.STATE_MOVING){
+			state.state = StateComponent.STATE_MOVING
 		}
 		/**
 		 * Thoughts on worm movement:

@@ -24,8 +24,8 @@ class PlayerControlSystem extends IteratingSystem {
 		StateComponent state = Mapper.stateCom.get(entity)
 
 		if(playerBody.body.linearVelocity.x == 0){
-			if(playerBody.body.linearVelocity.x != 0 && state.get() != StateComponent.STATE_MOVING){
-				state.set(StateComponent.STATE_MOVING)
+			if(playerBody.body.linearVelocity.x != 0 && state.state != StateComponent.STATE_MOVING){
+				state.state = StateComponent.STATE_MOVING
 			}
 		}
 

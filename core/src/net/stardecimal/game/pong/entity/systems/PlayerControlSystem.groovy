@@ -27,8 +27,8 @@ class PlayerControlSystem extends IteratingSystem {
 
 //		println("position y: ${playerBody.body.position.y}")
 		if(playerBody.body.linearVelocity.y == 0){
-			if(playerBody.body.linearVelocity.y != 0 && state.get() != StateComponent.STATE_MOVING){
-				state.set(StateComponent.STATE_MOVING)
+			if(playerBody.body.linearVelocity.y != 0 && state.state != StateComponent.STATE_MOVING){
+				state.state = StateComponent.STATE_MOVING
 			}
 		}
 

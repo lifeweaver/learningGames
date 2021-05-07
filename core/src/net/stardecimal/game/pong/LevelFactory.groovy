@@ -107,7 +107,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 		texture.region = paddleTex
 		type.type = TypeComponent.TYPES.PLAYER
-		stateCom.set(StateComponent.STATE_NORMAL)
+		stateCom.state = StateComponent.STATE_NORMAL
 		sdBody.body.setUserData(entity)
 		sdBody.body.sleepingAllowed = false
 		scom.body = sdBody.body
@@ -143,7 +143,7 @@ class LevelFactory implements DefaultLevelFactory {
 		texture.region = paddleTex
 		enemy.xPosCenter = 2
 		type.type = TypeComponent.TYPES.ENEMY
-		stateCom.set(StateComponent.STATE_NORMAL)
+		stateCom.state = StateComponent.STATE_NORMAL
 		sdBody.body.setUserData(entity)
 		scom.body = sdBody.body
 

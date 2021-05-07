@@ -71,7 +71,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 		texture.region = new TextureRegion(wormTex)
 		type.type = TypeComponent.TYPES.PLAYER
-		stateCom.set(StateComponent.STATE_NORMAL)
+		stateCom.state = StateComponent.STATE_NORMAL
 		sdBody.body.setUserData(entity)
 		sdBody.body.sleepingAllowed = false
 		scom.body = sdBody.body
