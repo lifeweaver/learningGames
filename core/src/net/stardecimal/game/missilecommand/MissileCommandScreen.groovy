@@ -31,8 +31,8 @@ class MissileCommandScreen extends ScreenAdapter implements GameScreen {
 		levelFactory.createGroundBarrier()
 		levelFactory.createPlayer(camera)
 		levelFactory.createCrosshair()
-//		levelFactory.initScore()
 		levelFactory.startMissileBarrage()
+//		levelFactory.initScore()
 	}
 
 	void resetWorld() {
@@ -43,6 +43,7 @@ class MissileCommandScreen extends ScreenAdapter implements GameScreen {
 		levelFactory.createCities()
 		levelFactory.createDefenderMissiles()
 		levelFactory.createPlayer(camera)
+		levelFactory.createCrosshair()
 		levelFactory.startMissileBarrage()
 //		levelFactory.initScore()
 	}
