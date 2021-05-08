@@ -29,8 +29,10 @@ class EnemySpawningSystem extends IntervalSystem {
 	@Override
 	void updateInterval() {
 		missilesToSpawn.times {
-			missilesSpawned += 1
-			levelFactory.createEnemyMissile()
+			Entity missile = levelFactory.createEnemyMissile()
+			if(missile) {
+				missilesSpawned += 1
+			}
 		}
 
 		//Spawn a bomber plane every 7 missiles

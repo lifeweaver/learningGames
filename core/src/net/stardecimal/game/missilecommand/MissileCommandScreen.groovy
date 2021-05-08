@@ -32,20 +32,20 @@ class MissileCommandScreen extends ScreenAdapter implements GameScreen {
 		levelFactory.createPlayer(camera)
 		levelFactory.createCrosshair()
 		levelFactory.startMissileBarrage()
-//		levelFactory.initScore()
 	}
 
 	void resetWorld() {
 		reset()
 		levelFactory.playerScore = 0
 		levelFactory.enemyScore = 0
+		levelFactory.missilesLeft = levelFactory.startMissiles
 
 		levelFactory.createCities()
 		levelFactory.createDefenderMissiles()
+		levelFactory.createGroundBarrier()
 		levelFactory.createPlayer(camera)
 		levelFactory.createCrosshair()
 		levelFactory.startMissileBarrage()
-//		levelFactory.initScore()
 	}
 
 	@Override
@@ -54,6 +54,11 @@ class MissileCommandScreen extends ScreenAdapter implements GameScreen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
 		engine.update(delta)
+		//Score and move to end game screen
+		if(!levelFactory.missilesLeft && !levelFactory.missilesInFlight()) {
+			levelFactory.calculateScore()
+			parent.changeScreen(parent.ENDGAME)
+		}
 	}
 
 	@Override

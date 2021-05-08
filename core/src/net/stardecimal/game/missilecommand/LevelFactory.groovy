@@ -52,9 +52,8 @@ class LevelFactory implements DefaultLevelFactory {
 	RandomXS128 rand = new RandomXS128()
 	def defenderMissiles
 	final short enemyGroup = -1
-
-	//TODO:
-	//add scoring
+	final static int startMissiles = 50
+	int missilesLeft = startMissiles
 
 	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		init(en, assetManager)
@@ -453,62 +452,66 @@ class LevelFactory implements DefaultLevelFactory {
 	}
 
 	// If spawnPoint is passed in, that is where the missile should spawn
-	// Used by the bomber plane and the satellite, and maybe the missile splitting
+	// Used by the bomber plane and the satellite, and the missile splitting
 	Entity createEnemyMissile(Vector2 startPosOverride=null, float angleOverride=0) {
-		Entity entity = engine.createEntity()
-		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
-		TransformComponent position = engine.createComponent(TransformComponent)
-		TextureComponent texture = engine.createComponent(TextureComponent)
-		TypeComponent type = engine.createComponent(TypeComponent)
-		CollisionComponent colComp = engine.createComponent(CollisionComponent)
-		BulletComponent bul = engine.createComponent(BulletComponent)
-		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
-		EnemyComponent ecom = engine.createComponent(EnemyComponent)
+		if(missilesLeft) {
+			missilesLeft--
+			Entity entity = engine.createEntity()
+			SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+			TransformComponent position = engine.createComponent(TransformComponent)
+			TextureComponent texture = engine.createComponent(TextureComponent)
+			TypeComponent type = engine.createComponent(TypeComponent)
+			CollisionComponent colComp = engine.createComponent(CollisionComponent)
+			BulletComponent bul = engine.createComponent(BulletComponent)
+			Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
+			EnemyComponent ecom = engine.createComponent(EnemyComponent)
 
-		float randX, y
-		if(startPosOverride) {
-			randX = startPosOverride.x
-			y = startPosOverride.y
-		} else {
-			randX = rand.nextInt(screenSize.x / RenderingSystem.PPM as int)
-			y = screenSize.y / RenderingSystem.PPM as float
+			float randX, y
+			if(startPosOverride) {
+				randX = startPosOverride.x
+				y = startPosOverride.y
+			} else {
+				randX = rand.nextInt(screenSize.x / RenderingSystem.PPM as int)
+				y = screenSize.y / RenderingSystem.PPM as float
+			}
+
+			sdBody.body = bodyFactory.makeCirclePolyBody(randX, y,0.2f, BodyFactory.PING_PONG, BodyDef.BodyType.DynamicBody,true)
+			sdBody.body.fixtureList.first().filterData.groupIndex = enemyGroup
+			sdBody.body.setBullet(true) // increase physics computation to limit body travelling through other objects
+			position.position.set(sdBody.body.position.x, sdBody.body.position.y,0)
+
+			float randAngle = angleOverride
+			if(!angleOverride) {
+				float[] angles = getMinAndMaxAngles(screenSize, sdBody.body.position)
+				float minAngle = angles[0]
+				float maxAngle = angles[1]
+				randAngle = rand.nextInt(maxAngle - minAngle as int) + minAngle as float
+			}
+
+			texture.region = missileTex
+			type.type = TypeComponent.TYPES.BULLET
+			sdBody.body.setUserData(entity)
+
+			//Add velocity
+			bul.xVel = 2.5 * MathUtils.cos(MathUtils.degreesToRadians * randAngle as float) as float
+			bul.yVel = 2.5 * MathUtils.sin(MathUtils.degreesToRadians * randAngle as float) * -1 as float
+			bul.owner = BulletComponent.Owner.ENEMY
+			bul.particleEffect = makeParticleEffect(ParticleEffectManager.CONTRAIL, sdBody, 0, 0, true)
+
+			entity.add(bul)
+			entity.add(colComp)
+			entity.add(sdBody)
+			entity.add(position)
+			entity.add(texture)
+			entity.add(type)
+			entity.add(ecom)
+
+			engine.addEntity(entity)
+
+			return entity
 		}
 
-		sdBody.body = bodyFactory.makeCirclePolyBody(randX, y,0.2f, BodyFactory.PING_PONG, BodyDef.BodyType.DynamicBody,true)
-		sdBody.body.fixtureList.first().filterData.groupIndex = enemyGroup
-		sdBody.body.setBullet(true) // increase physics computation to limit body travelling through other objects
-		position.position.set(sdBody.body.position.x, sdBody.body.position.y,0)
-
-		float randAngle = angleOverride
-		if(!angleOverride) {
-			float[] angles = getMinAndMaxAngles(screenSize, sdBody.body.position)
-			float minAngle = angles[0]
-			float maxAngle = angles[1]
-			randAngle = rand.nextInt(maxAngle - minAngle as int) + minAngle as float
-//			log.debug("start: ${sdBody.body.position}, randAngle: ${randAngle}, minAngle: ${minAngle}, maxAngle: ${maxAngle}")
-		}
-
-		texture.region = missileTex
-		type.type = TypeComponent.TYPES.BULLET
-		sdBody.body.setUserData(entity)
-
-		//Add velocity
-		bul.xVel = 2.5 * MathUtils.cos(MathUtils.degreesToRadians * randAngle as float) as float
-		bul.yVel = 2.5 * MathUtils.sin(MathUtils.degreesToRadians * randAngle as float) * -1 as float
-		bul.owner = BulletComponent.Owner.ENEMY
-		bul.particleEffect = makeParticleEffect(ParticleEffectManager.CONTRAIL, sdBody, 0, 0, true)
-
-		entity.add(bul)
-		entity.add(colComp)
-		entity.add(sdBody)
-		entity.add(position)
-		entity.add(texture)
-		entity.add(type)
-		entity.add(ecom)
-
-		engine.addEntity(entity)
-
-		return entity
+		return null
 	}
 
 	void createBomberPlane() {
@@ -698,6 +701,12 @@ class LevelFactory implements DefaultLevelFactory {
 		return null
 	}
 
+	int missilesInFlight() {
+		engine.getEntities().findAll {
+			Mapper.typeCom.get(it)?.type == TypeComponent.TYPES.BULLET
+		}.size()
+	}
+
 	void calculateScore() {
 		int score = 0
 
@@ -713,15 +722,7 @@ class LevelFactory implements DefaultLevelFactory {
 		score += cities * 50
 		score += missiles * 5
 
-		this.hud.setScore(score)
+		playerScore = score
+//		this.hud.setScore(playerScore)
 	}
-
-	void initScore() {
-		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
-//		screenSize.x / RenderingSystem.PPM / 2 as float, 2f
-		//TODO: Add fontQueue to rendering system?
-//		BitmapFont font = new BitmapFont()
-//		font.draw(null, "Score: 0", screenSize.x / RenderingSystem.PPM / 2 as float, screenSize.y / RenderingSystem.PPM - 2 as float)
-	}
-
 }

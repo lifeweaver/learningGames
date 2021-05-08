@@ -35,8 +35,8 @@ class EndScreen extends ScreenAdapter {
 	void show() {
 		// get skin
 		skin = parent.assetManager.manager.get("skin/glassy-ui.json")
-		atlas = parent.assetManager.manager.get("images/loading.atlas")
-		background = atlas.findRegion("flamebackground")
+//		atlas = parent.assetManager.manager.get("images/loading.atlas")
+//		background = atlas.findRegion("flamebackground")
 
 		// create button to go back to manu
 		TextButton menuButton = new TextButton("Back", skin, "small")
@@ -57,15 +57,15 @@ class EndScreen extends ScreenAdapter {
 		// create table to layout iutems we will add
 		Table table = new Table()
 		table.setFillParent(true)
-		table.setBackground(new TiledDrawable(background))
+//		table.setBackground(new TiledDrawable(background))
 
 		//create a Labels showing the score and some credits
-		Label labelScore = new Label("You score was "+levelFactory.playerScore+" Meters", skin)
+		Label labelScore = new Label("Score " + levelFactory.playerScore, skin)
 		Label labelCredits = new Label("Credits:", skin)
-		Label labelCredits1 = new Label("Game Design by", skin)
-		Label labelCredits2 = new Label("stardecimal.net", skin)
-		Label labelCredits3 = new Label("Art Design by", skin)
-		Label labelCredits4 = new Label("stardecimal.net", skin)
+		Label labelCredits1 = new Label("Game Design by ", skin)
+		Label labelCredits2 = new Label("Lifeweaver", skin)
+		Label labelCredits3 = new Label("Art Design by ", skin)
+		Label labelCredits4 = new Label("Lifeweaver", skin)
 
 		// add items to table
 		table.add(labelScore).colspan(2)

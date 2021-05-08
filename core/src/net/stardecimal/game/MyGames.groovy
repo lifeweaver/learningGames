@@ -3,7 +3,9 @@ package net.stardecimal.game
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
+import com.badlogic.gdx.graphics.Cursor
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import net.stardecimal.game.breakout.BreakoutScreen
 import net.stardecimal.game.loader.SdAssetManager
 import net.stardecimal.game.missilecommand.MissileCommandScreen
@@ -48,6 +50,7 @@ class MyGames extends Game {
 	// something else
 
 	void changeScreen(int screen) {
+		Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow)
 		switch(screen) {
 			case MENU:
 				menuScreen = menuScreen ?: new MenuScreen(this)
@@ -105,7 +108,7 @@ class MyGames extends Game {
 				break
 
 			case ENDGAME:
-				endScreen = endScreen ?: new EndScreen(this)
+				endScreen = endScreen ?: new EndScreen(this, this.screen.levelFactory)
 				this.setScreen(endScreen)
 				break
 		}
