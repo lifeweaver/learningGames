@@ -40,7 +40,7 @@ class PingPongSystem extends IteratingSystem {
 		if(bx < 0 || bx > screenSize.x / RenderingSystem.PPM || by < 0 || by > screenSize.y / RenderingSystem.PPM){
 			bullet.isDead = true
 			println('bullet off screen')
-			parent.enemyScore += 1
+			levelFactory.enemyScore += 1
 			levelFactory.createPingPong()
 		}
 

@@ -2,6 +2,7 @@ package net.stardecimal.game
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.Vector2
@@ -28,6 +29,9 @@ trait DefaultLevelFactory {
 	Entity player
 	TextureRegion boundaryTex
 	ParticleEffectManager pem
+	int playerScore = 0
+	int enemyScore = 0
+	def hud
 
 	void init(PooledEngine en, SdAssetManager am) {
 		engine = en
@@ -97,6 +101,7 @@ trait DefaultLevelFactory {
 	}
 
 	abstract TiledMap generateBackground()
+	abstract def createHud(SpriteBatch batch)
 
 	static float randomPos(float corner1, corner2) {
 		Random rand = new Random()

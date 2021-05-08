@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import net.stardecimal.game.DefaultLevelFactory
 import net.stardecimal.game.MyGames
 
 class EndScreen extends ScreenAdapter {
@@ -23,9 +24,11 @@ class EndScreen extends ScreenAdapter {
 	private Stage stage
 	private TextureAtlas atlas
 	private TextureAtlas.AtlasRegion background
+	private DefaultLevelFactory levelFactory
 
-	EndScreen(MyGames game){
+	EndScreen(MyGames game, DefaultLevelFactory lvlFactory) {
 		parent = game
+		levelFactory = lvlFactory
 	}
 
 	@Override
@@ -57,7 +60,7 @@ class EndScreen extends ScreenAdapter {
 		table.setBackground(new TiledDrawable(background))
 
 		//create a Labels showing the score and some credits
-		Label labelScore = new Label("You score was "+parent.playerScore+" Meters", skin)
+		Label labelScore = new Label("You score was "+levelFactory.playerScore+" Meters", skin)
 		Label labelCredits = new Label("Credits:", skin)
 		Label labelCredits1 = new Label("Game Design by", skin)
 		Label labelCredits2 = new Label("stardecimal.net", skin)

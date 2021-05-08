@@ -33,8 +33,8 @@ class PongScreen extends ScreenAdapter implements GameScreen {
 
 	void resetWorld() {
 		reset()
-		parent.playerScore = 0
-		parent.enemyScore = 0
+		levelFactory.playerScore = 0
+		levelFactory.enemyScore = 0
 
 		player = levelFactory.createPlayer(camera)
 		levelFactory.createEnemy()

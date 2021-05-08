@@ -4,6 +4,7 @@ package net.stardecimal.game.pong
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.Vector2
@@ -242,4 +243,7 @@ class LevelFactory implements DefaultLevelFactory {
 	TiledMap generateBackground() {
 		return null
 	}
+
+	@Override
+	def createHud(SpriteBatch batch) {}
 }

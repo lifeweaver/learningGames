@@ -36,8 +36,6 @@ class MyGames extends Game {
 	final static int WORM = 5
 	final static int BREAKOUT = 6
 	final static int MISSILE_COMMAND = 7
-	int playerScore = 0
-	int enemyScore = 0
 	Music playingSong
 
 	//TODO
@@ -141,5 +139,11 @@ class MyGames extends Game {
 	@Override
 	void dispose () {
 		assetManager.manager.dispose()
+	}
+
+	@Override
+	void resize(int width, int height) {
+		super.resize(width, height)
+
 	}
 }

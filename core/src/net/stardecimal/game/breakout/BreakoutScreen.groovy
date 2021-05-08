@@ -28,8 +28,6 @@ class BreakoutScreen extends ScreenAdapter implements GameScreen {
 
 	void resetWorld() {
 		reset()
-		parent.playerScore = 0
-		parent.enemyScore = 0
 
 		player = levelFactory.createPlayer(camera)
 		levelFactory.createBoundaries()

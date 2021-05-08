@@ -189,7 +189,7 @@ class CollisionSystem extends IteratingSystem {
 	}
 
 	void boxBounce(BulletComponent bullet, PowerUpComponent powerUp) {
-		parent.playerScore += 1
+		levelFactory.playerScore += 1
 
 		if(powerUp.noBounceCount < 1) {
 			Vector2 newT = hitY(bullet.xVel, bullet.yVel)

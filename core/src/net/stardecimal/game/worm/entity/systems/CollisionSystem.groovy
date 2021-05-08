@@ -55,7 +55,7 @@ class CollisionSystem extends IteratingSystem {
 							bounce.play()
 							println('Player ate fruit!')
 							Mapper.bCom.get(collidedEntity).isDead = true
-							parent.playerScore += 1
+							levelFactory.playerScore += 1
 							levelFactory.createFruit()
 							PlayerComponent playerComponent = ComponentMapper.getFor(PlayerComponent.class).get(entity)
 							playerComponent.length = playerComponent.length + 1

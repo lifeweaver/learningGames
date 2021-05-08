@@ -32,6 +32,7 @@ trait GameScreen {
 		batch = new SpriteBatch()
 		RenderingSystem renderingSystem = new RenderingSystem(batch)
 		renderingSystem.addTiledMapBackground(lvlFactory.generateBackground())
+		renderingSystem.addHud(lvlFactory.createHud(batch))
 		camera = renderingSystem.camera
 		engine.addSystem(new ParticleEffectSystem(batch, camera, lvlFactory.world))
 		batch.projectionMatrix = camera.combined

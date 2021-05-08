@@ -7,6 +7,7 @@ import com.badlogic.gdx.ai.steer.SteeringBehavior
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.MapLayers
 import com.badlogic.gdx.maps.tiled.TiledMap
@@ -121,6 +122,12 @@ class LevelFactory implements DefaultLevelFactory {
 		layers.add(layer1)
 
 		return map
+	}
+
+	@Override
+	def createHud(SpriteBatch batch) {
+		hud = new MissileCommandHud(batch)
+		return hud
 	}
 
 	void createCities() {
@@ -689,6 +696,24 @@ class LevelFactory implements DefaultLevelFactory {
 		}
 
 		return null
+	}
+
+	void calculateScore() {
+		int score = 0
+
+		List<Entity> targets = findTargets()
+		int cities = targets.findAll {
+			Mapper.typeCom.get(it)?.type == TypeComponent.TYPES.CITY
+		}.size()
+
+		int missiles = targets.findAll {
+			Mapper.typeCom.get(it)?.type == TypeComponent.TYPES.DEFENDER_MISSILE
+		}.size()
+
+		score += cities * 50
+		score += missiles * 5
+
+		this.hud.setScore(score)
 	}
 
 	void initScore() {

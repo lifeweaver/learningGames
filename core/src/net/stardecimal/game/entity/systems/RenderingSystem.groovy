@@ -11,11 +11,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
+import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Fixture
 import com.badlogic.gdx.physics.box2d.PolygonShape
 import com.badlogic.gdx.physics.box2d.Shape
 import com.badlogic.gdx.utils.Array
+import net.stardecimal.game.Hud
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TextureComponent
@@ -54,12 +56,14 @@ class RenderingSystem extends SortedIteratingSystem {
 		return pixelValue * PIXELS_TO_METRES
 	}
 
-	private SpriteBatch batch
+	SpriteBatch batch
 	private Array<Entity> renderQueue // used to allow sorting of images allowing us to draw images on top of each other
 	private Comparator<Entity> comparator // to sort images based on the z position of the transformComponent
 	private OrthographicCamera cam
 	private TiledMap background
 	private OrthogonalTiledMapRenderer backgroundRenderer
+	private Matrix4 hudMatrix
+	private def hud
 
 	@SuppressWarnings('unchecked')
 	RenderingSystem(SpriteBatch batch) {
@@ -78,6 +82,11 @@ class RenderingSystem extends SortedIteratingSystem {
 			background = map
 			backgroundRenderer = new OrthogonalTiledMapRenderer(background, batch)
 		}
+	}
+
+	void addHud(hud) {
+		this.hud = hud
+		hudMatrix = new Matrix4(this.batch.getProjectionMatrix().setToOrtho2D(0, 0, FRUSTUM_WIDTH, FRUSTUM_HEIGHT))
 	}
 
 	@Override
@@ -232,6 +241,11 @@ class RenderingSystem extends SortedIteratingSystem {
 
 
 		batch.end()
+		//Hud drawing
+		if(hud) {
+			batch.setProjectionMatrix(hudMatrix)
+			hud.stage.draw()
+		}
 		renderQueue.clear()
 	}
 

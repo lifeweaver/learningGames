@@ -119,7 +119,7 @@ class CollisionSystem extends IteratingSystem {
 							BulletComponent bullet = Mapper.bulletCom.get(entity)
 							bullet.isDead = true
 							println('player scored')
-							parent.playerScore += 1
+							levelFactory.playerScore += 1
 							levelFactory.createPingPong()
 
 							break
