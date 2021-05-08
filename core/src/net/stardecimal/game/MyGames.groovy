@@ -69,10 +69,13 @@ class MyGames extends Game {
 			multiplexer.addProcessor(uiInputProcessor)
 
 			//Null out every game
+			pongScreen?.dispose()
 			pongScreen = null
+			wormScreen?.dispose()
 			wormScreen = null
 			breakoutScreen?.dispose()
 			breakoutScreen = null
+			missileCommandScreen?.dispose()
 			missileCommandScreen = null
 		}
 
