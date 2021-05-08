@@ -102,7 +102,7 @@ class PreferencesScreen extends ScreenAdapter {
 		backButton.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.MENU)
+				parent.changeScreen(parent.lastMenu)
 			}
 		})
 

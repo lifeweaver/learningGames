@@ -5,7 +5,6 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -14,12 +13,12 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.loader.SdAssetManager
 
-class GameSelectionScreen extends ScreenAdapter {
-	MyGames parent
-	Stage stage
-	Skin skin
+class PauseScreen extends ScreenAdapter {
+	private MyGames parent
+	private Skin skin
+	private Stage stage
 
-	GameSelectionScreen(MyGames game) {
+	PauseScreen(MyGames game) {
 		parent = game
 		stage = new Stage(new ScreenViewport())
 		parent.assetManager.queueAddSkin()
@@ -36,7 +35,7 @@ class GameSelectionScreen extends ScreenAdapter {
 	}
 
 	@Override
-	void show () {
+	void show() {
 		Gdx.input.setInputProcessor(stage)
 		stage.clear()
 		// Create a table that fills the screen. Everything else will go inside this table.
@@ -44,73 +43,58 @@ class GameSelectionScreen extends ScreenAdapter {
 				fillParent: true,
 				debug: false
 		)
-		Table innerTable = new Table()
-		ScrollPane scroll = new ScrollPane(innerTable)
-		table.add(scroll)
-		table.row()
 
 		stage.addActor(table)
 
-		TextButton pingPong = new TextButton("Ping Pong", skin)
-		TextButton worm = new TextButton("Worm", skin)
-		TextButton breakout = new TextButton("Breakout", skin)
-		TextButton missileCommand = new TextButton("Missile Command", skin)
-		TextButton back = new TextButton("Back", skin)
+		TextButton resume = new TextButton("Resume", skin)
+		TextButton preferences = new TextButton("Preferences", skin)
+		TextButton mainMenu = new TextButton("Main Menu", skin)
+		TextButton exit = new TextButton("Exit", skin)
 
-		innerTable.add(pingPong).fillX().uniformX()
-		innerTable.row().pad(5, 0, 5, 0)
-		innerTable.add(worm).fillX().uniformX()
-		innerTable.row()
-		innerTable.add(breakout).fillX().uniformX()
-		innerTable.row().pad(5, 0, 5, 0)
-		innerTable.add(missileCommand).fillX().uniformX()
-		innerTable.row().pad(5, 0, 5, 0)
-		innerTable.add(back).fillX().uniformX()
-		table.layout()
+		table.add(resume).fillX().uniformX()
+		table.row().pad(10, 0, 10, 0)
+		table.add(preferences).fillX().uniformX()
+		table.row()
+		table.add(mainMenu).fillX().uniformX()
+		table.row().pad(10, 0, 10, 0)
+		table.add(exit).fillX().uniformX()
 
-		back.addListener(new ChangeListener() {
+		resume.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(parent.lastMenu)
+				parent.changeScreen(parent.currentGame)
 			}
 		})
 
-		pingPong.addListener(new ChangeListener() {
+		preferences.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.PONG)
+				parent.changeScreen(MyGames.PREFERENCES)
 			}
 		})
 
-		worm.addListener(new ChangeListener() {
+		mainMenu.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.WORM)
+				parent.changeScreen(MyGames.MENU)
 			}
 		})
 
-		breakout.addListener(new ChangeListener() {
+		exit.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.BREAKOUT)
-			}
-		})
-
-		missileCommand.addListener(new ChangeListener() {
-			@Override
-			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.MISSILE_COMMAND)
+				Gdx.app.exit()
 			}
 		})
 	}
 
 	@Override
-	void resize (int width, int height) {
+	void resize(int width, int height) {
 		stage.getViewport().update(width, height, true)
 	}
 
 	@Override
-	void dispose () {
+	void dispose() {
 		stage.dispose()
 	}
 }

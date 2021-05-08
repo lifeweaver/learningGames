@@ -28,6 +28,11 @@ class BodyFactory {
 		thisInstance = this
 	}
 
+	void dispose() {
+		this.world = null
+		thisInstance = null
+	}
+
 	static BodyFactory getInstance(World world) {
 		if (thisInstance == null) {
 			thisInstance = new BodyFactory(world)

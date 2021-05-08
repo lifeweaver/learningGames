@@ -26,6 +26,7 @@ trait GameScreen {
 		parent.assetManager.queueAddIndividualAssets()
 		parent.assetManager.manager.finishLoading()
 		controller = new KeyboardController()
+		parent.multiplexer.addProcessor(controller)
 		engine = new PooledEngine()
 		lvlFactory = (DefaultLevelFactory) instance.newInstance(engine, parent.assetManager)
 
@@ -56,7 +57,6 @@ trait GameScreen {
 		controller.right = false
 		controller.up = false
 		controller.down = false
-		controller.esc = false
 		controller.isMouse1Down = false
 		controller.isMouse2Down = false
 		controller.isMouse3Down = false

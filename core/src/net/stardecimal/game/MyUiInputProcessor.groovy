@@ -4,33 +4,28 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.math.Vector2
 
-class KeyboardController implements InputProcessor {
+class MyUiInputProcessor implements InputProcessor {
 
-	boolean left, right, up, down
+	boolean esc
 	boolean isMouse1Down, isMouse2Down, isMouse3Down
 	boolean isDragged
 	Vector2 mouseLocation = new Vector2()
+	MyGames parent
+
+	MyUiInputProcessor(MyGames game) {
+		parent = game
+	}
 
 	@Override
 	boolean keyDown(int keycode) {
 		boolean keyProcessed = false
 		switch (keycode) {
-			case Input.Keys.LEFT:
-				left = true
+			case Input.Keys.ESCAPE:
+				esc = true
+				if(parent.state == MyGames.STATE.RUNNING) {
+					parent.changeScreen(MyGames.PAUSE)
+				}
 				keyProcessed = true
-				break
-			case Input.Keys.RIGHT:
-				right = true
-				keyProcessed = true
-				break
-			case Input.Keys.UP:
-				up = true
-				keyProcessed = true
-				break
-			case Input.Keys.DOWN:
-				down = true
-				keyProcessed = true
-				break
 		}
 
 		return keyProcessed
@@ -40,22 +35,9 @@ class KeyboardController implements InputProcessor {
 	boolean keyUp(int keycode) {
 		boolean keyProcessed = false
 		switch (keycode) {
-			case Input.Keys.LEFT:
-				left = false
+			case Input.Keys.ESCAPE:
+				esc = false
 				keyProcessed = true
-				break
-			case Input.Keys.RIGHT:
-				right = false
-				keyProcessed = true
-				break
-			case Input.Keys.UP:
-				up = false
-				keyProcessed = true
-				break
-			case Input.Keys.DOWN:
-				down = false
-				keyProcessed = true
-				break
 		}
 
 		return keyProcessed

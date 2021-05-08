@@ -37,14 +37,22 @@ class BreakoutScreen extends ScreenAdapter implements GameScreen {
 
 	@Override
 	void render(float delta) {
-		Gdx.gl.glClearColor(0,0,0, 1)
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+		if(parent.state == MyGames.STATE.RUNNING) {
+			Gdx.gl.glClearColor(0, 0, 0, 1)
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-		engine.update(delta)
+			engine.update(delta)
+		}
 	}
 
 	@Override
 	void show() {
-		Gdx.input.setInputProcessor(controller)
+		Gdx.input.setInputProcessor(parent.multiplexer)
+	}
+
+	@Override
+	void dispose() {
+		levelFactory.world.dispose()
+		levelFactory.bodyFactory.dispose()
 	}
 }
