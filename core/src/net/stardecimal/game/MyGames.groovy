@@ -54,6 +54,7 @@ class MyGames extends Game {
 	MyUiInputProcessor uiInputProcessor
 
 	//TODO
+	//Save preferences
 	//use https://github.com/libgdx/libgdx/wiki/Texture-packer
 	//stop using .finishLoading() and have a progress screen with a loading bar.
 	//Additionally you can automate your resource loading via:
@@ -140,7 +141,7 @@ class MyGames extends Game {
 				break
 
 
-			case MISSILE_COMMAND:
+			case SPACE_INVADERS:
 				gameChange(screen)
 				if(!spaceInvadersScreen) {
 					spaceInvadersScreen = new SpaceInvadersScreen(this)
