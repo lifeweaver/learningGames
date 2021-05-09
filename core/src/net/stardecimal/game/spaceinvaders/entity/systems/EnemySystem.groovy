@@ -59,7 +59,6 @@ class EnemySystem extends IteratingSystem {
 		//Adjust for firing body
 		firingPos.y = firingPos.y - 1 as float
 
-		println("firingPos: ${firingPos}, targetPos: ${new Vector2(firingPos.x, 2)}")
 		Array<Body> entitiesHitByRay = levelFactory.singleRayCast(firingPos, new Vector2(firingPos.x, 2))
 
 		boolean alliesBelow = entitiesHitByRay.find {
