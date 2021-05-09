@@ -15,6 +15,7 @@ import net.stardecimal.game.BodyFactory
 import net.stardecimal.game.DefaultLevelFactory
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
+import net.stardecimal.game.entity.components.EnemyComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
@@ -55,8 +56,6 @@ class LevelFactory implements DefaultLevelFactory {
 
 
 //		background bump that speeds up?
-//
-//		player shot should cancel enemy shot
 //		barriers that disappear in place shot? - maybe delete one particle from shot and one from wall?
 
 		log.info("level factory initialized")
@@ -118,6 +117,7 @@ class LevelFactory implements DefaultLevelFactory {
 		TransformComponent position = engine.createComponent(TransformComponent)
 		TextureComponent texture = engine.createComponent(TextureComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
+		EnemyComponent eCom = engine.createComponent(EnemyComponent)
 
 		sdBody.body = bodyFactory.makeBoxPolyBody(
 				startPos.x,
@@ -133,6 +133,7 @@ class LevelFactory implements DefaultLevelFactory {
 		type.type = TypeComponent.TYPES.ENEMY
 		sdBody.body.setUserData(entity)
 
+		entity.add(eCom)
 		entity.add(sdBody)
 		entity.add(position)
 		entity.add(texture)

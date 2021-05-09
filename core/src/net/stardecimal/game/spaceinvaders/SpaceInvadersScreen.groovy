@@ -7,6 +7,7 @@ import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.spaceinvaders.entity.systems.BulletSystem
 import net.stardecimal.game.spaceinvaders.entity.systems.CollisionSystem
+import net.stardecimal.game.spaceinvaders.entity.systems.EnemySystem
 import net.stardecimal.game.spaceinvaders.entity.systems.PlayerControlSystem
 
 class SpaceInvadersScreen extends ScreenAdapter implements GameScreen {
@@ -19,6 +20,7 @@ class SpaceInvadersScreen extends ScreenAdapter implements GameScreen {
 		engine.addSystem(new PlayerControlSystem(controller, levelFactory))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))
 		engine.addSystem(new BulletSystem(game, levelFactory))
+		engine.addSystem(new EnemySystem(levelFactory))
 		levelFactory.createBoundaries()
 		levelFactory.createPlayer(camera)
 		levelFactory.createEnemies()

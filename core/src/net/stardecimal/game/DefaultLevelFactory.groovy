@@ -193,6 +193,14 @@ trait DefaultLevelFactory {
 		return rayCastBodies
 	}
 
+	Array<Body> singleRayCast(Vector2 start, Vector2 end) {
+		Array<Body> rayCastBodies = new Array<Body>()
+		SeeThroughRayCastCallback ray = new SeeThroughRayCastCallback(rayCastBodies, end)
+		world.rayCast(ray, new Vector2(start), new Vector2(end))
+
+		return rayCastBodies
+	}
+
 	Array<Body> aabb(Vector2 lower, Vector2 upper) {
 		AllAABBQueryCallback aabbQueryCallback = new AllAABBQueryCallback()
 		world.QueryAABB(aabbQueryCallback, lower.x, lower.y, upper.x, upper.y)
