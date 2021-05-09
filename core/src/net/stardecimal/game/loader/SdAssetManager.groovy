@@ -31,6 +31,12 @@ class SdAssetManager {
 	final static String boom = "input/missile_command/boom.wav"
 	final static String targeting_beep = "input/missile_command/targeting_beep.wav"
 
+	final static String enemy4Theme = "input/space_invaders/enemy4Theme.wav"
+	final static String background = "input/space_invaders/background.wav"
+	final static String enemyBlownUp = "input/space_invaders/enemyBlownUp.wav"
+	final static String playerBlownUp = "input/space_invaders/playerBlownUp.wav"
+	final static String playerFiring = "input/space_invaders/playerFiring.wav"
+
 //	final static String playingSong = 'music/Rolemusic_-_pl4y1ng.mp3'
 //
 
@@ -65,6 +71,12 @@ class SdAssetManager {
 		manager.load(paddleRightLoss, Sound)
 		manager.load(boom, Sound)
 		manager.load(targeting_beep, Sound)
+
+		manager.load(enemy4Theme, Sound)
+		manager.load(background, Sound)
+		manager.load(enemyBlownUp, Sound)
+		manager.load(playerBlownUp, Sound)
+		manager.load(playerFiring, Sound)
 	}
 
 	void queueAddMusic() {
