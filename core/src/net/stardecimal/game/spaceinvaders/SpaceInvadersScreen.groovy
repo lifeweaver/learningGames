@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
+import net.stardecimal.game.spaceinvaders.entity.systems.BulletSystem
 import net.stardecimal.game.spaceinvaders.entity.systems.PlayerControlSystem
 
 class SpaceInvadersScreen extends ScreenAdapter implements GameScreen {
@@ -16,6 +17,7 @@ class SpaceInvadersScreen extends ScreenAdapter implements GameScreen {
 
 		engine.addSystem(new PlayerControlSystem(controller, levelFactory))
 //		engine.addSystem(new CollisionSystem(parent, levelFactory))
+		engine.addSystem(new BulletSystem(game, levelFactory))
 //		levelFactory.createGroundBarrier()
 		levelFactory.createPlayer(camera)
 		levelFactory.createBoundaries()

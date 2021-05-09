@@ -13,9 +13,12 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import net.stardecimal.game.BodyFactory
 import net.stardecimal.game.DefaultLevelFactory
+import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
+import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
+import net.stardecimal.game.entity.components.SoundEffectComponent
 import net.stardecimal.game.entity.components.TextureComponent
 import net.stardecimal.game.entity.components.TransformComponent
 import net.stardecimal.game.entity.components.TypeComponent
@@ -23,9 +26,10 @@ import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
 
 class LevelFactory implements DefaultLevelFactory {
-	private TextureRegion enemy1Tex, enemy2Tex, enemy3Tex, enemy4Tex, playerTex, barrierTex
+	private TextureRegion enemy1Tex, enemy2Tex, enemy3Tex, enemy4Tex, playerTex, barrierTex, playerShotTex, enemyShotTex
 	private Sound enemy4Theme, enemyBlownUp, playerBlownUp, playerFiring, background
 	RandomXS128 rand = new RandomXS128()
+	Entity player
 
 	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		init(en, assetManager)
@@ -40,6 +44,8 @@ class LevelFactory implements DefaultLevelFactory {
 		enemy4Tex = atlas.findRegion("space_invaders/enemy4")
 		playerTex = atlas.findRegion("space_invaders/player")
 		barrierTex = atlas.findRegion("space_invaders/barrier")
+		playerShotTex = atlas.findRegion("space_invaders/playerShot")
+		enemyShotTex = atlas.findRegion("space_invaders/enemyShot")
 
 		enemy4Theme = assetManager.manager.get(SdAssetManager.enemy4Theme)
 		enemyBlownUp = assetManager.manager.get(SdAssetManager.enemyBlownUp)
@@ -61,12 +67,12 @@ class LevelFactory implements DefaultLevelFactory {
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)
 		TextureComponent texture = engine.createComponent(TextureComponent)
-		PlayerComponent player = engine.createComponent(PlayerComponent)
+		PlayerComponent playerCom = engine.createComponent(PlayerComponent)
 		CollisionComponent colComp = engine.createComponent(CollisionComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
 
-		player.cam = cam
+		playerCom.cam = cam
 		sdBody.body = bodyFactory.makeBoxPolyBody(
 				screenSize.x / RenderingSystem.PPM / 2 as float,
 				3,
@@ -84,12 +90,69 @@ class LevelFactory implements DefaultLevelFactory {
 		entity.add(sdBody)
 		entity.add(position)
 		entity.add(texture)
-		entity.add(player)
+		entity.add(playerCom)
 		entity.add(colComp)
 		entity.add(type)
 		engine.addEntity(entity)
+		player = entity
 
 		return entity
+	}
+
+	void playerShoot() {
+		//Get player position
+		Vector2 startPos = Mapper.bCom.get(player).body.position
+		createShot(startPos, true)
+	}
+
+	void createShot(Vector2 startPos, boolean isPlayer) {
+		//Create shot
+		Entity entity = engine.createEntity()
+		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+		TransformComponent position = engine.createComponent(TransformComponent)
+		TextureComponent texture = engine.createComponent(TextureComponent)
+		CollisionComponent colComp = engine.createComponent(CollisionComponent)
+		TypeComponent type = engine.createComponent(TypeComponent)
+		BulletComponent bul = engine.createComponent(BulletComponent)
+
+		sdBody.body = bodyFactory.makeBoxPolyBody(
+				startPos.x,
+				startPos.y + (isPlayer ? 0.5f : -0.5f) as float,
+				0.25f,
+				0.5f,
+				BodyFactory.STONE,
+				BodyDef.BodyType.DynamicBody,
+				true
+		)
+
+		type.type = TypeComponent.TYPES.BULLET
+		sdBody.body.bullet = true
+		sdBody.body.setUserData(entity)
+		bul.startPos = sdBody.body.position
+
+		if(isPlayer) {
+			texture.region = playerShotTex
+			bul.yVel = 10
+			bul.owner = BulletComponent.Owner.PLAYER
+
+			SoundEffectComponent soundCom = engine.createComponent(SoundEffectComponent)
+			soundCom.soundEffect = playerFiring
+			soundCom.play()
+			entity.add(soundCom)
+		} else {
+			texture.region = enemyShotTex
+			bul.yVel = -10
+			bul.owner = BulletComponent.Owner.ENEMY
+	//		bul.particleEffect = makeParticleEffect(ParticleEffectManager.CONTRAIL, sdBody, 0, 0, true)
+		}
+
+		entity.add(bul)
+		entity.add(sdBody)
+		entity.add(position)
+		entity.add(texture)
+		entity.add(colComp)
+		entity.add(type)
+		engine.addEntity(entity)
 	}
 
 	@Override

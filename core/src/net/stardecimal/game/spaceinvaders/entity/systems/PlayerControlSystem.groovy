@@ -29,7 +29,7 @@ class PlayerControlSystem extends IteratingSystem {
 		if(controller.spacbar && System.currentTimeMillis() - lastSpaceBar > 500) {
 			lastSpaceBar = System.currentTimeMillis()
 			println("player fired")
-//			levelFactory.playerShoot()
+			levelFactory.playerShoot()
 		}
 
 		if (controller.left) {

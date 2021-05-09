@@ -116,11 +116,25 @@ space_invaders/enemy4
   orig: 10, 10
   offset: 0, 0
   index: -1
+space_invaders/enemyShot
+  rotate: false
+  xy: 36, 27
+  size: 3, 10
+  orig: 3, 10
+  offset: 0, 0
+  index: -1
 space_invaders/player
   rotate: false
   xy: 89, 18
   size: 15, 10
   orig: 15, 10
+  offset: 0, 0
+  index: -1
+space_invaders/playerShot
+  rotate: false
+  xy: 119, 36
+  size: 3, 10
+  orig: 3, 10
   offset: 0, 0
   index: -1
 worm/fruit
