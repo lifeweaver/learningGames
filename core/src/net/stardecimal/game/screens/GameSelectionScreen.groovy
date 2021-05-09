@@ -55,6 +55,7 @@ class GameSelectionScreen extends ScreenAdapter {
 		TextButton worm = new TextButton("Worm", skin)
 		TextButton breakout = new TextButton("Breakout", skin)
 		TextButton missileCommand = new TextButton("Missile Command", skin)
+		TextButton spaceInvaders = new TextButton("Space Invaders", skin)
 		TextButton back = new TextButton("Back", skin)
 
 		innerTable.add(pingPong).fillX().uniformX()
@@ -64,6 +65,8 @@ class GameSelectionScreen extends ScreenAdapter {
 		innerTable.add(breakout).fillX().uniformX()
 		innerTable.row().pad(5, 0, 5, 0)
 		innerTable.add(missileCommand).fillX().uniformX()
+		innerTable.row()
+		innerTable.add(spaceInvaders).fillX().uniformX()
 		innerTable.row().pad(5, 0, 5, 0)
 		innerTable.add(back).fillX().uniformX()
 		table.layout()
@@ -100,6 +103,13 @@ class GameSelectionScreen extends ScreenAdapter {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
 				parent.changeScreen(MyGames.MISSILE_COMMAND)
+			}
+		})
+
+		spaceInvaders.addListener(new ChangeListener() {
+			@Override
+			void changed(ChangeListener.ChangeEvent event, Actor actor) {
+				parent.changeScreen(MyGames.SPACE_INVADERS)
 			}
 		})
 	}

@@ -15,6 +15,7 @@ import net.stardecimal.game.screens.GameSelectionScreen
 import net.stardecimal.game.screens.MenuScreen
 import net.stardecimal.game.screens.PauseScreen
 import net.stardecimal.game.screens.PreferencesScreen
+import net.stardecimal.game.spaceinvaders.SpaceInvadersScreen
 import net.stardecimal.game.worm.WormScreen
 
 class MyGames extends Game {
@@ -31,6 +32,7 @@ class MyGames extends Game {
 	private BreakoutScreen breakoutScreen
 	private MissileCommandScreen missileCommandScreen
 	private PauseScreen pauseScreen
+	private SpaceInvadersScreen spaceInvadersScreen
 	SdAssetManager assetManager = new SdAssetManager()
 	InputMultiplexer multiplexer = new InputMultiplexer()
 
@@ -43,6 +45,7 @@ class MyGames extends Game {
 	final static int BREAKOUT = 6
 	final static int MISSILE_COMMAND = 7
 	final static int PAUSE = 8
+	final static int SPACE_INVADERS = 9
 	Music playingSong
 	int lastMenu = MENU
 	int currentGame
@@ -77,6 +80,8 @@ class MyGames extends Game {
 			breakoutScreen = null
 			missileCommandScreen?.dispose()
 			missileCommandScreen = null
+			spaceInvadersScreen?.dispose()
+			spaceInvadersScreen = null
 		}
 
 		currentGame = screen
@@ -131,6 +136,19 @@ class MyGames extends Game {
 				}
 
 				this.setScreen(missileCommandScreen)
+				state = STATE.RUNNING
+				break
+
+
+			case MISSILE_COMMAND:
+				gameChange(screen)
+				if(!spaceInvadersScreen) {
+					spaceInvadersScreen = new SpaceInvadersScreen(this)
+				} else if(lastMenu != PAUSE) {
+					spaceInvadersScreen.resetWorld()
+				}
+
+				this.setScreen(spaceInvadersScreen)
 				state = STATE.RUNNING
 				break
 
