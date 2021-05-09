@@ -27,7 +27,7 @@ import net.stardecimal.game.loader.SdAssetManager
 
 class LevelFactory implements DefaultLevelFactory {
 	private TextureRegion enemy1Tex, enemy2Tex, enemy3Tex, enemy4Tex, playerTex, barrierTex, playerShotTex, enemyShotTex
-	private Sound enemy4Theme, enemyBlownUp, playerBlownUp, playerFiring, background
+	Sound enemy4Theme, enemyBlownUp, playerBlownUp, playerFiring, background
 	RandomXS128 rand = new RandomXS128()
 	Entity player
 
@@ -68,7 +68,6 @@ class LevelFactory implements DefaultLevelFactory {
 		TransformComponent position = engine.createComponent(TransformComponent)
 		TextureComponent texture = engine.createComponent(TextureComponent)
 		PlayerComponent playerCom = engine.createComponent(PlayerComponent)
-		CollisionComponent colComp = engine.createComponent(CollisionComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
 
@@ -91,12 +90,54 @@ class LevelFactory implements DefaultLevelFactory {
 		entity.add(position)
 		entity.add(texture)
 		entity.add(playerCom)
-		entity.add(colComp)
 		entity.add(type)
 		engine.addEntity(entity)
 		player = entity
 
 		return entity
+	}
+
+	void createEnemies() {
+		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
+		Vector2 startPos = new Vector2(screenSize.x / RenderingSystem.PPM / 10 as float, (screenSize.y / RenderingSystem.PPM) - ((screenSize.y / RenderingSystem.PPM) / 10 * 2) as float)
+		float origX = startPos.x
+
+		[enemy3Tex, enemy2Tex, enemy2Tex, enemy1Tex, enemy1Tex].each {tex ->
+			17.times {
+				createEnemy(startPos, tex)
+				startPos.x = startPos.x + 2 as float
+			}
+			startPos.x = origX
+			startPos.y = startPos.y - 2 as float
+		}
+	}
+
+	void createEnemy(Vector2 startPos, TextureRegion tex) {
+		Entity entity = engine.createEntity()
+		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+		TransformComponent position = engine.createComponent(TransformComponent)
+		TextureComponent texture = engine.createComponent(TextureComponent)
+		TypeComponent type = engine.createComponent(TypeComponent)
+
+		sdBody.body = bodyFactory.makeBoxPolyBody(
+				startPos.x,
+				startPos.y,
+				1.5,
+				1,
+				BodyFactory.STONE,
+				BodyDef.BodyType.KinematicBody,
+				true
+		)
+
+		texture.region = tex
+		type.type = TypeComponent.TYPES.ENEMY
+		sdBody.body.setUserData(entity)
+
+		entity.add(sdBody)
+		entity.add(position)
+		entity.add(texture)
+		entity.add(type)
+		engine.addEntity(entity)
 	}
 
 	void playerShoot() {
@@ -117,9 +158,9 @@ class LevelFactory implements DefaultLevelFactory {
 
 		sdBody.body = bodyFactory.makeBoxPolyBody(
 				startPos.x,
-				startPos.y + (isPlayer ? 0.5f : -0.5f) as float,
-				0.25f,
-				0.5f,
+				startPos.y + (isPlayer ? 1 : -1) as float,
+				0.25,
+				0.5,
 				BodyFactory.STONE,
 				BodyDef.BodyType.DynamicBody,
 				true
