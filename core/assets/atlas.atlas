@@ -1,0 +1,97 @@
+
+atlas.png
+size: 128, 128
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+missile_command/bomberPlane
+  rotate: false
+  xy: 45, 48
+  size: 45, 32
+  orig: 45, 32
+  offset: 0, 0
+  index: -1
+missile_command/city
+  rotate: false
+  xy: 2, 82
+  size: 120, 40
+  orig: 120, 40
+  offset: 0, 0
+  index: -1
+missile_command/crosshairs
+  rotate: false
+  xy: 2, 5
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+missile_command/defenderMissile
+  rotate: false
+  xy: 48, 16
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+missile_command/enemyMissileTrail
+  rotate: false
+  xy: 2, 2
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+missile_command/explosion
+  rotate: false
+  xy: 89, 18
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+missile_command/pre_particle
+  rotate: false
+  xy: 92, 48
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+missile_command/satellite
+  rotate: false
+  xy: 2, 39
+  size: 41, 41
+  orig: 41, 41
+  offset: 0, 0
+  index: -1
+missile_command/smartBomb
+  rotate: false
+  xy: 89, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+pong/paddle
+  rotate: false
+  xy: 107, 6
+  size: 10, 40
+  orig: 10, 40
+  offset: 0, 0
+  index: -1
+pong/pingPong
+  rotate: false
+  xy: 36, 14
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+worm/fruit
+  rotate: false
+  xy: 45, 26
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+worm/worm
+  rotate: false
+  xy: 67, 26
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1

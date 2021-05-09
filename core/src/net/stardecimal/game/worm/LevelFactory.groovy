@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.MapLayers
 import com.badlogic.gdx.maps.tiled.TiledMap
@@ -29,8 +30,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class LevelFactory implements DefaultLevelFactory {
-	private TextureRegion wormTailTex, cellBackground
-	private Texture fruitTex, wormTex
+	private TextureRegion wormTailTex, cellBackground, fruitTex, wormTex
 	private TiledMap background
 	private static final Logger log = LoggerFactory.getLogger(LevelFactory)
 
@@ -38,8 +38,9 @@ class LevelFactory implements DefaultLevelFactory {
 		init(en, assetManager)
 
 		//Specific textures
-		wormTex  = assetManager.manager.get(SdAssetManager.worm)
-		fruitTex = assetManager.manager.get(SdAssetManager.fruit)
+		TextureAtlas atlas = assetManager.manager.get(SdAssetManager.gameImages)
+		wormTex  = atlas.findRegion("worm/worm")
+		fruitTex = atlas.findRegion("worm/fruit")
 		wormTailTex = DFUtils.makeTextureRegion(2, 2, '#00137F')
 		cellBackground =  DFUtils.makeTextureRegion(2, 2, '#008000')
 		log.info("level factory initialized")
@@ -70,7 +71,7 @@ class LevelFactory implements DefaultLevelFactory {
 				true
 		)
 
-		texture.region = new TextureRegion(wormTex)
+		texture.region = wormTex
 		type.type = TypeComponent.TYPES.PLAYER
 		stateCom.state = StateComponent.STATE_NORMAL
 		sdBody.body.setUserData(entity)
@@ -247,7 +248,7 @@ class LevelFactory implements DefaultLevelFactory {
 				BodyDef.BodyType.DynamicBody,
 				true
 		)
-		texture.region = new TextureRegion(fruitTex)
+		texture.region = fruitTex
 
 		type.type = TypeComponent.TYPES.SCORE_WALL
 		sdBody.body.setUserData(entity)

@@ -1,15 +1,15 @@
-buildscript {
-    
+import com.badlogic.gdx.tools.texturepacker.TexturePacker
 
+buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         jcenter()
     }
     dependencies {
-        
-
+        classpath "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
 }
 
@@ -21,13 +21,14 @@ allprojects {
     version = '1.0'
     ext {
         appName = "myGames"
-        gdxVersion = '1.9.14'
+        gdxVersion = gdxVersion
         roboVMVersion = '2.3.3'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.4'
         aiVersion = '1.8.2'
         groovyVersion = '3.0.6'
         logbackVersion = '1.2.3'
+        texturePacker = ["core/assets/input/", "core/assets/", "atlas"]
     }
 
     repositories {
@@ -73,4 +74,14 @@ project(":core") {
 
 tasks.eclipse.doLast {
     delete ".project"
+}
+
+task texturePacker {
+    doLast {
+        if(project.ext.has('texturePacker')) {
+            logger.info "Calling texturePacker: ${texturePacker}"
+            TexturePacker.Settings settings = new TexturePacker.Settings(combineSubdirectories: true, flattenPaths: false)
+            TexturePacker.process(settings, texturePacker[0], texturePacker[1], texturePacker[2])
+        }
+    }
 }

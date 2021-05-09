@@ -23,6 +23,7 @@ trait GameScreen {
 		this.parent = game
 
 		parent.assetManager.queueAddSounds()
+		parent.assetManager.queueAddImages()
 		parent.assetManager.queueAddIndividualAssets()
 		parent.assetManager.manager.finishLoading()
 		controller = new KeyboardController()

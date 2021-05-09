@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.MapLayers
 import com.badlogic.gdx.maps.tiled.TiledMap
@@ -44,8 +45,7 @@ import net.stardecimal.game.missilecommand.entity.components.EnemyComponent
 import net.stardecimal.game.missilecommand.entity.systems.EnemySpawningSystem
 
 class LevelFactory implements DefaultLevelFactory {
-	private Texture cityTex, defenderMissileTex, explosionTex, bomberPlaneTex, satelliteTex, smartBombTex, crosshairsTex
-	private TextureRegion cellBackground, cellBackgroundRed, missileTex, nothingTex
+	private TextureRegion cellBackground, cellBackgroundRed, missileTex, nothingTex, cityTex, defenderMissileTex, bomberPlaneTex, satelliteTex, smartBombTex, crosshairsTex
 	Sound boom, targeting_beep
 	private float defenderMissileWidth = 0.5
 	private float defenderMissileHeight = 0.75
@@ -59,13 +59,16 @@ class LevelFactory implements DefaultLevelFactory {
 		init(en, assetManager)
 
 		//Specific textures
-		cityTex  = assetManager.manager.get(SdAssetManager.city)
-		defenderMissileTex = assetManager.manager.get(SdAssetManager.defenderMissile)
-		explosionTex = assetManager.manager.get(SdAssetManager.explosion)
-		bomberPlaneTex = assetManager.manager.get(SdAssetManager.bomberPlane)
-		satelliteTex = assetManager.manager.get(SdAssetManager.satellite)
-		smartBombTex = assetManager.manager.get(SdAssetManager.smartBomb)
-		crosshairsTex = assetManager.manager.get(SdAssetManager.crosshairs)
+		TextureAtlas atlas = assetManager.manager.get(SdAssetManager.gameImages)
+		atlas.findRegion("missile_command/")
+
+
+		cityTex = atlas.findRegion("missile_command/city")
+		defenderMissileTex = atlas.findRegion("missile_command/defenderMissile")
+		bomberPlaneTex = atlas.findRegion("missile_command/bomberPlane")
+		satelliteTex = atlas.findRegion("missile_command/satellite")
+		smartBombTex = atlas.findRegion("missile_command/smartBomb")
+		crosshairsTex = atlas.findRegion("missile_command/crosshairs")
 		cellBackground =  DFUtils.makeTextureRegion(2, 2, '#000000')
 		cellBackgroundRed =  DFUtils.makeTextureRegion(2, 2, '#ff0000')
 		missileTex = DFUtils.makeTextureRegion(1, 1, '#ffffff')
@@ -162,7 +165,7 @@ class LevelFactory implements DefaultLevelFactory {
 		)
 		sdBody.body.setUserData(entity)
 
-		texture.region = new TextureRegion(cityTex)
+		texture.region = cityTex
 		type.type = TypeComponent.TYPES.CITY
 
 		entity.add(sdBody)
@@ -261,7 +264,7 @@ class LevelFactory implements DefaultLevelFactory {
 		)
 		sdBody.body.setUserData(entity)
 
-		texture.region = new TextureRegion(defenderMissileTex)
+		texture.region = defenderMissileTex
 		type.type = TypeComponent.TYPES.DEFENDER_MISSILE
 
 		entity.add(sdBody)
@@ -541,15 +544,13 @@ class LevelFactory implements DefaultLevelFactory {
 		sdBody.body.setUserData(entity)
 
 		//Starting point specific settings
+		texture.region = bomberPlaneTex
 		if(randX == 0) {
-			texture.region = new TextureRegion(bomberPlaneTex)
 			position.flipX = true
 
 			//Velocity
 			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, 5, 1f), 0)
 		} else {
-			texture.region = new TextureRegion(bomberPlaneTex)
-
 			//Velocity
 			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, -5, 1f), 0)
 		}
@@ -592,15 +593,13 @@ class LevelFactory implements DefaultLevelFactory {
 		sdBody.body.setUserData(entity)
 
 		//Starting point specific settings
+		texture.region = satelliteTex
 		if(randX == 0) {
-			texture.region = new TextureRegion(satelliteTex)
 			position.flipX = true
 
 			//Velocity
 			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, 7, 1f), 0)
 		} else {
-			texture.region = new TextureRegion(satelliteTex)
-
 			//Velocity
 			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, -7, 1f), 0)
 		}
@@ -644,7 +643,7 @@ class LevelFactory implements DefaultLevelFactory {
 		)
 		sdBody.body.fixtureList.first().filterData.groupIndex = enemyGroup
 		sdBody.body.setUserData(entity)
-		texture.region = new TextureRegion(smartBombTex)
+		texture.region = smartBombTex
 		type.type = TypeComponent.TYPES.SMART_BOMB
 
 		stateCom.state = StateComponent.STATE_NORMAL
@@ -672,7 +671,7 @@ class LevelFactory implements DefaultLevelFactory {
 	}
 
 	void createCrosshair() {
-		Gdx.graphics.setCursor(DFUtils.textureRegionToCursor(new TextureRegion(crosshairsTex), crosshairsTex.width / 2 as int, crosshairsTex.height / 2 as int))
+		Gdx.graphics.setCursor(DFUtils.textureRegionToCursor(crosshairsTex, crosshairsTex.regionWidth / 2 as int, crosshairsTex.regionHeight / 2 as int))
 	}
 
 	List<Entity> findTargets() {

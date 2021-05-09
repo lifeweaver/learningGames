@@ -14,53 +14,34 @@ class SdAssetManager {
 	final AssetManager manager = new AssetManager()
 
 	// Textures
-//	final static String gameImages = 'images/parent.atlas'
+	final static String gameImages = 'atlas.atlas'
 //	final static String loadingImages = 'images/loading.atlas'
 //
 //	final static String smokeEffect = "particles/smoke.pe"
 //	final static String waterEffect = "particles/water.pe"
 //	final static String fireEffect = "particles/fire.pe"
 
-	final static String bounce = 'pong/bounce.wav'
-	final static String paddleLeftLoss = 'pong/computerWhatAreYouDoing.wav'
-	final static String paddleRightLoss = 'pong/computerSorry.wav'
+	final static String bounce = 'input/pong/bounce.wav'
+	final static String paddleLeftLoss = 'input/pong/computerWhatAreYouDoing.wav'
+	final static String paddleRightLoss = 'input/pong/computerSorry.wav'
 	final static String skin = "skin/glassy-ui.json"
 
-	final static String fruit = "worm/fruit.png"
-	final static String worm = "worm/worm.png"
-
-	final static String city = "missile_command/city.png"
-	final static String defenderMissile = "missile_command/defenderMissile.png"
-	final static String enemyMissileTrail = "missile_command/enemyMissileTrail.pe"
-	final static String explosion = "missile_command/explosion.png"
-	final static String explosionParticle = "missile_command/explosion.pe"
-	final static String bomberPlane = "missile_command/bomberPlane.png"
-	final static String satellite = "missile_command/satellite.png"
-	final static String smartBomb = "missile_command/smartBomb.png"
-	final static String crosshairs = "missile_command/crosshairs.png"
-	final static String boom = "missile_command/boom.wav"
-	final static String targeting_beep = "missile_command/targeting_beep.wav"
+	final static String enemyMissileTrail = "input/missile_command/enemyMissileTrail.pe"
+	final static String explosionParticle = "input/missile_command/explosion.pe"
+	final static String boom = "input/missile_command/boom.wav"
+	final static String targeting_beep = "input/missile_command/targeting_beep.wav"
 
 //	final static String playingSong = 'music/Rolemusic_-_pl4y1ng.mp3'
 //
 
 	void queueAddIndividualAssets() {
-		manager.load(fruit, Texture)
-		manager.load(worm, Texture)
-		manager.load(city, Texture)
-		manager.load(defenderMissile, Texture)
 		manager.load(enemyMissileTrail, ParticleEffect)
-		manager.load(explosion, Texture)
 		manager.load(explosionParticle, ParticleEffect)
-		manager.load(bomberPlane, Texture)
-		manager.load(satellite, Texture)
-		manager.load(smartBomb, Texture)
-		manager.load(crosshairs, Texture)
 	}
 
-//	void queueAddImages() {
-//		manager.load(gameImages, TextureAtlas.class)
-//	}
+	void queueAddImages() {
+		manager.load(gameImages, TextureAtlas.class)
+	}
 
 //	void queueAddLoadingImages() {
 //		manager.load(loadingImages, TextureAtlas.class)
