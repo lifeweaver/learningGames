@@ -60,7 +60,6 @@ class LevelFactory implements DefaultLevelFactory {
 
 
 //		background bump that speeds up?
-//		barriers that disappear in place shot? - maybe delete one particle from shot and one from wall?
 
 		log.info("level factory initialized")
 	}
