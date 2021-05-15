@@ -37,7 +37,7 @@ class MyContactListener implements ContactListener {
 	private void entityCollision(Entity entity, Fixture fb) {
 		if(fb.body.userData instanceof Entity) {
 			Entity colEnt = fb.body.userData as Entity
-			log.debug("entity${Integer.toHexString(entity.hashCode())}.type: ${TypeComponent.getTypeName(Mapper.typeCom.get(entity)?.type)}, colEnt${Integer.toHexString(colEnt.hashCode())}.type: ${TypeComponent.getTypeName(Mapper.typeCom.get(colEnt)?.type)}")
+//			log.debug("entity${Integer.toHexString(entity.hashCode())}.type: ${TypeComponent.getTypeName(Mapper.typeCom.get(entity)?.type)}, colEnt${Integer.toHexString(colEnt.hashCode())}.type: ${TypeComponent.getTypeName(Mapper.typeCom.get(colEnt)?.type)}")
 
 			CollisionComponent col = Mapper.collisionCom.get(entity)
 			CollisionComponent colb = Mapper.collisionCom.get(colEnt)

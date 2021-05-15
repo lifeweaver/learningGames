@@ -32,6 +32,7 @@ trait DefaultLevelFactory {
 	int playerScore = 0
 	int enemyScore = 0
 	def hud
+	def customContactListener
 
 	void init(PooledEngine en, SdAssetManager am) {
 		engine = en
@@ -40,7 +41,11 @@ trait DefaultLevelFactory {
 
 		// the y is gravity, normal is -9.8f I think.
 		world = new World(new Vector2(0, 0), true)
-		world.setContactListener(new MyContactListener())
+		if(customContactListener) {
+			world.setContactListener(customContactListener)
+		} else {
+			world.setContactListener(new MyContactListener())
+		}
 		bodyFactory = BodyFactory.getInstance(world)
 		boundaryTex = DFUtils.makeTextureRegion(RenderingSystem.getScreenSizeInMeters().x / RenderingSystem.PPM as float, 0.1f, '#ffffff')
 	}
