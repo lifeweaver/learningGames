@@ -27,7 +27,7 @@ missile_command/crosshairs
   index: -1
 missile_command/defenderMissile
   rotate: false
-  xy: 72, 4
+  xy: 84, 8
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -135,6 +135,13 @@ space_invaders/playerShot
   xy: 119, 36
   size: 3, 10
   orig: 3, 10
+  offset: 0, 0
+  index: -1
+space_invaders/shield
+  rotate: false
+  xy: 72, 2
+  size: 10, 10
+  orig: 10, 10
   offset: 0, 0
   index: -1
 worm/fruit

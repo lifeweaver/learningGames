@@ -24,6 +24,7 @@ class SpaceInvadersScreen extends ScreenAdapter implements GameScreen {
 		levelFactory.createBoundaries()
 		levelFactory.createPlayer(camera)
 		levelFactory.createEnemies()
+		levelFactory.createShields()
 
 	}
 
@@ -31,7 +32,10 @@ class SpaceInvadersScreen extends ScreenAdapter implements GameScreen {
 		reset()
 		levelFactory.playerScore = 0
 		levelFactory.enemyScore = 0
-		//TODO: copy anything needed from the constructor
+		levelFactory.createBoundaries()
+		levelFactory.createPlayer(camera)
+		levelFactory.createEnemies()
+		levelFactory.createShields()
 	}
 
 	@Override

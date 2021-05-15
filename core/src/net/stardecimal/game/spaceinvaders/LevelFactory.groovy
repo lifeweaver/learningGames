@@ -11,7 +11,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
+import com.codeandweb.physicseditor.PhysicsShapeCache
 import net.stardecimal.game.BodyFactory
+import net.stardecimal.game.DFUtils
 import net.stardecimal.game.DefaultLevelFactory
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
@@ -27,7 +29,7 @@ import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
 
 class LevelFactory implements DefaultLevelFactory {
-	private TextureRegion enemy1Tex, enemy2Tex, enemy3Tex, enemy4Tex, playerTex, barrierTex, playerShotTex, enemyShotTex
+	private TextureRegion enemy1Tex, enemy2Tex, enemy3Tex, enemy4Tex, playerTex, barrierTex, playerShotTex, enemyShotTex, shieldTex, shieldPartTex
 	Sound enemy4Theme, enemyBlownUp, playerBlownUp, playerFiring, background
 	RandomXS128 rand = new RandomXS128()
 	Entity player
@@ -47,6 +49,8 @@ class LevelFactory implements DefaultLevelFactory {
 		barrierTex = atlas.findRegion("space_invaders/barrier")
 		playerShotTex = atlas.findRegion("space_invaders/playerShot")
 		enemyShotTex = atlas.findRegion("space_invaders/enemyShot")
+		shieldTex = atlas.findRegion("space_invaders/shield")
+		shieldPartTex = DFUtils.makeTextureRegion(1, 1, '#006400')
 
 		enemy4Theme = assetManager.manager.get(SdAssetManager.enemy4Theme)
 		enemyBlownUp = assetManager.manager.get(SdAssetManager.enemyBlownUp)
@@ -59,6 +63,96 @@ class LevelFactory implements DefaultLevelFactory {
 //		barriers that disappear in place shot? - maybe delete one particle from shot and one from wall?
 
 		log.info("level factory initialized")
+	}
+
+	void createShields() {
+		createDestructibleShield(3, 6)
+		createDestructibleShield(19, 6)
+		createDestructibleShield(35, 6)
+	}
+
+	void createDestructibleShield(float origX, float origY) {
+		4.times { column ->
+			float startX = origX
+			6.times { row ->
+				//We want to skip the middle part of the bottom
+				boolean skip = (column == 3 && (row == 1 || row == 2 || row == 3 || row == 4))
+
+				if(!skip) {
+					createDestructibleShieldPart(new Vector2(startX, origY))
+				}
+
+				startX += 0.5
+			}
+			origY -= 0.5
+		}
+	}
+
+	void createDestructibleShieldPart(Vector2 startPos) {
+		Entity entity = engine.createEntity()
+		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+		TransformComponent position = engine.createComponent(TransformComponent)
+		TextureComponent texture = engine.createComponent(TextureComponent)
+		TypeComponent type = engine.createComponent(TypeComponent)
+
+
+		sdBody.body = bodyFactory.makeBoxPolyBody(
+				startPos.x,
+				startPos.y,
+				0.5,
+				0.5,
+				BodyFactory.STONE,
+				BodyDef.BodyType.KinematicBody,
+				true
+		)
+
+
+		texture.region = shieldPartTex
+		type.type = TypeComponent.TYPES.DESTRUCTIBLE_SCENERY
+		sdBody.body.setUserData(entity)
+
+		entity.add(sdBody)
+		entity.add(position)
+		entity.add(texture)
+		entity.add(type)
+		engine.addEntity(entity)
+	}
+
+	//Unused but left for reference on how to use the PhysicsShapeCache for the future
+	void createShield() {
+		Entity entity = engine.createEntity()
+		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+		TransformComponent position = engine.createComponent(TransformComponent)
+		TextureComponent texture = engine.createComponent(TextureComponent)
+		TypeComponent type = engine.createComponent(TypeComponent)
+		PhysicsShapeCache physicsBodies = new PhysicsShapeCache("input/space_invaders/barrier.xml")
+
+		texture.region = barrierTex
+		texture.offsetX = 1
+		texture.offsetY = 1
+		position.scale.y = 1.4
+
+//		float[] points = [2, 6, 2, 4, 2.5, 4, 2.5, 4.5, 2.75, 5, 3, 5, 3, 8, 2.5, 8, 2, 6]
+//		float[] points2 = [3, 4, 3, 2.5, 3.2, 2.5, 3.5, 2.2, 3.5, 2, 4, 2, 4, 3, 3.5, 4, 3, 4]
+//		sdBody.body = bodyFactory.makeChainBody(points, BodyDef.BodyType.KinematicBody)
+
+//		ChainShape chainShape = new ChainShape()
+//		sdBody.body.createFixture(bodyFactory.makeChainFixture(chainShape, points2))
+//		chainShape.dispose()
+
+		log.debug("texture.region.regionWidth: ${texture.region.regionWidth}, texture.region.regionHeight: ${texture.region.regionHeight}")
+		sdBody.body = physicsBodies.createBody('barrier', world, 0.2, 0.2)
+		sdBody.body.setTransform(new Vector2(3, 6), 0)
+		sdBody.body.type = BodyDef.BodyType.KinematicBody
+		type.type = TypeComponent.TYPES.OTHER
+
+		sdBody.body.setUserData(entity)
+
+		entity.add(sdBody)
+		entity.add(position)
+		entity.add(texture)
+		entity.add(type)
+		engine.addEntity(entity)
 	}
 
 	Entity createPlayer(OrthographicCamera cam) {

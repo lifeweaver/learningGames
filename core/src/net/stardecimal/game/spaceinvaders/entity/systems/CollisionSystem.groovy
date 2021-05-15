@@ -62,6 +62,11 @@ class CollisionSystem extends IteratingSystem {
 						body.isDead = true
 						levelFactory.playerBlownUp.play()
 						break
+
+					case TypeComponent.TYPES.DESTRUCTIBLE_SCENERY:
+						collidedBody.isDead = true
+						body.isDead = true
+						break
 				}
 			}
 		}
