@@ -41,7 +41,7 @@ class PlayerControlSystem extends IteratingSystem {
 		}
 
 		if (!controller.left && !controller.right) {
-			playerBody.body.setLinearVelocity(MathUtils.lerp(playerBody.body.linearVelocity.x, 0, 0.1f), playerBody.body.linearVelocity.y)
+			playerBody.body.setLinearVelocity(MathUtils.lerp(playerBody.body.linearVelocity.x, 0, 0.2f), playerBody.body.linearVelocity.y)
 		}
 	}
 }
