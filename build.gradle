@@ -36,6 +36,7 @@ allprojects {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "https://jitpack.io" }
     }
 
     dependencies {
@@ -43,6 +44,7 @@ allprojects {
         implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
         implementation group: 'ch.qos.logback', name: 'logback-core', version: "$logbackVersion"
         implementation group: 'ch.qos.logback', name: 'logback-classic', version: "$logbackVersion"
+        implementation 'com.github.Anuken:GdxGifRecorder:1.4'
     }
 }
 

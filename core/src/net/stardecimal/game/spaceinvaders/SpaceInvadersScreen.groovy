@@ -26,6 +26,7 @@ class SpaceInvadersScreen extends ScreenAdapter implements GameScreen {
 		levelFactory.createEnemies()
 		levelFactory.createShields()
 
+//		parent.recorder = new GifRecorder(batch)
 	}
 
 	void resetWorld() {
@@ -50,6 +51,11 @@ class SpaceInvadersScreen extends ScreenAdapter implements GameScreen {
 //				levelFactory.calculateScore()
 //				parent.changeScreen(parent.ENDGAME)
 //			}
+		}
+
+		// Gif Recorder support
+		if(parent.recorder) {
+			parent.recorder.update()
 		}
 	}
 

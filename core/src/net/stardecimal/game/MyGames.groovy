@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.Cursor
 import com.badlogic.gdx.graphics.GL20
+import io.anuke.gif.GifRecorder
 import net.stardecimal.game.breakout.BreakoutScreen
 import net.stardecimal.game.loader.SdAssetManager
 import net.stardecimal.game.missilecommand.MissileCommandScreen
@@ -52,6 +53,7 @@ class MyGames extends Game {
 	int currentScreen
 	STATE state = STATE.READY
 	MyUiInputProcessor uiInputProcessor
+	GifRecorder recorder
 
 	//TODO
 	//Save preferences
