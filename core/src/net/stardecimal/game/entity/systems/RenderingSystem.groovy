@@ -13,6 +13,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.math.collision.BoundingBox
 import com.badlogic.gdx.physics.box2d.Fixture
 import com.badlogic.gdx.physics.box2d.PolygonShape
 import com.badlogic.gdx.physics.box2d.Shape
@@ -138,30 +140,18 @@ class RenderingSystem extends SortedIteratingSystem {
 						} else if(fixture.shape.type == Shape.Type.Polygon) {
 							PolygonShape shape = fixture.shape as PolygonShape
 							Vector2 vector = new Vector2()
-//
-							def vectors = []
-							shape.vertexCount.times {
-								shape.getVertex(it, vector)
-								vectors.add(new Vector2(vector.x, vector.y))
-							}
-
-							vectors.sort {it.x}
-							w2 = (vectors.first().x).abs() + (vectors.last().x).abs()
-
-							vectors.sort {it.y}
-							h2 = (vectors.first().y).abs() + (vectors.last().y).abs()
 
 							// code that may be better some how? from https://gist.github.com/nooone/8363982
-//							BoundingBox boundingBox
-//							shape.getVertex(0, vector)
-//							vector = fixture.body.getWorldPoint(vector)
-//							boundingBox = new BoundingBox(new Vector3(vector, 0), new Vector3(vector, 0))
-//							for (int i = 1; i < shape.vertexCount; i++) {
-//								shape.getVertex(i, vector)
-//								boundingBox.ext(new Vector3(fixture.body.getWorldPoint(vector), 0))
-//							}
-//							w2 = boundingBox.width
-//							h2 = boundingBox.height
+							BoundingBox boundingBox
+							shape.getVertex(0, vector)
+							vector = fixture.body.getWorldPoint(vector)
+							boundingBox = new BoundingBox(new Vector3(vector, 0), new Vector3(vector, 0))
+							for (int i = 1; i < shape.vertexCount; i++) {
+								shape.getVertex(i, vector)
+								boundingBox.ext(new Vector3(fixture.body.getWorldPoint(vector), 0))
+							}
+							w2 = boundingBox.width
+							h2 = boundingBox.height
 						}
 					}
 				}
@@ -180,7 +170,7 @@ class RenderingSystem extends SortedIteratingSystem {
 				float drawX = t.position.x - originX + tex.offsetX as float
 				float drawY = t.position.y - originY + tex.offsetY as float
 
-//				println("${Mapper.typeCom.get(entity).type} position: x: ${t.position.x}, y: ${t.position.y}")
+//				println("${TypeComponent.getTypeName(entity)} position: x: ${t.position.x}, y: ${t.position.y}, width: ${width}, height: ${height}")
 				if(tex.region) {
 					batch.draw(
 							tex.region,
