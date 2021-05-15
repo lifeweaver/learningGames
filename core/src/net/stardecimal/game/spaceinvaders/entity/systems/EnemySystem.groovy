@@ -18,7 +18,7 @@ class EnemySystem extends IteratingSystem {
 	private Array<Entity> enemyQueue
 	float lastTimeFired = 0
 	float fireDelay = 0
-	final float firingDelay = 4
+	final float firingDelay = 2
 	float lastMovement = 1
 	float movementInterval = 1
 	boolean goingRight = true
