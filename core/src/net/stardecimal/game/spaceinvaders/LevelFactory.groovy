@@ -60,6 +60,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 
 //		background bump that speeds up?
+		// enemy4 stuff
 
 		log.info("level factory initialized")
 	}

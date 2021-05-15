@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array
 import net.stardecimal.game.entity.components.EnemyComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
+import net.stardecimal.game.entity.components.TransformComponent
 import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.spaceinvaders.LevelFactory
 
@@ -18,6 +19,10 @@ class EnemySystem extends IteratingSystem {
 	float lastTimeFired = 0
 	float fireDelay = 0
 	final float firingDelay = 4
+	float lastMovement = 1
+	float movementInterval = 1
+	boolean goingRight = true
+	float change = 0.5
 
 	@SuppressWarnings("unchecked")
 	EnemySystem(LevelFactory lvlFactory) {
@@ -29,14 +34,23 @@ class EnemySystem extends IteratingSystem {
 	@Override
 	void update(float deltaTime) {
 		super.update(deltaTime)
+		float maxX = 0
+		float minX = 40
 
 		if(fireDelay > 0) {
 			fireDelay = fireDelay - deltaTime as float
 		}
 
+		if(lastMovement > 0) {
+			lastMovement = lastMovement - deltaTime as float
+		}
+
 		enemyQueue.each {
 			SdBodyComponent sdBody = Mapper.bCom.get(it)
 			boolean canFire = this.canFire(sdBody.body.position)
+			float enemyX = sdBody.body.position.x
+			maxX = enemyX > maxX ? enemyX : maxX
+			minX = enemyX < minX ? enemyX : minX
 
 			//can fire, check for allies below
 			if(canFire) {
@@ -50,6 +64,31 @@ class EnemySystem extends IteratingSystem {
 					}
 				}
 			}
+		}
+
+		//check if the enemy should move
+		if(lastMovement <= 0) {
+			lastMovement = movementInterval
+			boolean goDown = false
+
+			if(maxX > 38.5) {
+				goingRight = false
+				goDown = true
+			} else if(minX < 1.5) {
+				goingRight = true
+				goDown = true
+			}
+
+			enemyQueue.each {
+				Body body = Mapper.bCom.get(it).body
+				TransformComponent transCom = Mapper.transCom.get(it)
+				float newX = (goingRight ? body.position.x + change : body.position.x - change) as float
+				float newY = goDown ? body.position.y - 0.5 as float : body.position.y
+				transCom.position.x = newX
+				transCom.position.y = newY
+				body.setTransform(newX, newY, 0)
+			}
+
 		}
 
 		enemyQueue.clear()
