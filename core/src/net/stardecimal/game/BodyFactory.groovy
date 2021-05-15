@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
+import com.badlogic.gdx.physics.box2d.ChainShape
 import com.badlogic.gdx.physics.box2d.CircleShape
 import com.badlogic.gdx.physics.box2d.EdgeShape
 import com.badlogic.gdx.physics.box2d.FixtureDef
@@ -139,6 +140,75 @@ class BodyFactory {
 
 		body.createFixture(fixtureDef)
 		fixtureDef.shape.dispose()
+	}
+
+	Body makeChainBody(float[] points, BodyDef.BodyType bodyType) {
+		return makeChainBody(pointsToVector2s(points), bodyType)
+	}
+
+	Body makeChainBody(float[][] verts, BodyDef.BodyType bodyType) {
+		Vector2[] vectors = []
+		verts.each {
+			vectors << new Vector2(it[0], it[1])
+		}
+		return makeChainBody(vectors, bodyType)
+	}
+
+	Body makeChainBody(Vector2 startPos, Vector2 endPos, BodyDef.BodyType bodyType) {
+		return makeChainBody((Vector2[]) [startPos, endPos], bodyType)
+	}
+
+	Body makeChainBody(Vector2[] verts, BodyDef.BodyType bodyType) {
+		BodyDef boxBodyDef = new BodyDef(type: bodyType, fixedRotation: true)
+
+		// For some reason the first x, and every y are being double, I have no idea how/why
+//		verts.first().x = verts.first().x / 2 as float
+		verts.each {
+			it.y = it.y / 2 as float
+		}
+
+		boxBodyDef.position.x = verts.first().x
+		boxBodyDef.position.y = verts.first().y
+
+		Body chainBody = world.createBody(boxBodyDef)
+		ChainShape chainShape = new ChainShape()
+		chainBody.createFixture(makeChainFixture(chainShape, verts))
+		chainShape.dispose()
+
+		return chainBody
+	}
+
+	static FixtureDef makeChainFixture(ChainShape chainShape, float[] points) {
+		return makeChainFixture(chainShape, pointsToVector2s(points))
+	}
+
+	private static Vector2[] pointsToVector2s(float[] points) {
+		def vectors = new ArrayList<Vector2>()
+		float x = 9999
+
+		points.each {
+			if(x == 9999) {
+				x = it
+				vectors << new Vector2(it, 0)
+			} else {
+				x = 9999
+				vectors.last().y = it
+			}
+		}
+
+		return (Vector2[]) vectors
+	}
+
+	static FixtureDef makeChainFixture(ChainShape chainShape, Vector2[] verts, float density=7, float restitution=0.5, float friction=0.3) {
+		FixtureDef fixtureDef = new FixtureDef()
+		fixtureDef.density = density
+		fixtureDef.friction = friction
+		fixtureDef.restitution = restitution
+		chainShape.createChain(verts)
+
+		fixtureDef.shape = chainShape
+
+		return fixtureDef
 	}
 
 	Body makeBoxPolyBody(float posX, float posY, float width, float height, int material, BodyDef.BodyType bodyType, boolean fixedRotation=false, boolean isSensor=false) {
