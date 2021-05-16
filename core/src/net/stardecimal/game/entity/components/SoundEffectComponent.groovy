@@ -11,18 +11,20 @@ class SoundEffectComponent implements Component, Pool.Poolable {
 
 	@Override
 	void reset() {
-		soundEffect.stop(soundId)
+		soundEffect?.stop(soundId)
 		soundEffect = null
 		looping = false
 		soundId = -1
 	}
 
 	void play() {
-		soundId = soundEffect.play()
-		soundEffect.setLooping(soundId, looping)
+		if(soundEffect) {
+			soundId = soundEffect.play()
+			soundEffect.setLooping(soundId, looping)
+		}
 	}
 
 	void stop() {
-		soundEffect.stop(soundId)
+		soundEffect?.stop(soundId)
 	}
 }
