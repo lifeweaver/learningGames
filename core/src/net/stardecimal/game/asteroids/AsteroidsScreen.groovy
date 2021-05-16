@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
+import net.stardecimal.game.asteroids.entity.systems.BulletSystem
 import net.stardecimal.game.asteroids.entity.systems.CollisionSystem
 import net.stardecimal.game.asteroids.entity.systems.EnemySystem
 import net.stardecimal.game.asteroids.entity.systems.PlayerControlSystem
@@ -21,6 +22,7 @@ class AsteroidsScreen extends ScreenAdapter implements GameScreen {
 		engine.addSystem(new PlayerControlSystem(controller, levelFactory))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))
 		engine.addSystem(new SpaceSystem())
+		engine.addSystem(new BulletSystem(parent))
 		engine.addSystem(new EnemySystem(levelFactory))
 		levelFactory.createPlayer(camera)
 		levelFactory.playerLives = 3

@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import net.stardecimal.game.BodyFactory
 import net.stardecimal.game.DFUtils
 import net.stardecimal.game.DefaultLevelFactory
+import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.PlayerComponent
@@ -66,8 +67,8 @@ class LevelFactory implements DefaultLevelFactory {
 		sdBody.body = bodyFactory.makeBoxPolyBody(
 				screenSize.x / RenderingSystem.PPM / 2 as float,
 				screenSize.y / RenderingSystem.PPM / 2 as float,
-				2,
-				2.5f,
+				1,
+				1.5f,
 				BodyFactory.STEEL,
 				BodyDef.BodyType.DynamicBody,
 				false
@@ -101,6 +102,7 @@ class LevelFactory implements DefaultLevelFactory {
 		TextureComponent texture = engine.createComponent(TextureComponent)
 		CollisionComponent colComp = engine.createComponent(CollisionComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
+		BulletComponent bul = engine.createComponent(BulletComponent)
 		VelocityComponent velCom = engine.createComponent(VelocityComponent)
 
 
@@ -124,14 +126,19 @@ class LevelFactory implements DefaultLevelFactory {
 		//TODO: figure out velocity
 		DFUtils.angleToVector(velCom.linearVelocity, startPos.angleRad())
 		println("angle: ${startPos.angleRad() * MathUtils.radiansToDegrees}, linearVelocity: ${velCom.linearVelocity}, something: ${DFUtils.vectorToAngle2(new Vector2(startPos.x, startPos.y)) * MathUtils.radiansToDegrees}, something2: ${DFUtils.vectorToAngle(new Vector2(startPos.x, startPos.y)) * MathUtils.radiansToDegrees}")
+		velCom.linearVelocity.x += velCom.linearVelocity.x * 10
+		velCom.linearVelocity.y += velCom.linearVelocity.y * 10
 
-//		velCom.linearVelocity.y = 10
+		bul.owner = BulletComponent.Owner.PLAYER
+		bul.maxLife = 5
 
 		SoundEffectComponent soundCom = engine.createComponent(SoundEffectComponent)
 		soundCom.soundEffect = playerFiring
 		soundCom.play()
 		entity.add(soundCom)
 
+
+		entity.add(bul)
 		entity.add(velCom)
 		entity.add(sdBody)
 		entity.add(position)

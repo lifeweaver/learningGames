@@ -28,14 +28,16 @@ class SpaceSystem extends IteratingSystem {
 		spaceQueue.each {
 			SdBodyComponent bCom = Mapper.bCom.get(it)
 
-			if(bCom.body.position.x < 0) {
-				bCom.body.setTransform(maxX, bCom.body.position.y, bCom.body.angle)
-			} else if(bCom.body.position.x > maxX) {
-				bCom.body.setTransform(0, bCom.body.position.y, bCom.body.angle)
-			} else if(bCom.body.position.y < 0) {
-				bCom.body.setTransform(bCom.body.position.x, maxY, bCom.body.angle)
-			} else if(bCom.body.position.y > maxY) {
-				bCom.body.setTransform(bCom.body.position.x, 0, bCom.body.angle)
+			if(bCom) {
+				if(bCom.body.position.x < 0) {
+					bCom.body.setTransform(maxX, bCom.body.position.y, bCom.body.angle)
+				} else if(bCom.body.position.x > maxX) {
+					bCom.body.setTransform(0, bCom.body.position.y, bCom.body.angle)
+				} else if(bCom.body.position.y < 0) {
+					bCom.body.setTransform(bCom.body.position.x, maxY, bCom.body.angle)
+				} else if(bCom.body.position.y > maxY) {
+					bCom.body.setTransform(bCom.body.position.x, 0, bCom.body.angle)
+				}
 			}
 		}
 	}

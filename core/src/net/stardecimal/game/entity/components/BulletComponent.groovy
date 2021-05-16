@@ -12,6 +12,7 @@ class BulletComponent implements Component, Pool.Poolable {
 	float yVel = 0
 	float distMoved = 0
 	float maxDist = 0
+	float maxLife = 0
 	Vector2 startPos = null
 	boolean isDead = false
 	Owner owner = Owner.NONE
@@ -24,6 +25,7 @@ class BulletComponent implements Component, Pool.Poolable {
 		yVel = 0
 		distMoved = 0
 		maxDist = 0
+		maxLife = 0
 		startPos = null
 		isDead = false
 		particleEffect = null
