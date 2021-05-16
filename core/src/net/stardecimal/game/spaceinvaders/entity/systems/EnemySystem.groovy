@@ -11,6 +11,7 @@ import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TransformComponent
 import net.stardecimal.game.entity.components.TypeComponent
+import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.spaceinvaders.LevelFactory
 
 class EnemySystem extends IteratingSystem {
@@ -19,11 +20,12 @@ class EnemySystem extends IteratingSystem {
 	float lastTimeFired = 0
 	float fireDelay = 0
 	final float firingDelay = 2
-	float lastMovement = 1
-	float movementInterval = 1
+	static float origMovementInterval = 1
+	float movementInterval = origMovementInterval
+	float lastMovement = movementInterval
 	boolean goingRight = true
 	float change = 0.5
-	static float spaceShipInterval = 30
+	static float spaceShipInterval = 5
 	float lastSpaceShip = spaceShipInterval
 
 	@SuppressWarnings("unchecked")
@@ -70,6 +72,7 @@ class EnemySystem extends IteratingSystem {
 			}
 		}
 		enemyQueue.removeValue(spaceShip, true)
+		movementInterval = enemyQueue.size * 0.01
 
 		//check if the enemy should move
 		if(lastMovement <= 0) {
@@ -99,7 +102,8 @@ class EnemySystem extends IteratingSystem {
 		if(spaceShip) {
 			lastSpaceShip = spaceShipInterval
 			SdBodyComponent sdBody = Mapper.bCom.get(spaceShip)
-			if(sdBody && ((sdBody.body.position.x < -5 && sdBody.body.linearVelocity.x < 0) || (sdBody.body.position.x > maxX + 5 && sdBody.body.linearVelocity.x > 0))) {
+			float edgeOfScreen = RenderingSystem.getScreenSizeInMeters().x / RenderingSystem.PPM as float
+			if(sdBody && ((sdBody.body.position.x < -1 && sdBody.body.linearVelocity.x < 0) || (sdBody.body.position.x > (edgeOfScreen + 5) && sdBody.body.linearVelocity.x > 0))) {
 				sdBody.isDead = true
 			}
 		} else if(lastSpaceShip <= 0) {
