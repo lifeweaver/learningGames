@@ -1,201 +1,201 @@
 
 atlas.png
-size: 256, 128
+size: 512, 64
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+asteroids/asteroid
+  rotate: false
+  xy: 311, 28
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
 asteroids/enemy
   rotate: false
-  xy: 173, 40
+  xy: 62, 8
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 asteroids/player
   rotate: false
-  xy: 221, 40
+  xy: 404, 50
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
-asteroids/player2
-  rotate: false
-  xy: 2, 26
-  size: 100, 100
-  orig: 100, 100
-  offset: 0, 0
-  index: -1
 missile_command/bomberPlane
   rotate: false
-  xy: 147, 52
+  xy: 167, 28
   size: 45, 32
   orig: 45, 32
   offset: 0, 0
   index: -1
 missile_command/city
   rotate: false
-  xy: 104, 86
+  xy: 2, 20
   size: 120, 40
   orig: 120, 40
   offset: 0, 0
   index: -1
 missile_command/crosshairs
   rotate: false
-  xy: 194, 52
+  xy: 214, 28
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 missile_command/defenderMissile
   rotate: false
-  xy: 46, 2
+  xy: 416, 52
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 missile_command/enemyMissileTrail
   rotate: false
-  xy: 56, 9
+  xy: 167, 25
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 missile_command/explosion
   rotate: false
-  xy: 197, 40
+  xy: 392, 50
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 missile_command/pre_particle
   rotate: false
-  xy: 104, 9
+  xy: 248, 28
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 missile_command/satellite
   rotate: false
-  xy: 104, 43
+  xy: 124, 19
   size: 41, 41
   orig: 41, 41
   offset: 0, 0
   index: -1
 missile_command/smartBomb
   rotate: false
-  xy: 238, 110
+  xy: 2, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 pong/paddle
   rotate: false
-  xy: 226, 86
+  xy: 282, 20
   size: 10, 40
   orig: 10, 40
   offset: 0, 0
   index: -1
 pong/pingPong
   rotate: false
-  xy: 209, 40
+  xy: 74, 8
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 space_invaders/barrier
   rotate: false
-  xy: 161, 40
+  xy: 380, 50
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 space_invaders/enemy1
   rotate: false
-  xy: 46, 12
+  xy: 338, 48
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 0
 space_invaders/enemy1
   rotate: false
-  xy: 60, 12
+  xy: 20, 6
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 1
 space_invaders/enemy2
   rotate: false
-  xy: 74, 12
+  xy: 352, 48
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 0
 space_invaders/enemy2
   rotate: false
-  xy: 88, 12
+  xy: 34, 6
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 1
 space_invaders/enemy3
   rotate: false
-  xy: 238, 84
+  xy: 366, 48
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 0
 space_invaders/enemy3
   rotate: false
-  xy: 147, 38
+  xy: 48, 6
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 1
 space_invaders/enemy4
   rotate: false
-  xy: 185, 40
+  xy: 323, 28
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 space_invaders/enemyShot
   rotate: false
-  xy: 138, 31
+  xy: 98, 8
   size: 3, 10
   orig: 3, 10
   offset: 0, 0
   index: -1
 space_invaders/player
   rotate: false
-  xy: 238, 98
+  xy: 294, 28
   size: 15, 10
   orig: 15, 10
   offset: 0, 0
   index: -1
 space_invaders/playerShot
   rotate: false
-  xy: 228, 74
+  xy: 103, 8
   size: 3, 10
   orig: 3, 10
   offset: 0, 0
   index: -1
 space_invaders/shield
   rotate: false
-  xy: 233, 72
+  xy: 86, 8
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 worm/fruit
   rotate: false
-  xy: 2, 4
+  xy: 294, 40
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 worm/worm
   rotate: false
-  xy: 24, 4
+  xy: 316, 40
   size: 20, 20
   orig: 20, 20
   offset: 0, 0

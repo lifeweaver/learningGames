@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.math.Vector2
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.asteroids.LevelFactory
 import net.stardecimal.game.entity.components.CollisionComponent
@@ -67,16 +68,44 @@ class CollisionSystem extends IteratingSystem {
 							levelFactory.createPlayer(cam)
 						}
 						break
+
+					case TypeComponent.TYPES.ASTEROID:
+						int worth = Mapper.scoreCom.get(collidedEntity).worth
+						collidedBody.isDead = true
+						body.isDead = true
+						levelFactory.enemyBlownUp.play(0.2)
+						levelFactory.playerScore = levelFactory.playerScore + worth
+
+						levelFactory.createAsteroid(collidedBody.body.position, new Vector2(3, 3), true)
+						levelFactory.createAsteroid(collidedBody.body.position, new Vector2(-3, -3), true)
+						break
+
+					case TypeComponent.TYPES.MINI_ASTEROID:
+						int worth = Mapper.scoreCom.get(collidedEntity).worth
+						collidedBody.isDead = true
+						body.isDead = true
+						levelFactory.enemyBlownUp.play(0.2)
+						levelFactory.playerScore = levelFactory.playerScore + worth
+						break
 				}
-				cc.collisionEntity = null
 			}
-		} else if(type == TypeComponent.TYPES.ENEMY) {
+			cc.collisionEntity = null
+		} else if(type == TypeComponent.TYPES.ASTEROID || type == TypeComponent.TYPES.MINI_ASTEROID) {
 			if (collidedEntity) {
 				SdBodyComponent collidedBody = Mapper.bCom.get(collidedEntity)
 				SdBodyComponent body = Mapper.bCom.get(entity)
 				switch (collidedType) {
+					case TypeComponent.TYPES.PLAYER:
+						OrthographicCamera cam = Mapper.playerCom.get(collidedEntity).cam
+						collidedBody.isDead = true
+						levelFactory.playerLives -= 1
+						if(levelFactory.playerLives >= 0) {
+							levelFactory.createPlayer(cam)
+						}
+						break
+
 					default:
-						println("Enemy Collided with: ${collidedType}")
+						println("Asteroid Collided with: ${TypeComponent.getTypeName(collidedType)}")
 				}
 				cc.collisionEntity = null
 			}
