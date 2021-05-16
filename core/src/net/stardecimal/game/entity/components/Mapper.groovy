@@ -21,4 +21,5 @@ class Mapper {
 	static final ComponentMapper<ParticleEffectComponent> peCom = ComponentMapper.getFor(ParticleEffectComponent.class)
 	static final ComponentMapper<ScoreComponent> scoreCom = ComponentMapper.getFor(ScoreComponent.class)
 	static final ComponentMapper<SoundEffectComponent> soundCom = ComponentMapper.getFor(SoundEffectComponent.class)
+	static final ComponentMapper<VelocityComponent> velCom = ComponentMapper.getFor(VelocityComponent.class)
 }

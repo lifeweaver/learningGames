@@ -8,8 +8,10 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.utils.Array
+import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TransformComponent
+import net.stardecimal.game.entity.components.VelocityComponent
 
 class PhysicsSystem extends IteratingSystem {
 	private static final float MAX_STEP_TIME = 1/45f as float
@@ -45,6 +47,12 @@ class PhysicsSystem extends IteratingSystem {
 				tfm.position.x = position.x
 				tfm.position.y = position.y
 				tfm.rotation = bodyComp.body.angle * MathUtils.radiansToDegrees as float
+
+				VelocityComponent velCom = Mapper.velCom.get(entity)
+				if(velCom) {
+					bodyComp.body.linearVelocity = velCom.linearVelocity
+					bodyComp.body.angularVelocity = velCom.angularVelocity
+				}
 
 				if(bodyComp.isDead) {
 					println('Removing a body and entity')
