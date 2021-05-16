@@ -31,6 +31,7 @@ trait DefaultLevelFactory {
 	ParticleEffectManager pem
 	int playerScore = 0
 	int enemyScore = 0
+	int playerLives = 0
 	def hud
 	def customContactListener
 

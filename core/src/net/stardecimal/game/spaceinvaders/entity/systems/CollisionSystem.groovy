@@ -3,6 +3,7 @@ package net.stardecimal.game.spaceinvaders.entity.systems
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.graphics.OrthographicCamera
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
@@ -52,15 +53,22 @@ class CollisionSystem extends IteratingSystem {
 						break
 
 					case TypeComponent.TYPES.ENEMY:
+						int worth = Mapper.scoreCom.get(collidedEntity).worth
 						collidedBody.isDead = true
 						body.isDead = true
 						levelFactory.enemyBlownUp.play()
+						levelFactory.playerScore = levelFactory.playerScore + worth
 						break
 
 					case TypeComponent.TYPES.PLAYER:
+						OrthographicCamera cam = Mapper.playerCom.get(collidedEntity).cam
 						collidedBody.isDead = true
 						body.isDead = true
 						levelFactory.playerBlownUp.play()
+						levelFactory.playerLives = levelFactory.playerLives - 1
+						if(levelFactory.playerLives >= 0) {
+							levelFactory.createPlayer(cam)
+						}
 						break
 
 					case TypeComponent.TYPES.DESTRUCTIBLE_SCENERY:

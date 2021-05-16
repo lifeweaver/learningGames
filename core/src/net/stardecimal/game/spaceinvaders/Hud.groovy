@@ -1,4 +1,4 @@
-package net.stardecimal.game.missilecommand
+package net.stardecimal.game.spaceinvaders
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
@@ -11,26 +11,32 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import net.stardecimal.game.HudOverlay
 
-class MissileCommandHud implements HudOverlay, Disposable {
-	Label score
+class Hud implements HudOverlay, Disposable {
+	Label score, lives
 
-	MissileCommandHud(SpriteBatch spriteBatch) {
+
+	Hud(SpriteBatch spriteBatch) {
 		stage = new Stage(new ScreenViewport(), spriteBatch)
-		table = new Table()
-		table.top()
-		table.fillParent = true
+		table = new Table(fillParent: true)
 
 		font = new BitmapFont(Gdx.files.internal("font/calibri14.fnt"), false)
-		Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.RED)
+		Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE)
 
 		score = new Label("SCORE:" + String.format("%06d", 0), labelStyle)
-		table.add(score).expandX().padTop(10)
+		lives = new Label(String.format("%06d", 0), labelStyle)
+		table.add(score).expand().center().top().padTop(10)
+		table.row()
+		table.add(lives).bottom().left().fillX().padBottom(10).padLeft(10)
 
 		stage.addActor(table)
 	}
 
 	void setScore(int value) {
 		score.setText("SCORE:" + String.format("%06d", value))
+	}
+
+	void setLives(int value) {
+		lives.setText(String.format("%06d", value))
 	}
 
 	@Override

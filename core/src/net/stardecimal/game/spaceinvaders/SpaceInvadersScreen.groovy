@@ -25,6 +25,7 @@ class SpaceInvadersScreen extends ScreenAdapter implements GameScreen {
 		levelFactory.createPlayer(camera)
 		levelFactory.createEnemies()
 		levelFactory.createShields()
+		levelFactory.playerLives = 3
 
 //		parent.recorder = new GifRecorder(batch)
 	}
@@ -33,6 +34,7 @@ class SpaceInvadersScreen extends ScreenAdapter implements GameScreen {
 		reset()
 		levelFactory.playerScore = 0
 		levelFactory.enemyScore = 0
+		levelFactory.playerLives = 3
 		levelFactory.createBoundaries()
 		levelFactory.createPlayer(camera)
 		levelFactory.createEnemies()
@@ -44,13 +46,15 @@ class SpaceInvadersScreen extends ScreenAdapter implements GameScreen {
 		if(parent.state == MyGames.STATE.RUNNING) {
 			Gdx.gl.glClearColor(0,0,0, 1)
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
 			engine.update(delta)
-			//Score and move to end game screen
-//			if(!levelFactory.missilesLeft && !levelFactory.missilesInFlight()) {
-//				levelFactory.calculateScore()
-//				parent.changeScreen(parent.ENDGAME)
-//			}
+
+			//Move to end game screen once all lives used up
+			if(levelFactory.playerLives == -1) {
+				parent.changeScreen(parent.ENDGAME)
+			}
+
+			levelFactory.hud.setScore(levelFactory.playerScore)
+			levelFactory.hud.setLives(levelFactory.playerLives)
 		}
 
 		// Gif Recorder support

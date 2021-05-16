@@ -20,6 +20,7 @@ import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.EnemyComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.PlayerComponent
+import net.stardecimal.game.entity.components.ScoreComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.SoundEffectComponent
 import net.stardecimal.game.entity.components.TextureComponent
@@ -195,9 +196,9 @@ class LevelFactory implements DefaultLevelFactory {
 		Vector2 startPos = new Vector2(screenSize.x / RenderingSystem.PPM / 10 as float, (screenSize.y / RenderingSystem.PPM) - ((screenSize.y / RenderingSystem.PPM) / 10 * 2) as float)
 		float origX = startPos.x
 
-		[enemy3Tex, enemy2Tex, enemy2Tex, enemy1Tex, enemy1Tex].each {tex ->
+		[[enemy3Tex, 30], [enemy2Tex, 20], [enemy2Tex, 20], [enemy1Tex, 10], [enemy1Tex, 10]].each {enemy ->
 			17.times {
-				createEnemy(startPos, tex)
+				createEnemy(startPos, (TextureRegion) enemy[0], (int) enemy[1])
 				startPos.x = startPos.x + 2 as float
 			}
 			startPos.x = origX
@@ -205,13 +206,15 @@ class LevelFactory implements DefaultLevelFactory {
 		}
 	}
 
-	void createEnemy(Vector2 startPos, TextureRegion tex) {
+	void createEnemy(Vector2 startPos, TextureRegion tex, int worth) {
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)
 		TextureComponent texture = engine.createComponent(TextureComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
 		EnemyComponent eCom = engine.createComponent(EnemyComponent)
+		ScoreComponent scoreCom = engine.createComponent(ScoreComponent)
+		scoreCom.worth = worth
 
 		sdBody.body = bodyFactory.makeBoxPolyBody(
 				startPos.x,
@@ -227,6 +230,7 @@ class LevelFactory implements DefaultLevelFactory {
 		type.type = TypeComponent.TYPES.ENEMY
 		sdBody.body.setUserData(entity)
 
+		entity.add(scoreCom)
 		entity.add(eCom)
 		entity.add(sdBody)
 		entity.add(position)
@@ -298,6 +302,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 	@Override
 	def createHud(SpriteBatch batch) {
-		return null
+		hud = new Hud(batch)
+		return hud
 	}
 }

@@ -19,4 +19,5 @@ class Mapper {
 	static final ComponentMapper<TypeComponent> typeCom = ComponentMapper.getFor(TypeComponent.class)
 	static final ComponentMapper<SteeringComponent> sCom = ComponentMapper.getFor(SteeringComponent.class)
 	static final ComponentMapper<ParticleEffectComponent> peCom = ComponentMapper.getFor(ParticleEffectComponent.class)
+	static final ComponentMapper<ScoreComponent> scoreCom = ComponentMapper.getFor(ScoreComponent.class)
 }
