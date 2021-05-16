@@ -85,6 +85,7 @@ class CollisionSystem extends IteratingSystem {
 						body.isDead = true
 						break
 				}
+				cc.collisionEntity = null
 			}
 		}
 	}
