@@ -40,16 +40,14 @@ class GameSelectionScreen extends ScreenAdapter {
 		Gdx.input.setInputProcessor(stage)
 		stage.clear()
 		// Create a table that fills the screen. Everything else will go inside this table.
-		Table table = new Table(
-				fillParent: true,
-				debug: false
+		Table root = new Table(
+				fillParent: true
 		)
-		Table innerTable = new Table()
+		Table innerTable = new Table(debug: false)
 		ScrollPane scroll = new ScrollPane(innerTable)
-		table.add(scroll)
-		table.row()
-
-		stage.addActor(table)
+		root.add(scroll)
+		root.row()
+		stage.addActor(root)
 
 		TextButton pingPong = new TextButton("Ping Pong", skin)
 		TextButton worm = new TextButton("Worm", skin)
@@ -58,18 +56,31 @@ class GameSelectionScreen extends ScreenAdapter {
 		TextButton spaceInvaders = new TextButton("Space Invaders", skin)
 		TextButton back = new TextButton("Back", skin)
 
-		innerTable.add(pingPong).fillX().uniformX()
-		innerTable.row().pad(5, 0, 5, 0)
-		innerTable.add(worm).fillX().uniformX()
+		[pingPong, worm, breakout, missileCommand, spaceInvaders, back].each {
+//			it.setTransform(true)
+//			it.setScale(0.7)
+			it.label.setFontScale(0.5)
+		}
+
+		innerTable.defaults().left().width(Gdx.graphics.width / 2 - 10).space(10)
+
+		innerTable.add(pingPong)
+		innerTable.add(worm)
 		innerTable.row()
-		innerTable.add(breakout).fillX().uniformX()
-		innerTable.row().pad(5, 0, 5, 0)
-		innerTable.add(missileCommand).fillX().uniformX()
-		innerTable.row()
-		innerTable.add(spaceInvaders).fillX().uniformX()
-		innerTable.row().pad(5, 0, 5, 0)
-		innerTable.add(back).fillX().uniformX()
-		table.layout()
+		innerTable.add(breakout)
+		innerTable.add(missileCommand)
+		innerTable.row().padBottom(10)
+		innerTable.add(spaceInvaders)
+		innerTable.add(back)
+		stage.setScrollFocus(scroll)
+		scroll.validate()
+		innerTable.validate()
+
+//		innerTable.setTransform(true)
+//		innerTable.setOrigin(100, 0)
+//		innerTable.setScaleX(0.7)
+		root.layout()
+
 
 		back.addListener(new ChangeListener() {
 			@Override
