@@ -50,8 +50,8 @@ class AsteroidsScreen extends ScreenAdapter implements GameScreen {
 				parent.changeScreen(parent.ENDGAME)
 			}
 
-//			levelFactory.hud.setScore(levelFactory.playerScore)
-//			levelFactory.hud.setLives(levelFactory.playerLives)
+			levelFactory.hud.setScore(levelFactory.playerScore)
+			levelFactory.hud.setLives(levelFactory.playerLives)
 		}
 
 		// Gif Recorder support
