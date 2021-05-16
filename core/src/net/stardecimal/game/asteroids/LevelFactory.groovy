@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import net.stardecimal.game.BodyFactory
 import net.stardecimal.game.DFUtils
@@ -89,13 +90,11 @@ class LevelFactory implements DefaultLevelFactory {
 	}
 
 	void playerShoot() {
-		//Get player position
-		Vector2 startPos = Mapper.bCom.get(player).body.position
-		createShot(startPos)
+		Body body = Mapper.bCom.get(player).body
+		createShot(body.position, body.angle)
 	}
 
-	void createShot(Vector2 startPos) {
-		//Create shot
+	void createShot(Vector2 startPos, float angle) {
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)
@@ -105,11 +104,13 @@ class LevelFactory implements DefaultLevelFactory {
 		BulletComponent bul = engine.createComponent(BulletComponent)
 		VelocityComponent velCom = engine.createComponent(VelocityComponent)
 
+		DFUtils.angleToVector(velCom.linearVelocity, angle)
+		velCom.linearVelocity.x += velCom.linearVelocity.x * 10
+		velCom.linearVelocity.y += velCom.linearVelocity.y * 10
 
-		//TODO fix for spawning in ship direction, startPos.angleDeg()
 		sdBody.body = bodyFactory.makeBoxPolyBody(
-				startPos.x + 5 as float,
-				startPos.y + 5 as float,
+				startPos.x = velCom.linearVelocity.x > 0 ? startPos.x + 1 as float : startPos.x - 1 as float,
+				startPos.y = velCom.linearVelocity.y > 0 ? startPos.y + 1 as float : startPos.y - 1 as float,
 				0.25,
 				0.25,
 				BodyFactory.STONE,
@@ -120,14 +121,8 @@ class LevelFactory implements DefaultLevelFactory {
 		type.type = TypeComponent.TYPES.BULLET
 		sdBody.body.bullet = true
 		sdBody.body.setUserData(entity)
-
 		texture.region = shotTex
 
-		//TODO: figure out velocity
-		DFUtils.angleToVector(velCom.linearVelocity, startPos.angleRad())
-		println("angle: ${startPos.angleRad() * MathUtils.radiansToDegrees}, linearVelocity: ${velCom.linearVelocity}, something: ${DFUtils.vectorToAngle2(new Vector2(startPos.x, startPos.y)) * MathUtils.radiansToDegrees}, something2: ${DFUtils.vectorToAngle(new Vector2(startPos.x, startPos.y)) * MathUtils.radiansToDegrees}")
-		velCom.linearVelocity.x += velCom.linearVelocity.x * 10
-		velCom.linearVelocity.y += velCom.linearVelocity.y * 10
 
 		bul.owner = BulletComponent.Owner.PLAYER
 		bul.maxLife = 5
