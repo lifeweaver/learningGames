@@ -56,8 +56,17 @@ class CollisionSystem extends IteratingSystem {
 						int worth = Mapper.scoreCom.get(collidedEntity).worth
 						collidedBody.isDead = true
 						body.isDead = true
-						levelFactory.enemyBlownUp.play()
+						levelFactory.enemyBlownUp.play(0.2)
 						levelFactory.playerScore = levelFactory.playerScore + worth
+						break
+
+					case TypeComponent.TYPES.ENEMY_SPACESHIP:
+						int worth = Mapper.scoreCom.get(collidedEntity).worth
+						Mapper.soundCom.get(collidedEntity)?.stop()
+						collidedBody.isDead = true
+						body.isDead = true
+						levelFactory.playerScore = levelFactory.playerScore + worth
+						engine.getSystem(EnemySystem).lastSpaceShip = EnemySystem.spaceShipInterval
 						break
 
 					case TypeComponent.TYPES.PLAYER:

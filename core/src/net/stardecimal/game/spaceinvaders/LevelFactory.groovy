@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.TiledMap
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
@@ -228,11 +229,62 @@ class LevelFactory implements DefaultLevelFactory {
 				true
 		)
 
-//		texture.region = tex
 		texture.animation = animation
 		type.type = TypeComponent.TYPES.ENEMY
 		sdBody.body.setUserData(entity)
 
+		entity.add(scoreCom)
+		entity.add(eCom)
+		entity.add(sdBody)
+		entity.add(position)
+		entity.add(texture)
+		entity.add(type)
+		engine.addEntity(entity)
+	}
+
+	void createEnemy4() {
+		Entity entity = engine.createEntity()
+		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+		TransformComponent position = engine.createComponent(TransformComponent)
+		TextureComponent texture = engine.createComponent(TextureComponent)
+		TypeComponent type = engine.createComponent(TypeComponent)
+		EnemyComponent eCom = engine.createComponent(EnemyComponent)
+		ScoreComponent scoreCom = engine.createComponent(ScoreComponent)
+		SoundEffectComponent soundCom = engine.createComponent(SoundEffectComponent)
+		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
+		float maxX = screenSize.x / RenderingSystem.PPM as float
+		float randX = rand.nextInt(maxX as int) > 20 ? maxX : 0
+		scoreCom.worth = 200
+
+		sdBody.body = bodyFactory.makeBoxPolyBody(
+				randX,
+				28,
+				2,
+				1,
+				BodyFactory.STONE,
+				BodyDef.BodyType.KinematicBody,
+				true
+		)
+
+		if(randX == 0) {
+			position.flipX = true
+
+			//Velocity
+			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, 5, 1f), 0)
+		} else {
+			//Velocity
+			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, -5, 1f), 0)
+		}
+
+		texture.region = enemy4Tex
+		type.type = TypeComponent.TYPES.ENEMY_SPACESHIP
+		sdBody.body.setUserData(entity)
+
+		soundCom.soundEffect = enemy4Theme
+		soundCom.looping = true
+		soundCom.play()
+
+		entity.add(soundCom)
 		entity.add(scoreCom)
 		entity.add(eCom)
 		entity.add(sdBody)

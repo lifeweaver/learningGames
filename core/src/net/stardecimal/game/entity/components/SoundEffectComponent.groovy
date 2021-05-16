@@ -21,4 +21,8 @@ class SoundEffectComponent implements Component, Pool.Poolable {
 		soundId = soundEffect.play()
 		soundEffect.setLooping(soundId, looping)
 	}
+
+	void stop() {
+		soundEffect.stop(soundId)
+	}
 }

@@ -23,6 +23,8 @@ class EnemySystem extends IteratingSystem {
 	float movementInterval = 1
 	boolean goingRight = true
 	float change = 0.5
+	static float spaceShipInterval = 30
+	float lastSpaceShip = spaceShipInterval
 
 	@SuppressWarnings("unchecked")
 	EnemySystem(LevelFactory lvlFactory) {
@@ -37,15 +39,17 @@ class EnemySystem extends IteratingSystem {
 		float maxX = 0
 		float minX = 40
 
-		if(fireDelay > 0) {
-			fireDelay = fireDelay - deltaTime as float
-		}
-
-		if(lastMovement > 0) {
-			lastMovement = lastMovement - deltaTime as float
-		}
+		fireDelay = fireDelay > 0 ? fireDelay - deltaTime as float : fireDelay
+		lastMovement = lastMovement > 0 ? lastMovement - deltaTime as float : lastMovement
+		lastSpaceShip = lastSpaceShip > 0 ? lastSpaceShip - deltaTime as float : lastSpaceShip
+		Entity spaceShip = null
 
 		enemyQueue.each {
+			if(Mapper.typeCom.get(it).type == TypeComponent.TYPES.ENEMY_SPACESHIP) {
+				spaceShip = it
+				return
+			}
+
 			SdBodyComponent sdBody = Mapper.bCom.get(it)
 			boolean canFire = this.canFire(sdBody.body.position)
 			float enemyX = sdBody.body.position.x
@@ -65,6 +69,7 @@ class EnemySystem extends IteratingSystem {
 				}
 			}
 		}
+		enemyQueue.removeValue(spaceShip, true)
 
 		//check if the enemy should move
 		if(lastMovement <= 0) {
@@ -89,6 +94,16 @@ class EnemySystem extends IteratingSystem {
 				body.setTransform(newX, newY, 0)
 			}
 
+		}
+
+		if(spaceShip) {
+			lastSpaceShip = spaceShipInterval
+			SdBodyComponent sdBody = Mapper.bCom.get(spaceShip)
+			if(sdBody && ((sdBody.body.position.x < -5 && sdBody.body.linearVelocity.x < 0) || (sdBody.body.position.x > maxX + 5 && sdBody.body.linearVelocity.x > 0))) {
+				sdBody.isDead = true
+			}
+		} else if(lastSpaceShip <= 0) {
+			levelFactory.createEnemy4()
 		}
 
 		enemyQueue.clear()

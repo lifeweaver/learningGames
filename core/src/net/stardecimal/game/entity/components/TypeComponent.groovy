@@ -23,6 +23,7 @@ class TypeComponent implements Component, Pool.Poolable {
 			SATELLITE: 14,
 			SMART_BOMB: 15,
 			DESTRUCTIBLE_SCENERY: 16,
+			ENEMY_SPACESHIP: 17,
 			DEFAULT: 999
 	]
 
