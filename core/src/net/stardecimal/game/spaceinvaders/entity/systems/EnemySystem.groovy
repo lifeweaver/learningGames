@@ -27,6 +27,7 @@ class EnemySystem extends IteratingSystem {
 	float change = 0.5
 	static float spaceShipInterval = 30
 	float lastSpaceShip = spaceShipInterval
+	static float minimumY = 7
 
 	@SuppressWarnings("unchecked")
 	EnemySystem(LevelFactory lvlFactory) {
@@ -40,6 +41,7 @@ class EnemySystem extends IteratingSystem {
 		super.update(deltaTime)
 		float maxX = 0
 		float minX = 40
+		float minY = 30
 
 		fireDelay = fireDelay > 0 ? fireDelay - deltaTime as float : fireDelay
 		lastMovement = lastMovement > 0 ? lastMovement - deltaTime as float : lastMovement
@@ -55,8 +57,10 @@ class EnemySystem extends IteratingSystem {
 			SdBodyComponent sdBody = Mapper.bCom.get(it)
 			boolean canFire = this.canFire(sdBody.body.position)
 			float enemyX = sdBody.body.position.x
+			float enemyY = sdBody.body.position.y
 			maxX = enemyX > maxX ? enemyX : maxX
 			minX = enemyX < minX ? enemyX : minX
+			minY = enemyY < minY ? enemyY : minY
 
 			//can fire, check for allies below
 			if(canFire) {
@@ -71,6 +75,11 @@ class EnemySystem extends IteratingSystem {
 				}
 			}
 		}
+		if(minY <= minimumY) {
+			levelFactory.playerLives = -1
+			return
+		}
+
 		enemyQueue.removeValue(spaceShip, true)
 		movementInterval = enemyQueue.size * 0.01
 
