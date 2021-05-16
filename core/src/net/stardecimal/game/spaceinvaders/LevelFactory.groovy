@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import com.codeandweb.physicseditor.PhysicsShapeCache
 import net.stardecimal.game.BodyFactory
 import net.stardecimal.game.DFUtils
+import net.stardecimal.game.DefaultHud
 import net.stardecimal.game.DefaultLevelFactory
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
@@ -357,7 +358,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 	@Override
 	def createHud(SpriteBatch batch) {
-		hud = new Hud(batch)
+		hud = new DefaultHud(batch)
 		return hud
 	}
 }

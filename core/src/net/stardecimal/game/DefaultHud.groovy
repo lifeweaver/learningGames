@@ -1,4 +1,4 @@
-package net.stardecimal.game.spaceinvaders
+package net.stardecimal.game
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
@@ -9,13 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import net.stardecimal.game.HudOverlay
 
-class Hud implements HudOverlay, Disposable {
+class DefaultHud implements HudOverlay, Disposable {
 	Label score, lives
 
 
-	Hud(SpriteBatch spriteBatch) {
+	DefaultHud(SpriteBatch spriteBatch) {
 		stage = new Stage(new ScreenViewport(), spriteBatch)
 		table = new Table(fillParent: true)
 
