@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -30,7 +31,8 @@ import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
 
 class LevelFactory implements DefaultLevelFactory {
-	private TextureRegion enemy1Tex, enemy2Tex, enemy3Tex, enemy4Tex, playerTex, barrierTex, playerShotTex, enemyShotTex, shieldTex, shieldPartTex
+	private TextureRegion enemy4Tex, playerTex, barrierTex, playerShotTex, enemyShotTex, shieldTex, shieldPartTex
+	private Animation<TextureRegion> enemy1Animation, enemy2Animation, enemy3Animation
 	Sound enemy4Theme, enemyBlownUp, playerBlownUp, playerFiring, background
 	RandomXS128 rand = new RandomXS128()
 	Entity player
@@ -42,9 +44,9 @@ class LevelFactory implements DefaultLevelFactory {
 		TextureAtlas atlas = assetManager.manager.get(SdAssetManager.gameImages)
 		atlas.findRegion("space_invaders/")
 
-		enemy1Tex = atlas.findRegion("space_invaders/enemy1")
-		enemy2Tex = atlas.findRegion("space_invaders/enemy2")
-		enemy3Tex = atlas.findRegion("space_invaders/enemy3")
+		enemy1Animation = new Animation<TextureRegion>(1f, atlas.findRegions("space_invaders/enemy1"), Animation.PlayMode.LOOP)
+		enemy2Animation = new Animation<TextureRegion>(1f, atlas.findRegions("space_invaders/enemy2"), Animation.PlayMode.LOOP)
+		enemy3Animation = new Animation<TextureRegion>(1f, atlas.findRegions("space_invaders/enemy3"), Animation.PlayMode.LOOP)
 		enemy4Tex = atlas.findRegion("space_invaders/enemy4")
 		playerTex = atlas.findRegion("space_invaders/player")
 		barrierTex = atlas.findRegion("space_invaders/barrier")
@@ -196,9 +198,9 @@ class LevelFactory implements DefaultLevelFactory {
 		Vector2 startPos = new Vector2(screenSize.x / RenderingSystem.PPM / 10 as float, (screenSize.y / RenderingSystem.PPM) - ((screenSize.y / RenderingSystem.PPM) / 10 * 2) as float)
 		float origX = startPos.x
 
-		[[enemy3Tex, 30], [enemy2Tex, 20], [enemy2Tex, 20], [enemy1Tex, 10], [enemy1Tex, 10]].each {enemy ->
+		[[enemy3Animation, 30], [enemy2Animation, 20], [enemy2Animation, 20], [enemy1Animation, 10], [enemy1Animation, 10]].each {enemy ->
 			17.times {
-				createEnemy(startPos, (TextureRegion) enemy[0], (int) enemy[1])
+				createEnemy(startPos, (Animation<TextureRegion>) enemy[0], (int) enemy[1])
 				startPos.x = startPos.x + 2 as float
 			}
 			startPos.x = origX
@@ -206,7 +208,7 @@ class LevelFactory implements DefaultLevelFactory {
 		}
 	}
 
-	void createEnemy(Vector2 startPos, TextureRegion tex, int worth) {
+	void createEnemy(Vector2 startPos, Animation<TextureRegion> animation, int worth) {
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)
@@ -226,7 +228,8 @@ class LevelFactory implements DefaultLevelFactory {
 				true
 		)
 
-		texture.region = tex
+//		texture.region = tex
+		texture.animation = animation
 		type.type = TypeComponent.TYPES.ENEMY
 		sdBody.body.setUserData(entity)
 

@@ -65,6 +65,7 @@ class RenderingSystem extends SortedIteratingSystem {
 	private OrthogonalTiledMapRenderer backgroundRenderer
 	private Matrix4 hudMatrix
 	private def hud
+	private float stateTime = 0
 
 	@SuppressWarnings('unchecked')
 	RenderingSystem(SpriteBatch batch) {
@@ -93,6 +94,7 @@ class RenderingSystem extends SortedIteratingSystem {
 	@Override
 	void update(float deltaTime) {
 		super.update(deltaTime)
+		stateTime += deltaTime
 
 		// sort the renderQueue based on the z index
 //		renderQueue.sort(comparator)
@@ -117,6 +119,11 @@ class RenderingSystem extends SortedIteratingSystem {
 			TextureComponent tex = Mapper.texCom.get(entity)
 			TransformComponent t = Mapper.transCom.get(entity)
 			SdBodyComponent b = Mapper.bCom.get(entity)
+
+			//Override region if animation exists
+			if(tex.animation && !t.isHidden) {
+				tex.region = tex.animation.getKeyFrame(stateTime, true)
+			}
 
 			if((tex.region != null || tex.texture != null) && !t.isHidden) {
 				float width, height
