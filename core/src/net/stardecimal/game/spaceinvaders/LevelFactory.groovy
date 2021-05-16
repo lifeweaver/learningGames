@@ -270,10 +270,10 @@ class LevelFactory implements DefaultLevelFactory {
 			position.flipX = true
 
 			//Velocity
-			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, 5, 1f), 0)
+			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, 6, 1f), 0)
 		} else {
 			//Velocity
-			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, -5, 1f), 0)
+			sdBody.body.setLinearVelocity(MathUtils.lerp(sdBody.body.linearVelocity.x, -6, 1f), 0)
 		}
 
 		texture.region = enemy4Tex
