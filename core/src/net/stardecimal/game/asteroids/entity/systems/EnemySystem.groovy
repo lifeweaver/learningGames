@@ -15,6 +15,7 @@ class EnemySystem extends IteratingSystem {
 	EnemySystem(LevelFactory lvlFactory) {
 		super(Family.all(EnemyComponent.class).get())
 		levelFactory = lvlFactory
+		enemyQueue = new Array<Entity>()
 	}
 
 	@Override

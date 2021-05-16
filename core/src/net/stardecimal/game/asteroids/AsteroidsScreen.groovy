@@ -8,6 +8,7 @@ import net.stardecimal.game.MyGames
 import net.stardecimal.game.asteroids.entity.systems.CollisionSystem
 import net.stardecimal.game.asteroids.entity.systems.EnemySystem
 import net.stardecimal.game.asteroids.entity.systems.PlayerControlSystem
+import net.stardecimal.game.asteroids.entity.systems.SpaceSystem
 
 class AsteroidsScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
@@ -19,6 +20,7 @@ class AsteroidsScreen extends ScreenAdapter implements GameScreen {
 
 		engine.addSystem(new PlayerControlSystem(controller, levelFactory))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))
+		engine.addSystem(new SpaceSystem())
 		engine.addSystem(new EnemySystem(levelFactory))
 		levelFactory.createPlayer(camera)
 		levelFactory.playerLives = 3

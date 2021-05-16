@@ -35,9 +35,6 @@ class PlayerControlSystem extends IteratingSystem {
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
 		SdBodyComponent playerBody = Mapper.bCom.get(entity)
-		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
-		float maxX = screenSize.x / RenderingSystem.PPM
-		float maxY = screenSize.y / RenderingSystem.PPM
 
 		if(controller.spacbar && System.currentTimeMillis() - lastSpaceBar > 500) {
 			lastSpaceBar = System.currentTimeMillis()
@@ -82,15 +79,5 @@ class PlayerControlSystem extends IteratingSystem {
 		playerY += dy * dy
 
 		playerBody.body.setLinearVelocity(playerX, playerY)
-
-		if(playerBody.body.position.x < 0) {
-			playerBody.body.setTransform(maxX, playerBody.body.position.y, playerBody.body.angle)
-		} else if(playerBody.body.position.x > maxX) {
-			playerBody.body.setTransform(0, playerBody.body.position.y, playerBody.body.angle)
-		} else if(playerBody.body.position.y < 0) {
-			playerBody.body.setTransform(playerBody.body.position.x, maxY, playerBody.body.angle)
-		} else if(playerBody.body.position.y > maxY) {
-			playerBody.body.setTransform(playerBody.body.position.x, 0, playerBody.body.angle)
-		}
 	}
 }
