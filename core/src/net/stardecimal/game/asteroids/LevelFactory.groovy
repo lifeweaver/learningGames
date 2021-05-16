@@ -16,7 +16,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import net.stardecimal.game.BodyFactory
 import net.stardecimal.game.DFUtils
 import net.stardecimal.game.DefaultLevelFactory
-import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.PlayerComponent
@@ -31,8 +30,7 @@ import net.stardecimal.game.loader.SdAssetManager
 
 class LevelFactory implements DefaultLevelFactory {
 	private TextureRegion enemyTex, playerTex, shotTex
-	private Animation<TextureRegion> enemy1Animation, enemy2Animation, enemy3Animation
-	Sound enemy4Theme, enemyBlownUp, playerBlownUp, playerFiring, background
+	Sound enemyBlownUp, playerBlownUp, playerFiring, background
 	RandomXS128 rand = new RandomXS128()
 	Entity player
 
@@ -47,6 +45,11 @@ class LevelFactory implements DefaultLevelFactory {
 		enemyTex = atlas.findRegion("asteroids/enemy")
 		shotTex = DFUtils.makeTextureRegion(0.25, 0.25, '#FFFFFF')
 
+		enemyBlownUp = assetManager.manager.get(SdAssetManager.enemyBlownUp)
+		playerBlownUp = assetManager.manager.get(SdAssetManager.playerBlownUp)
+		playerFiring = assetManager.manager.get(SdAssetManager.playerFiring)
+
+		log.info("level factory initialized")
 	}
 
 	void createPlayer(OrthographicCamera cam) {
@@ -56,8 +59,8 @@ class LevelFactory implements DefaultLevelFactory {
 		TextureComponent texture = engine.createComponent(TextureComponent)
 		PlayerComponent playerCom = engine.createComponent(PlayerComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
+		VelocityComponent velCom = engine.createComponent(VelocityComponent)
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
-
 
 		playerCom.cam = cam
 		sdBody.body = bodyFactory.makeBoxPolyBody(
@@ -74,6 +77,7 @@ class LevelFactory implements DefaultLevelFactory {
 		type.type = TypeComponent.TYPES.PLAYER
 		sdBody.body.setUserData(entity)
 
+		entity.add(velCom)
 		entity.add(sdBody)
 		entity.add(position)
 		entity.add(texture)

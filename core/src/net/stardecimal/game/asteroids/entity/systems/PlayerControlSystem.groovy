@@ -3,27 +3,25 @@ package net.stardecimal.game.asteroids.entity.systems
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
+import net.stardecimal.game.DFUtils
 import net.stardecimal.game.KeyboardController
 import net.stardecimal.game.asteroids.LevelFactory
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
-import net.stardecimal.game.entity.systems.RenderingSystem
+import net.stardecimal.game.entity.components.VelocityComponent
 
 class PlayerControlSystem extends IteratingSystem {
 	KeyboardController controller
 	LevelFactory levelFactory
 	long lastSpaceBar = System.currentTimeMillis()
-	float radians = 3.1415f / 2
+	long lastMovement = System.currentTimeMillis()
+	float radians = 0
 	float rotationSpeed = 3
-	float dx = 0
-	float dy = 0
-	float acceleration = 200
-	float deceleration = 10
-	float maxSpeed = 300
-	float acceleratingTimer = 0
+	float acceleration = 5
+	float deceleration = 0.01
+	float maxSpeed = 10
 
 	@SuppressWarnings("unchecked")
 	PlayerControlSystem(KeyboardController keyCon, LevelFactory lvlFactory) {
@@ -35,6 +33,8 @@ class PlayerControlSystem extends IteratingSystem {
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
 		SdBodyComponent playerBody = Mapper.bCom.get(entity)
+		VelocityComponent velCom = Mapper.velCom.get(entity)
+		float currentSpeed = Math.sqrt(velCom.linearVelocity.x * velCom.linearVelocity.x + velCom.linearVelocity.y * velCom.linearVelocity.y) as float
 
 		if(controller.spacbar && System.currentTimeMillis() - lastSpaceBar > 500) {
 			lastSpaceBar = System.currentTimeMillis()
@@ -44,40 +44,38 @@ class PlayerControlSystem extends IteratingSystem {
 
 		if (controller.left) {
 			radians += rotationSpeed * deltaTime
-//			playerBody.body.setTransform(playerBody.body.position.x, playerBody.body.position.y, playerBody.body.angle + 0.1 as float)
+			playerBody.body.setTransform(playerBody.body.position.x, playerBody.body.position.y, radians)
 		}
 
 		if (controller.right) {
 			radians -= rotationSpeed * deltaTime
-//			playerBody.body.setTransform(playerBody.body.position.x, playerBody.body.position.y, playerBody.body.angle - 0.1 as float)
+			playerBody.body.setTransform(playerBody.body.position.x, playerBody.body.position.y, radians)
 		}
 
-		if (controller.up) {
-			dx += MathUtils.cos(radians) * acceleration * deltaTime
-			dy += MathUtils.cos(radians) * acceleration * deltaTime
-			acceleratingTimer += deltaTime
-			if(acceleratingTimer > 0.1f) {
-				acceleratingTimer = 0
+		if(System.currentTimeMillis() - lastMovement > 50) {
+			lastMovement = System.currentTimeMillis()
+			if (controller.up) {
+				Vector2 newVelocity = new Vector2()
+				DFUtils.angleToVector(newVelocity, radians)
+
+				velCom.linearVelocity.x += newVelocity.x * acceleration * deltaTime as float
+				velCom.linearVelocity.y += newVelocity.y * acceleration * deltaTime as float
+				currentSpeed = Math.sqrt(velCom.linearVelocity.x * velCom.linearVelocity.x + velCom.linearVelocity.y * velCom.linearVelocity.y) as float
+
+				//Speed limit enforcement
+				if(currentSpeed > maxSpeed) {
+					velCom.linearVelocity.x = (velCom.linearVelocity.x / currentSpeed) * maxSpeed as float
+					velCom.linearVelocity.y = (velCom.linearVelocity.y / currentSpeed) * maxSpeed as float
+				}
+
 			}
-//			playerBody.body.setLinearVelocity(playerBody.body.linearVelocity.x, MathUtils.lerp(playerBody.body.linearVelocity.y, 5, 0.2f))
-		} else {
-			acceleratingTimer = 0
 		}
 
-		float vec = (float) Math.sqrt(dx * dx + dy * dy)
-		if(vec > 0) {
-			dx -= (dx / vec) * deceleration * deltaTime
-			dy -= (dy / vec) * deceleration * deltaTime
-		} else if(vec > maxSpeed) {
-			dx = (dx / vec) * maxSpeed as float
-			dy = (dy / vec) * maxSpeed as float
+		//Deceleration
+		if(currentSpeed > 0) {
+			velCom.linearVelocity.x -= (velCom.linearVelocity.x / currentSpeed) * deceleration as float
+			velCom.linearVelocity.y -= (velCom.linearVelocity.y / currentSpeed) * deceleration as float
 		}
 
-		float playerX = playerBody.body.linearVelocity.x
-		float playerY = playerBody.body.linearVelocity.y
-		playerX += dx * dx
-		playerY += dy * dy
-
-		playerBody.body.setLinearVelocity(playerX, playerY)
 	}
 }

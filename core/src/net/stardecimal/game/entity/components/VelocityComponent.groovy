@@ -5,13 +5,13 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Pool
 
 class VelocityComponent implements Component, Pool.Poolable {
-	Vector2 linearVelocity = new Vector2()
+	Vector2 linearVelocity = new Vector2(0, 0)
 	float angularVelocity = 0
 
 
 	@Override
 	void reset() {
-		linearVelocity = new Vector2()
+		linearVelocity = new Vector2(0, 0)
 		angularVelocity = 0
 	}
 }
