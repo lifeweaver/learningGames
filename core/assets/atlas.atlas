@@ -4,6 +4,20 @@ size: 512, 64
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+asteroids/enemy
+  rotate: false
+  xy: 380, 50
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+asteroids/player
+  rotate: false
+  xy: 74, 8
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
 missile_command/bomberPlane
   rotate: false
   xy: 167, 28
@@ -27,7 +41,7 @@ missile_command/crosshairs
   index: -1
 missile_command/defenderMissile
   rotate: false
-  xy: 74, 10
+  xy: 86, 10
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -41,7 +55,7 @@ missile_command/enemyMissileTrail
   index: -1
 missile_command/explosion
   rotate: false
-  xy: 62, 8
+  xy: 323, 28
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
@@ -76,7 +90,7 @@ pong/paddle
   index: -1
 pong/pingPong
   rotate: false
-  xy: 323, 28
+  xy: 392, 50
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
@@ -132,14 +146,14 @@ space_invaders/enemy3
   index: 1
 space_invaders/enemy4
   rotate: false
-  xy: 380, 50
+  xy: 62, 8
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 space_invaders/enemyShot
   rotate: false
-  xy: 404, 50
+  xy: 416, 50
   size: 3, 10
   orig: 3, 10
   offset: 0, 0
@@ -153,14 +167,14 @@ space_invaders/player
   index: -1
 space_invaders/playerShot
   rotate: false
-  xy: 409, 50
+  xy: 421, 50
   size: 3, 10
   orig: 3, 10
   offset: 0, 0
   index: -1
 space_invaders/shield
   rotate: false
-  xy: 392, 50
+  xy: 404, 50
   size: 10, 10
   orig: 10, 10
   offset: 0, 0

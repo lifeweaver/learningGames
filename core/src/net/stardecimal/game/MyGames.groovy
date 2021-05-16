@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.Cursor
 import com.badlogic.gdx.graphics.GL20
 import io.anuke.gif.GifRecorder
+import net.stardecimal.game.asteroids.AsteroidsScreen
 import net.stardecimal.game.breakout.BreakoutScreen
 import net.stardecimal.game.loader.SdAssetManager
 import net.stardecimal.game.missilecommand.MissileCommandScreen
@@ -34,6 +35,7 @@ class MyGames extends Game {
 	private MissileCommandScreen missileCommandScreen
 	private PauseScreen pauseScreen
 	private SpaceInvadersScreen spaceInvadersScreen
+	private AsteroidsScreen asteroidsScreen
 	SdAssetManager assetManager = new SdAssetManager()
 	InputMultiplexer multiplexer = new InputMultiplexer()
 
@@ -47,6 +49,7 @@ class MyGames extends Game {
 	final static int MISSILE_COMMAND = 7
 	final static int PAUSE = 8
 	final static int SPACE_INVADERS = 9
+	final static int ASTEROIDS = 10
 	Music playingSong
 	int lastMenu = MENU
 	int currentGame
@@ -85,6 +88,8 @@ class MyGames extends Game {
 			missileCommandScreen = null
 			spaceInvadersScreen?.dispose()
 			spaceInvadersScreen = null
+			asteroidsScreen?.dispose()
+			asteroidsScreen = null
 		}
 
 		currentGame = screen
@@ -152,6 +157,18 @@ class MyGames extends Game {
 				}
 
 				this.setScreen(spaceInvadersScreen)
+				state = STATE.RUNNING
+				break
+
+			case ASTEROIDS:
+				gameChange(screen)
+				if(!asteroidsScreen) {
+					asteroidsScreen = new AsteroidsScreen(this)
+				} else if(lastMenu != PAUSE) {
+					asteroidsScreen.resetWorld()
+				}
+
+				this.setScreen(asteroidsScreen)
 				state = STATE.RUNNING
 				break
 
