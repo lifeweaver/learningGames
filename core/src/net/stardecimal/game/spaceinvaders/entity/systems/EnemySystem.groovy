@@ -25,7 +25,7 @@ class EnemySystem extends IteratingSystem {
 	float lastMovement = movementInterval
 	boolean goingRight = true
 	float change = 0.5
-	static float spaceShipInterval = 5
+	static float spaceShipInterval = 30
 	float lastSpaceShip = spaceShipInterval
 
 	@SuppressWarnings("unchecked")
@@ -108,6 +108,11 @@ class EnemySystem extends IteratingSystem {
 			}
 		} else if(lastSpaceShip <= 0) {
 			levelFactory.createEnemy4()
+		}
+
+		if(enemyQueue.isEmpty()) {
+			movementInterval = origMovementInterval
+			levelFactory.createEnemies()
 		}
 
 		enemyQueue.clear()
