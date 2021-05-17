@@ -4,12 +4,10 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.TiledMap
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
@@ -73,7 +71,7 @@ class LevelFactory implements DefaultLevelFactory {
 				screenSize.x / RenderingSystem.PPM / 2 as float,
 				screenSize.y / RenderingSystem.PPM / 2 as float,
 				1,
-				1.5f,
+				1,
 				BodyFactory.STEEL,
 				BodyDef.BodyType.DynamicBody,
 				false
@@ -148,7 +146,7 @@ class LevelFactory implements DefaultLevelFactory {
 		engine.addEntity(entity)
 	}
 
-	void createAsteroid(Vector2 startPos=null, Vector2 velocity=null, boolean mini=false) {
+	void createAsteroid(Vector2 startPos=null, Vector2 velocity=null, int asteroidType=TypeComponent.TYPES.ASTEROID) {
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)
@@ -165,35 +163,48 @@ class LevelFactory implements DefaultLevelFactory {
 		float randY = rand.nextInt(maxY as int)
 
 		//Don't spawn on the player
-		Vector3 playerPos = Mapper.transCom.get(player).position
+		Vector3 playerPos = player ? Mapper.transCom.get(player).position : new Vector3(screenSize.x / RenderingSystem.PPM / 2 as float, screenSize.y / RenderingSystem.PPM / 2 as float, 0)
 		if(Math.abs(playerPos.x - randX) < 3 || Math.abs(playerPos.y - randY) < 3) {
 			randX += 4
 			randY += 4
 		}
 
-		if(!mini) {
-			scoreCom.worth = 10
-			type.type = TypeComponent.TYPES.ASTEROID
-			position.scale.x = 0.65
-			position.scale.y = 0.65
+		type.type = asteroidType
+
+		if(asteroidType == TypeComponent.TYPES.ASTEROID) {
+			scoreCom.worth = 50
+			position.scale.x = 0.8
+			position.scale.y = 0.8
 			sdBody.body = bodyFactory.makeCirclePolyBody(
 					randX,
 					randY,
+					2,
+					BodyFactory.STONE,
+					BodyDef.BodyType.DynamicBody
+			)
+			velCom.linearVelocity.x = rand.nextInt(5)
+			velCom.linearVelocity.y = rand.nextInt(5)
+		} else if(asteroidType == TypeComponent.TYPES.MEDIUM_ASTEROID) {
+			scoreCom.worth = 100
+			position.scale.x = 0.7
+			position.scale.y = 0.7
+			sdBody.body = bodyFactory.makeCirclePolyBody(
+					startPos.x,
+					startPos.y,
 					1.25,
 					BodyFactory.STONE,
 					BodyDef.BodyType.DynamicBody
 			)
-			velCom.linearVelocity.x = rand.nextInt(10)
-			velCom.linearVelocity.y = rand.nextInt(10)
-		} else {
-			scoreCom.worth = 5
-			type.type = TypeComponent.TYPES.MINI_ASTEROID
-			position.scale.x = 0.30
-			position.scale.y = 0.30
+
+			velCom.linearVelocity = velocity
+		} else if(asteroidType == TypeComponent.TYPES.MINI_ASTEROID) {
+			scoreCom.worth = 150
+			position.scale.x = 0.50
+			position.scale.y = 0.50
 			sdBody.body = bodyFactory.makeCirclePolyBody(
 					startPos.x,
 					startPos.y,
-					0.75,
+					1,
 					BodyFactory.STONE,
 					BodyDef.BodyType.DynamicBody
 			)

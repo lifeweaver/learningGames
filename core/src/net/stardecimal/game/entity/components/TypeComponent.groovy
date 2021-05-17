@@ -26,6 +26,7 @@ class TypeComponent implements Component, Pool.Poolable {
 			ENEMY_SPACESHIP: 17,
 			ASTEROID: 18,
 			MINI_ASTEROID: 19,
+			MEDIUM_ASTEROID: 20,
 			DEFAULT: 999
 	]
 

@@ -34,6 +34,9 @@ class AsteroidsScreen extends ScreenAdapter implements GameScreen {
 		levelFactory.createPlayer(camera)
 		levelFactory.playerScore = 0
 		levelFactory.playerLives = 3
+		10.times {
+			levelFactory.createAsteroid()
+		}
 	}
 
 	@Override

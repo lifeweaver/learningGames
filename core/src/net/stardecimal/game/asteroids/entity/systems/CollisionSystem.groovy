@@ -50,15 +50,10 @@ class CollisionSystem extends IteratingSystem {
 						break
 
 					case TypeComponent.TYPES.ENEMY:
-						int worth = Mapper.scoreCom.get(collidedEntity).worth
-						collidedBody.isDead = true
-						body.isDead = true
-						levelFactory.enemyBlownUp.play(0.2)
-						levelFactory.playerScore = levelFactory.playerScore + worth
+						destroyAndAddWorth(body, collidedBody, collidedEntity)
 						break
 
 					case TypeComponent.TYPES.PLAYER:
-						//TODO make it so only shots fired by the enemy hurt the player, collision masks?
 						OrthographicCamera cam = Mapper.playerCom.get(collidedEntity).cam
 						collidedBody.isDead = true
 						body.isDead = true
@@ -70,27 +65,26 @@ class CollisionSystem extends IteratingSystem {
 						break
 
 					case TypeComponent.TYPES.ASTEROID:
-						int worth = Mapper.scoreCom.get(collidedEntity).worth
-						collidedBody.isDead = true
-						body.isDead = true
-						levelFactory.enemyBlownUp.play(0.2)
-						levelFactory.playerScore = levelFactory.playerScore + worth
+						destroyAndAddWorth(body, collidedBody, collidedEntity)
 
-						levelFactory.createAsteroid(collidedBody.body.position, new Vector2(3, 3), true)
-						levelFactory.createAsteroid(collidedBody.body.position, new Vector2(-3, -3), true)
+						levelFactory.createAsteroid(collidedBody.body.position, new Vector2(3, 3), TypeComponent.TYPES.MEDIUM_ASTEROID)
+						levelFactory.createAsteroid(collidedBody.body.position, new Vector2(-3, -3), TypeComponent.TYPES.MEDIUM_ASTEROID)
+						break
+
+					case TypeComponent.TYPES.MEDIUM_ASTEROID:
+						destroyAndAddWorth(body, collidedBody, collidedEntity)
+
+						levelFactory.createAsteroid(collidedBody.body.position, new Vector2(3, 3), TypeComponent.TYPES.MINI_ASTEROID)
+						levelFactory.createAsteroid(collidedBody.body.position, new Vector2(-3, -3), TypeComponent.TYPES.MINI_ASTEROID)
 						break
 
 					case TypeComponent.TYPES.MINI_ASTEROID:
-						int worth = Mapper.scoreCom.get(collidedEntity).worth
-						collidedBody.isDead = true
-						body.isDead = true
-						levelFactory.enemyBlownUp.play(0.2)
-						levelFactory.playerScore = levelFactory.playerScore + worth
+						destroyAndAddWorth(body, collidedBody, collidedEntity)
 						break
 				}
 			}
 			cc.collisionEntity = null
-		} else if(type == TypeComponent.TYPES.ASTEROID || type == TypeComponent.TYPES.MINI_ASTEROID) {
+		} else if(type == TypeComponent.TYPES.ASTEROID || type == TypeComponent.TYPES.MEDIUM_ASTEROID || type == TypeComponent.TYPES.MINI_ASTEROID) {
 			if (collidedEntity) {
 				SdBodyComponent collidedBody = Mapper.bCom.get(collidedEntity)
 				SdBodyComponent body = Mapper.bCom.get(entity)
@@ -110,6 +104,14 @@ class CollisionSystem extends IteratingSystem {
 				cc.collisionEntity = null
 			}
 		}
+	}
+
+	void destroyAndAddWorth(SdBodyComponent body, SdBodyComponent collidedBody, Entity collidedEntity ) {
+		int worth = Mapper.scoreCom.get(collidedEntity).worth
+		collidedBody.isDead = true
+		body.isDead = true
+		levelFactory.enemyBlownUp.play(0.2)
+		levelFactory.playerScore = levelFactory.playerScore + worth
 	}
 
 }

@@ -12,6 +12,9 @@ class AsteroidSpawningSystem extends IntervalSystem {
 	AsteroidSpawningSystem(LevelFactory lvlFactory, float interval) {
 		super(interval)
 		levelFactory = lvlFactory
+		10.times {
+			levelFactory.createAsteroid()
+		}
 	}
 
 	@Override
@@ -20,7 +23,7 @@ class AsteroidSpawningSystem extends IntervalSystem {
 			Mapper.typeCom.get(it).type == TypeComponent.TYPES.ASTEROID
 		}.size()
 
-		if(asteroids < 5) {
+		if(asteroids < 10) {
 			levelFactory.createAsteroid()
 		}
 	}

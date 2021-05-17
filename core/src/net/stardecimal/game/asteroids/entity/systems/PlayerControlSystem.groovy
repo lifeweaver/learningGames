@@ -19,7 +19,7 @@ class PlayerControlSystem extends IteratingSystem {
 	long lastMovement = System.currentTimeMillis()
 	float radians = 0
 	float rotationSpeed = 3
-	float acceleration = 20
+	float acceleration = 40
 	float deceleration = 0.01
 	float maxSpeed = 10
 
@@ -36,7 +36,7 @@ class PlayerControlSystem extends IteratingSystem {
 		VelocityComponent velCom = Mapper.velCom.get(entity)
 		float currentSpeed = Math.sqrt(velCom.linearVelocity.x * velCom.linearVelocity.x + velCom.linearVelocity.y * velCom.linearVelocity.y) as float
 
-		if(controller.spacbar && System.currentTimeMillis() - lastSpaceBar > 500) {
+		if(controller.spacbar && System.currentTimeMillis() - lastSpaceBar > 300) {
 			lastSpaceBar = System.currentTimeMillis()
 			println("player fired")
 			levelFactory.playerShoot()
