@@ -7,12 +7,13 @@ import net.stardecimal.game.entity.components.TypeComponent
 
 class AsteroidSpawningSystem extends IntervalSystem {
 	LevelFactory levelFactory
+	int maxAsteroids = 5
 
 	@SuppressWarnings("unchecked")
 	AsteroidSpawningSystem(LevelFactory lvlFactory, float interval) {
 		super(interval)
 		levelFactory = lvlFactory
-		10.times {
+		maxAsteroids.times {
 			levelFactory.createAsteroid()
 		}
 	}
@@ -23,7 +24,7 @@ class AsteroidSpawningSystem extends IntervalSystem {
 			Mapper.typeCom.get(it).type == TypeComponent.TYPES.ASTEROID
 		}.size()
 
-		if(asteroids < 10) {
+		if(asteroids < maxAsteroids) {
 			levelFactory.createAsteroid()
 		}
 	}
