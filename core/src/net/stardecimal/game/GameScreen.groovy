@@ -61,5 +61,6 @@ trait GameScreen {
 		controller.isMouse1Down = false
 		controller.isMouse2Down = false
 		controller.isMouse3Down = false
+		controller.spacbar = false
 	}
 }
