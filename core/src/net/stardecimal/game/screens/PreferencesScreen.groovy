@@ -65,7 +65,7 @@ class PreferencesScreen extends ScreenAdapter {
 		})
 
 		final Slider soundMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin )
-		soundMusicSlider.setValue( parent.getPreferences().getMusicVolume() )
+		soundMusicSlider.setValue( parent.getPreferences().getSoundVolume() )
 		soundMusicSlider.addListener(new EventListener() {
 			@Override
 			boolean handle(Event event) {
