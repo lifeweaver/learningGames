@@ -136,6 +136,7 @@ class LevelFactory implements DefaultLevelFactory {
 		TypeComponent type = engine.createComponent(TypeComponent)
 		SteeringComponent scom = engine.createComponent(SteeringComponent)
 		StateComponent stateCom = engine.createComponent(StateComponent)
+		CollisionComponent colComp = engine.createComponent(CollisionComponent)
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
 		float randX = rand.nextInt(1) ? 0 : screenSize.x / RenderingSystem.PPM
 		float randY = rand.nextInt(screenSize.y / RenderingSystem.PPM as int)
@@ -161,6 +162,7 @@ class LevelFactory implements DefaultLevelFactory {
 		scom.maxLinearSpeed = 5f
 		scom.steeringBehavior = steeringBehavior
 
+		entity.add(colComp)
 		entity.add(stateCom)
 		entity.add(scom)
 		entity.add(sdBody)

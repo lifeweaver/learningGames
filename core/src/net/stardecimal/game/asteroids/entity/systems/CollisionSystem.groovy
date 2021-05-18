@@ -92,7 +92,6 @@ class CollisionSystem extends IteratingSystem {
 		} else if(type == TypeComponent.TYPES.ASTEROID || type == TypeComponent.TYPES.MEDIUM_ASTEROID || type == TypeComponent.TYPES.MINI_ASTEROID) {
 			if (collidedEntity) {
 				SdBodyComponent collidedBody = Mapper.bCom.get(collidedEntity)
-				SdBodyComponent body = Mapper.bCom.get(entity)
 				switch (collidedType) {
 					case TypeComponent.TYPES.PLAYER:
 						if(collidedBody.invulnerabilityTime > 0) {
@@ -108,6 +107,26 @@ class CollisionSystem extends IteratingSystem {
 
 					case TypeComponent.TYPES.ENEMY:
 						collidedBody.isDead = true
+						break
+				}
+				cc.collisionEntity = null
+			}
+		} else if(type == TypeComponent.TYPES.ENEMY) {
+			if(collidedEntity) {
+				SdBodyComponent body = Mapper.bCom.get(entity)
+				SdBodyComponent collidedBody = Mapper.bCom.get(collidedEntity)
+				switch (collidedType) {
+					case TypeComponent.TYPES.PLAYER:
+						if(collidedBody.invulnerabilityTime > 0) {
+							break
+						}
+						OrthographicCamera cam = Mapper.playerCom.get(collidedEntity).cam
+						collidedBody.isDead = true
+						body.isDead = true
+						levelFactory.playerLives -= 1
+						if(levelFactory.playerLives >= 0) {
+							levelFactory.createPlayer(cam)
+						}
 						break
 				}
 				cc.collisionEntity = null
