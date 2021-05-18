@@ -67,7 +67,6 @@ class LevelFactory implements DefaultLevelFactory {
 	}
 
 	//TODO:
-	//Fix player shooting
 	//Make enemy shoot
 	//High score list and initials etc. JMD
 	//Blow up animation?
@@ -188,12 +187,13 @@ class LevelFactory implements DefaultLevelFactory {
 		VelocityComponent velCom = engine.createComponent(VelocityComponent)
 
 		DFUtils.angleToVector(velCom.linearVelocity, angle)
+		Vector2 shotStartPos = new Vector2(velCom.linearVelocity.x, velCom.linearVelocity.y).add(startPos)
 		velCom.linearVelocity.x += velCom.linearVelocity.x * 15
 		velCom.linearVelocity.y += velCom.linearVelocity.y * 15
 
 		sdBody.body = bodyFactory.makeBoxPolyBody(
-				startPos.x = velCom.linearVelocity.x > 0 ? startPos.x + 1 as float : startPos.x - 1 as float,
-				startPos.y = velCom.linearVelocity.y > 0 ? startPos.y + 1 as float : startPos.y - 1 as float,
+				shotStartPos.x,
+				shotStartPos.y,
 				0.25,
 				0.25,
 				BodyFactory.STONE,
