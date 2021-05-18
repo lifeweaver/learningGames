@@ -9,6 +9,7 @@ import net.stardecimal.game.MyGames
 import net.stardecimal.game.asteroids.LevelFactory
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
+import net.stardecimal.game.entity.components.ScoreComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TypeComponent
 
@@ -98,8 +99,9 @@ class CollisionSystem extends IteratingSystem {
 						}
 						break
 
-					default:
-						println("Asteroid Collided with: ${TypeComponent.getTypeName(collidedType)}")
+					case TypeComponent.TYPES.ENEMY:
+						collidedBody.isDead = true
+						break
 				}
 				cc.collisionEntity = null
 			}
@@ -107,11 +109,13 @@ class CollisionSystem extends IteratingSystem {
 	}
 
 	void destroyAndAddWorth(SdBodyComponent body, SdBodyComponent collidedBody, Entity collidedEntity ) {
-		int worth = Mapper.scoreCom.get(collidedEntity).worth
-		collidedBody.isDead = true
-		body.isDead = true
-		levelFactory.enemyBlownUp.play(0.2)
-		levelFactory.playerScore = levelFactory.playerScore + worth
+		if(!collidedBody.isDead) {
+			ScoreComponent scoreCom = Mapper.scoreCom.get(collidedEntity)
+			int worth = scoreCom ? scoreCom.worth : 50
+			collidedBody.isDead = true
+			body.isDead = true
+			levelFactory.enemyBlownUp.play(0.2)
+			levelFactory.playerScore = levelFactory.playerScore + worth
+		}
 	}
-
 }
