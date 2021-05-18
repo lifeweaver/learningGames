@@ -27,6 +27,7 @@ class SdAssetManager {
 	final static String skin = "skin/glassy-ui.json"
 
 	final static String enemyMissileTrail = "input/missile_command/enemyMissileTrail.pe"
+	final static String flames = "input/asteroids/flames.pe"
 	final static String explosionParticle = "input/missile_command/explosion.pe"
 	final static String boom = "input/missile_command/boom.wav"
 	final static String targeting_beep = "input/missile_command/targeting_beep.wav"
@@ -43,6 +44,7 @@ class SdAssetManager {
 	void queueAddIndividualAssets() {
 		manager.load(enemyMissileTrail, ParticleEffect)
 		manager.load(explosionParticle, ParticleEffect)
+		manager.load(flames, ParticleEffect)
 	}
 
 	void queueAddImages() {

@@ -18,11 +18,13 @@ import net.stardecimal.game.BodyFactory
 import net.stardecimal.game.DFUtils
 import net.stardecimal.game.DefaultHud
 import net.stardecimal.game.DefaultLevelFactory
+import net.stardecimal.game.ParticleEffectManager
 import net.stardecimal.game.ai.SteeringPresets
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.EnemyComponent
 import net.stardecimal.game.entity.components.Mapper
+import net.stardecimal.game.entity.components.ParticleEffectComponent
 import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.ScoreComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
@@ -58,18 +60,23 @@ class LevelFactory implements DefaultLevelFactory {
 		enemyBlownUp = assetManager.manager.get(SdAssetManager.enemyBlownUp)
 		playerBlownUp = assetManager.manager.get(SdAssetManager.playerBlownUp)
 		playerFiring = assetManager.manager.get(SdAssetManager.playerFiring)
+		pem.addParticleEffect(ParticleEffectManager.FLAMES , assetManager.manager.get(SdAssetManager.flames))
 
 		log.info("level factory initialized")
 	}
 
-	//TODO: add flames
+	//TODO:
 	//Fix player shooting
 	//Make enemy shoot
 	//High score list and initials etc. JMD
 	//Blow up animation?
+	//hyperspace or shield
 
 
 	void createPlayer(OrthographicCamera cam) {
+		//Reset controls on death
+		controller.reset()
+
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)
@@ -77,6 +84,7 @@ class LevelFactory implements DefaultLevelFactory {
 		PlayerComponent playerCom = engine.createComponent(PlayerComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
 		VelocityComponent velCom = engine.createComponent(VelocityComponent)
+		ParticleEffectComponent pec = engine.createComponent(ParticleEffectComponent)
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
 
 		playerCom.cam = cam
@@ -96,6 +104,16 @@ class LevelFactory implements DefaultLevelFactory {
 		sdBody.body.setUserData(entity)
 		velCom.removeAfterProcessing = false
 
+		pec.particleEffect = pem.getPooledParticleEffect(ParticleEffectManager.FLAMES)
+		pec.particleEffect.setPosition(sdBody.body.position.x, sdBody.body.position.y)
+		pec.particleEffect.scaleEffect(0.01, 0.1)
+		pec.angleEmitters = true
+		pec.isAttached = true
+		pec.attachedBody = sdBody.body
+		pec.killOnParentBodyDeath = true
+		pec.timeTilDeath = 1000000000000
+
+		entity.add(pec)
 		entity.add(velCom)
 		entity.add(sdBody)
 		entity.add(position)

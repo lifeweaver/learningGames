@@ -8,6 +8,7 @@ import net.stardecimal.game.DFUtils
 import net.stardecimal.game.KeyboardController
 import net.stardecimal.game.asteroids.LevelFactory
 import net.stardecimal.game.entity.components.Mapper
+import net.stardecimal.game.entity.components.ParticleEffectComponent
 import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.VelocityComponent
@@ -24,9 +25,9 @@ class PlayerControlSystem extends IteratingSystem {
 	float maxSpeed = 10
 
 	@SuppressWarnings("unchecked")
-	PlayerControlSystem(KeyboardController keyCon, LevelFactory lvlFactory) {
+	PlayerControlSystem(LevelFactory lvlFactory) {
 		super(Family.all(PlayerComponent.class).get())
-		controller = keyCon
+		controller = lvlFactory.controller
 		levelFactory = lvlFactory
 	}
 
@@ -57,6 +58,7 @@ class PlayerControlSystem extends IteratingSystem {
 
 		if(System.currentTimeMillis() - lastMovement > 50) {
 			lastMovement = System.currentTimeMillis()
+			ParticleEffectComponent pec = Mapper.peCom.get(entity)
 			if (controller.up) {
 				Vector2 newVelocity = new Vector2()
 				DFUtils.angleToVector(newVelocity, radians)
@@ -71,7 +73,17 @@ class PlayerControlSystem extends IteratingSystem {
 					velCom.linearVelocity.y = (velCom.linearVelocity.y / currentSpeed) * maxSpeed as float
 				}
 
+				//Show flames
+				if(pec.destroyExistingParticles) {
+					pec.destroyExistingParticles = false
+				}
+			} else {
+				//Remove flames
+				if(!pec.destroyExistingParticles) {
+					pec.destroyExistingParticles = true
+				}
 			}
+
 		}
 
 		//Deceleration

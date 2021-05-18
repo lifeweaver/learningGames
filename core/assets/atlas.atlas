@@ -6,7 +6,7 @@ filter: Nearest, Nearest
 repeat: none
 asteroids/asteroid
   rotate: false
-  xy: 311, 28
+  xy: 345, 28
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
@@ -18,9 +18,16 @@ asteroids/enemy
   orig: 10, 10
   offset: 0, 0
   index: -1
+asteroids/particle
+  rotate: false
+  xy: 248, 28
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 asteroids/player
   rotate: false
-  xy: 404, 50
+  xy: 438, 50
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
@@ -48,7 +55,7 @@ missile_command/crosshairs
   index: -1
 missile_command/defenderMissile
   rotate: false
-  xy: 416, 52
+  xy: 450, 52
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -62,14 +69,14 @@ missile_command/enemyMissileTrail
   index: -1
 missile_command/explosion
   rotate: false
-  xy: 392, 50
+  xy: 426, 50
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 missile_command/pre_particle
   rotate: false
-  xy: 248, 28
+  xy: 282, 28
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -90,7 +97,7 @@ missile_command/smartBomb
   index: -1
 pong/paddle
   rotate: false
-  xy: 282, 20
+  xy: 316, 20
   size: 10, 40
   orig: 10, 40
   offset: 0, 0
@@ -104,14 +111,14 @@ pong/pingPong
   index: -1
 space_invaders/barrier
   rotate: false
-  xy: 380, 50
+  xy: 414, 50
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 space_invaders/enemy1
   rotate: false
-  xy: 338, 48
+  xy: 372, 48
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
@@ -125,7 +132,7 @@ space_invaders/enemy1
   index: 1
 space_invaders/enemy2
   rotate: false
-  xy: 352, 48
+  xy: 386, 48
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
@@ -139,7 +146,7 @@ space_invaders/enemy2
   index: 1
 space_invaders/enemy3
   rotate: false
-  xy: 366, 48
+  xy: 400, 48
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
@@ -153,7 +160,7 @@ space_invaders/enemy3
   index: 1
 space_invaders/enemy4
   rotate: false
-  xy: 323, 28
+  xy: 357, 28
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
@@ -167,7 +174,7 @@ space_invaders/enemyShot
   index: -1
 space_invaders/player
   rotate: false
-  xy: 294, 28
+  xy: 328, 28
   size: 15, 10
   orig: 15, 10
   offset: 0, 0
@@ -188,14 +195,14 @@ space_invaders/shield
   index: -1
 worm/fruit
   rotate: false
-  xy: 294, 40
+  xy: 328, 40
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 worm/worm
   rotate: false
-  xy: 316, 40
+  xy: 350, 40
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
