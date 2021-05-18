@@ -20,6 +20,7 @@ import net.stardecimal.game.DefaultHud
 import net.stardecimal.game.DefaultLevelFactory
 import net.stardecimal.game.ParticleEffectManager
 import net.stardecimal.game.ai.SteeringPresets
+import net.stardecimal.game.asteroids.entity.systems.PlayerControlSystem
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.EnemyComponent
@@ -76,6 +77,9 @@ class LevelFactory implements DefaultLevelFactory {
 	void createPlayer(OrthographicCamera cam) {
 		//Reset controls on death
 		controller.reset()
+
+		//Reset the angle of the ship on death
+		engine.getSystem(PlayerControlSystem).radians = 0
 
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
