@@ -34,6 +34,9 @@ class PlayerControlSystem extends IteratingSystem {
 	protected void processEntity(Entity entity, float deltaTime) {
 		SdBodyComponent playerBody = Mapper.bCom.get(entity)
 		VelocityComponent velCom = Mapper.velCom.get(entity)
+		//Update the invulnerabilityTime for the player
+		playerBody.invulnerabilityTime -= deltaTime
+
 		float currentSpeed = Math.sqrt(velCom.linearVelocity.x * velCom.linearVelocity.x + velCom.linearVelocity.y * velCom.linearVelocity.y) as float
 
 		if(controller.spacbar && System.currentTimeMillis() - lastSpaceBar > 300) {

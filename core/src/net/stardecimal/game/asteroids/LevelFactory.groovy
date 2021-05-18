@@ -63,7 +63,6 @@ class LevelFactory implements DefaultLevelFactory {
 	}
 
 	void createPlayer(OrthographicCamera cam) {
-		//TODO: move asteroids if on player spawn pos
 		//TODO: add flames
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
@@ -87,6 +86,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 		texture.region = playerTex
 		type.type = TypeComponent.TYPES.PLAYER
+		sdBody.invulnerabilityTime = 2
 		sdBody.body.setUserData(entity)
 		velCom.removeAfterProcessing = false
 

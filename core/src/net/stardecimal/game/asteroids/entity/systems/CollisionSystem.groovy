@@ -55,6 +55,10 @@ class CollisionSystem extends IteratingSystem {
 						break
 
 					case TypeComponent.TYPES.PLAYER:
+						if(collidedBody.invulnerabilityTime > 0) {
+							body.isDead = true
+							break
+						}
 						OrthographicCamera cam = Mapper.playerCom.get(collidedEntity).cam
 						collidedBody.isDead = true
 						body.isDead = true
@@ -91,6 +95,9 @@ class CollisionSystem extends IteratingSystem {
 				SdBodyComponent body = Mapper.bCom.get(entity)
 				switch (collidedType) {
 					case TypeComponent.TYPES.PLAYER:
+						if(collidedBody.invulnerabilityTime > 0) {
+							break
+						}
 						OrthographicCamera cam = Mapper.playerCom.get(collidedEntity).cam
 						collidedBody.isDead = true
 						levelFactory.playerLives -= 1

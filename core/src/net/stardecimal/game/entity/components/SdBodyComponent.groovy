@@ -9,6 +9,7 @@ class SdBodyComponent implements Component, Pool.Poolable{
 	boolean isDead = false
 	float width = 0
 	float height = 0
+	float invulnerabilityTime = 0
 
 	@Override
 	void reset() {
@@ -16,5 +17,6 @@ class SdBodyComponent implements Component, Pool.Poolable{
 		isDead = false
 		width = 0
 		height = 0
+		invulnerabilityTime = 0
 	}
 }
