@@ -19,7 +19,7 @@ class MissileCommandScreen extends ScreenAdapter implements GameScreen {
 		init(game, LevelFactory.class)
 		levelFactory = (LevelFactory) lvlFactory
 
-		engine.addSystem(new PlayerControlSystem(controller, levelFactory, camera))
+		engine.addSystem(new PlayerControlSystem(levelFactory, camera))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))
 		engine.addSystem(new EnemySpawningSystem(levelFactory, initialEnemyMissileSpawnInterval))
 		engine.addSystem(new EnemySystem(levelFactory))

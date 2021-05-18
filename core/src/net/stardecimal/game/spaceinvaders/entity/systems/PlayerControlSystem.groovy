@@ -16,9 +16,9 @@ class PlayerControlSystem extends IteratingSystem {
 	long lastSpaceBar = System.currentTimeMillis()
 
 	@SuppressWarnings("unchecked")
-	PlayerControlSystem(KeyboardController keyCon, LevelFactory lvlFactory) {
+	PlayerControlSystem(LevelFactory lvlFactory) {
 		super(Family.all(PlayerComponent.class).get())
-		controller = keyCon
+		controller = lvlFactory.controller
 		levelFactory = lvlFactory
 	}
 

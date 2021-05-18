@@ -29,6 +29,7 @@ trait DefaultLevelFactory {
 	Entity player
 	TextureRegion boundaryTex
 	ParticleEffectManager pem
+	KeyboardController controller
 	int playerScore = 0
 	int enemyScore = 0
 	int playerLives = 0

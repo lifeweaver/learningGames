@@ -19,9 +19,9 @@ class PlayerControlSystem extends IteratingSystem {
 	OrthographicCamera camera
 
 	@SuppressWarnings("unchecked")
-	PlayerControlSystem(KeyboardController keyCon, LevelFactory lvlFactory, OrthographicCamera cam) {
+	PlayerControlSystem(LevelFactory lvlFactory, OrthographicCamera cam) {
 		super(Family.all(PlayerComponent.class).get())
-		controller = keyCon
+		controller = lvlFactory.controller
 		levelFactory = lvlFactory
 		camera = cam
 	}

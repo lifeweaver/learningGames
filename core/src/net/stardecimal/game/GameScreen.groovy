@@ -13,7 +13,6 @@ import net.stardecimal.game.entity.systems.SteeringSystem
 trait GameScreen {
 	MyGames parent
 	OrthographicCamera camera
-	KeyboardController controller
 	SpriteBatch batch
 	PooledEngine engine
 	Entity player
@@ -26,10 +25,10 @@ trait GameScreen {
 		parent.assetManager.queueAddImages()
 		parent.assetManager.queueAddIndividualAssets()
 		parent.assetManager.manager.finishLoading()
-		controller = new KeyboardController()
-		parent.multiplexer.addProcessor(controller)
 		engine = new PooledEngine()
 		lvlFactory = (DefaultLevelFactory) instance.newInstance(engine, parent.assetManager)
+		lvlFactory.controller = new KeyboardController()
+		parent.multiplexer.addProcessor(lvlFactory.controller)
 
 		batch = new SpriteBatch()
 		RenderingSystem renderingSystem = new RenderingSystem(batch)
@@ -54,13 +53,6 @@ trait GameScreen {
 		lvlFactory.resetWorld()
 
 		// reset controller controls (fixes bug where controller stuck on direction if died in that position)
-		controller.left = false
-		controller.right = false
-		controller.up = false
-		controller.down = false
-		controller.isMouse1Down = false
-		controller.isMouse2Down = false
-		controller.isMouse3Down = false
-		controller.spacbar = false
+		lvlFactory.controller.reset()
 	}
 }

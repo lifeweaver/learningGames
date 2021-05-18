@@ -121,4 +121,15 @@ class KeyboardController implements InputProcessor {
 	boolean scrolled(float amountX, float amountY) {
 		return false
 	}
+
+	void reset() {
+		left = false
+		right = false
+		up = false
+		down = false
+		isMouse1Down = false
+		isMouse2Down = false
+		isMouse3Down = false
+		spacbar = false
+	}
 }

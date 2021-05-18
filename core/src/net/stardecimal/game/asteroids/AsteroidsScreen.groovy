@@ -20,7 +20,7 @@ class AsteroidsScreen extends ScreenAdapter implements GameScreen {
 		init(game, LevelFactory.class)
 		levelFactory = (LevelFactory) lvlFactory
 
-		engine.addSystem(new PlayerControlSystem(controller, levelFactory))
+		engine.addSystem(new PlayerControlSystem(levelFactory))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))
 		engine.addSystem(new SpaceSystem())
 		engine.addSystem(new BulletSystem(parent))
