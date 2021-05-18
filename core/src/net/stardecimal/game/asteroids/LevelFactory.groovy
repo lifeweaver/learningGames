@@ -2,6 +2,7 @@ package net.stardecimal.game.asteroids
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
+import com.badlogic.gdx.ai.steer.SteeringBehavior
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -17,13 +18,18 @@ import net.stardecimal.game.BodyFactory
 import net.stardecimal.game.DFUtils
 import net.stardecimal.game.DefaultHud
 import net.stardecimal.game.DefaultLevelFactory
+import net.stardecimal.game.ai.SteeringPresets
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
+import net.stardecimal.game.entity.components.EnemyComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.ScoreComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
+import net.stardecimal.game.entity.components.SdLocation
 import net.stardecimal.game.entity.components.SoundEffectComponent
+import net.stardecimal.game.entity.components.StateComponent
+import net.stardecimal.game.entity.components.SteeringComponent
 import net.stardecimal.game.entity.components.TextureComponent
 import net.stardecimal.game.entity.components.TransformComponent
 import net.stardecimal.game.entity.components.TypeComponent
@@ -57,6 +63,8 @@ class LevelFactory implements DefaultLevelFactory {
 	}
 
 	void createPlayer(OrthographicCamera cam) {
+		//TODO: move asteroids if on player spawn pos
+		//TODO: add flames
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)
@@ -92,6 +100,50 @@ class LevelFactory implements DefaultLevelFactory {
 		player = entity
 	}
 
+	void createEnemy() {
+		Entity entity = engine.createEntity()
+		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+		TransformComponent position = engine.createComponent(TransformComponent)
+		TextureComponent texture = engine.createComponent(TextureComponent)
+		EnemyComponent eCom = engine.createComponent(EnemyComponent)
+		TypeComponent type = engine.createComponent(TypeComponent)
+		SteeringComponent scom = engine.createComponent(SteeringComponent)
+		StateComponent stateCom = engine.createComponent(StateComponent)
+		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
+		float randX = rand.nextInt(1) ? 0 : screenSize.x / RenderingSystem.PPM
+		float randY = rand.nextInt(screenSize.y / RenderingSystem.PPM as int)
+
+		sdBody.body = bodyFactory.makeBoxPolyBody(
+				randX,
+				randY,
+				1.5,
+				1,
+				BodyFactory.STEEL,
+				BodyDef.BodyType.DynamicBody,
+				true
+		)
+
+		texture.region = enemyTex
+		type.type = TypeComponent.TYPES.ENEMY
+		sdBody.body.setUserData(entity)
+
+		stateCom.state = StateComponent.STATE_NORMAL
+		eCom.target = player
+		scom.body = sdBody.body
+		SteeringBehavior<Vector2> steeringBehavior = SteeringPresets.getArrive(scom, new SdLocation(position: Mapper.bCom.get(player).body.position, orientation: 0))
+		scom.maxLinearSpeed = 5f
+		scom.steeringBehavior = steeringBehavior
+
+		entity.add(stateCom)
+		entity.add(scom)
+		entity.add(sdBody)
+		entity.add(position)
+		entity.add(texture)
+		entity.add(eCom)
+		entity.add(type)
+		engine.addEntity(entity)
+	}
+
 	void playerShoot() {
 		Body body = Mapper.bCom.get(player).body
 		createShot(body.position, body.angle)
@@ -108,8 +160,8 @@ class LevelFactory implements DefaultLevelFactory {
 		VelocityComponent velCom = engine.createComponent(VelocityComponent)
 
 		DFUtils.angleToVector(velCom.linearVelocity, angle)
-		velCom.linearVelocity.x += velCom.linearVelocity.x * 10
-		velCom.linearVelocity.y += velCom.linearVelocity.y * 10
+		velCom.linearVelocity.x += velCom.linearVelocity.x * 15
+		velCom.linearVelocity.y += velCom.linearVelocity.y * 15
 
 		sdBody.body = bodyFactory.makeBoxPolyBody(
 				startPos.x = velCom.linearVelocity.x > 0 ? startPos.x + 1 as float : startPos.x - 1 as float,
@@ -163,10 +215,12 @@ class LevelFactory implements DefaultLevelFactory {
 		float randY = rand.nextInt(maxY as int)
 
 		//Don't spawn on the player
-		Vector3 playerPos = player ? Mapper.transCom.get(player).position : new Vector3(screenSize.x / RenderingSystem.PPM / 2 as float, screenSize.y / RenderingSystem.PPM / 2 as float, 0)
-		if(Math.abs(playerPos.x - randX) < 3 || Math.abs(playerPos.y - randY) < 3) {
-			randX += 4
-			randY += 4
+		if(player) {
+			Vector3 playerPos = player ? Mapper.transCom.get(player).position : new Vector3(screenSize.x / RenderingSystem.PPM / 2 as float, screenSize.y / RenderingSystem.PPM / 2 as float, 0)
+			if(Math.abs(playerPos.x - randX) < 3 || Math.abs(playerPos.y - randY) < 3) {
+				randX += 4
+				randY += 4
+			}
 		}
 
 		type.type = asteroidType
