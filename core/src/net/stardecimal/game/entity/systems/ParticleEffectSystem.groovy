@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.utils.Array
 import net.stardecimal.game.entity.components.Mapper
@@ -39,11 +40,30 @@ class ParticleEffectSystem extends IteratingSystem {
 			batch.begin()
 			for (Entity entity : renderQueue) {
 				ParticleEffectComponent pec = Mapper.peCom.get(entity)
-				pec.particleEffect.draw(batch, deltaTime)
+				if(pec.destroyExistingParticles) {
+					pec.particleEffect.emitters.each {
+						it.reset()
+					}
+				} else {
+					if(pec.isAttached && pec.angleEmitters) {
+						adjustParticleAngles(pec)
+					}
+
+					pec.particleEffect.draw(batch, deltaTime)
+				}
 			}
 			batch.end()
 		}
 		renderQueue.clear()
+	}
+
+	static void adjustParticleAngles(ParticleEffectComponent pec) {
+		float angle = (pec.attachedBody.angle * MathUtils.radiansToDegrees + 270) % 360 as float
+
+		pec.particleEffect.emitters.each {
+			it.angle.setLow(angle)
+			it.angle.setHigh(angle)
+		}
 	}
 
 	@Override

@@ -9,11 +9,13 @@ import com.badlogic.gdx.utils.Pool
 class ParticleEffectComponent implements Component, Pool.Poolable {
 	ParticleEffectPool.PooledEffect particleEffect
 	boolean isAttached = false
+	boolean angleEmitters = false
 	float xOffset = 0
 	float yOffset = 0
 	float timeTilDeath = 0.5f
 	boolean isDead = false
 	boolean killOnParentBodyDeath = false
+	boolean destroyExistingParticles = false
 	Body attachedBody
 
 	@Override
@@ -27,5 +29,7 @@ class ParticleEffectComponent implements Component, Pool.Poolable {
 		attachedBody = null
 		timeTilDeath = 0.5f
 		killOnParentBodyDeath = false
+		destroyExistingParticles = false
+		angleEmitters = false
 	}
 }
