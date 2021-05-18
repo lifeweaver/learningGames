@@ -24,7 +24,7 @@ class AsteroidsScreen extends ScreenAdapter implements GameScreen {
 		engine.addSystem(new SpaceSystem())
 		engine.addSystem(new BulletSystem(parent))
 		engine.addSystem(new EnemySystem(levelFactory))
-		engine.addSystem(new AsteroidSpawningSystem(levelFactory, 5))
+		engine.addSystem(new AsteroidSpawningSystem(levelFactory, 1))
 		levelFactory.createPlayer(camera)
 		levelFactory.playerLives = 3
 	}
