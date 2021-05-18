@@ -62,8 +62,14 @@ class LevelFactory implements DefaultLevelFactory {
 		log.info("level factory initialized")
 	}
 
+	//TODO: add flames
+	//Fix player shooting
+	//Make enemy shoot
+	//High score list and initials etc. JMD
+	//Blow up animation?
+
+
 	void createPlayer(OrthographicCamera cam) {
-		//TODO: add flames
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)

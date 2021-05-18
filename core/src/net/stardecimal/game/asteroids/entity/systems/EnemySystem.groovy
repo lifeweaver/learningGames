@@ -44,7 +44,6 @@ class EnemySystem extends IteratingSystem {
 				SteeringComponent scom = Mapper.sCom.get(it)
 				StateComponent stateCom = Mapper.stateCom.get(it)
 				if(scom) {
-					println("stateCom.state: ${stateCom.state}")
 					def closestAsteroid = closestThreat(Mapper.bCom.get(it).body.position)
 					Vector2 pos = Mapper.bCom.get(closestAsteroid).body.position
 

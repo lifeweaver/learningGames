@@ -3,6 +3,7 @@ package net.stardecimal.game.asteroids
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
+import io.anuke.gif.GifRecorder
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.asteroids.entity.systems.AsteroidSpawningSystem
@@ -27,6 +28,8 @@ class AsteroidsScreen extends ScreenAdapter implements GameScreen {
 		engine.addSystem(new AsteroidSpawningSystem(levelFactory, 1))
 		levelFactory.createPlayer(camera)
 		levelFactory.playerLives = 3
+
+//		parent.recorder = new GifRecorder(batch)
 	}
 
 	void resetWorld() {
