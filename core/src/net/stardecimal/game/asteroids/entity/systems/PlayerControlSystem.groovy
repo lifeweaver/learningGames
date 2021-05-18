@@ -18,8 +18,8 @@ class PlayerControlSystem extends IteratingSystem {
 	long lastSpaceBar = System.currentTimeMillis()
 	long lastMovement = System.currentTimeMillis()
 	float radians = 0
-	float rotationSpeed = 3
-	float acceleration = 40
+	float rotationSpeed = 6
+	float acceleration = 60
 	float deceleration = 0.01
 	float maxSpeed = 10
 
