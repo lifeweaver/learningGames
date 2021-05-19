@@ -177,7 +177,7 @@ class LevelFactory implements DefaultLevelFactory {
 		createShot(body.position, body.angle)
 	}
 
-	void createShot(Vector2 startPos, float angle) {
+	void createShot(Vector2 startPos, float angle, BulletComponent.Owner owner=BulletComponent.Owner.PLAYER) {
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)
@@ -208,7 +208,7 @@ class LevelFactory implements DefaultLevelFactory {
 		texture.region = shotTex
 
 
-		bul.owner = BulletComponent.Owner.PLAYER
+		bul.owner = owner
 		bul.maxLife = 5
 
 		SoundEffectComponent soundCom = engine.createComponent(SoundEffectComponent)

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Vector2
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.asteroids.LevelFactory
+import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.ScoreComponent
@@ -51,7 +52,11 @@ class CollisionSystem extends IteratingSystem {
 						break
 
 					case TypeComponent.TYPES.ENEMY:
-						destroyAndAddWorth(body, collidedBody, collidedEntity)
+						//Only get hurt by player bullets, not it's own.
+						BulletComponent bul = Mapper.bulletCom.get(collidedEntity)
+						if(bul.owner == BulletComponent.Owner.PLAYER) {
+							destroyAndAddWorth(body, collidedBody, collidedEntity)
+						}
 						break
 
 					case TypeComponent.TYPES.PLAYER:
@@ -123,8 +128,12 @@ class CollisionSystem extends IteratingSystem {
 						break
 
 					case TypeComponent.TYPES.BULLET:
-						collidedBody.isDead = true
-						body.isDead = true
+						//Only get hurt by player bullets, not it's own.
+						BulletComponent bul = Mapper.bulletCom.get(collidedEntity)
+						if(bul.owner == BulletComponent.Owner.PLAYER) {
+							collidedBody.isDead = true
+							body.isDead = true
+						}
 						break
 
 					case TypeComponent.TYPES.PLAYER:
