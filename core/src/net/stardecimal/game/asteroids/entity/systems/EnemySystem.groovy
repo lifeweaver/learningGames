@@ -6,8 +6,10 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.ai.steer.SteeringBehavior
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
+import net.stardecimal.game.DFUtils
 import net.stardecimal.game.ai.SteeringPresets
 import net.stardecimal.game.asteroids.LevelFactory
+import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.EnemyComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdLocation
@@ -20,6 +22,8 @@ class EnemySystem extends IteratingSystem {
 	private Array<Entity> enemyQueue
 	static float enemySpawningInterval = 15
 	float lastEnemySpawned = 0
+	static float enemyShootingInterval = 3
+	float lastShot = enemyShootingInterval
 
 	@SuppressWarnings("unchecked")
 	EnemySystem(LevelFactory lvlFactory) {
@@ -32,6 +36,7 @@ class EnemySystem extends IteratingSystem {
 	void update(float deltaTime) {
 		super.update(deltaTime)
 		lastEnemySpawned = lastEnemySpawned > 0 ? lastEnemySpawned - deltaTime as float : lastEnemySpawned
+		lastShot = lastShot > 0 ? lastShot - deltaTime as float : lastShot
 
 		if(levelFactory.player) {
 			if(enemyQueue.isEmpty() && lastEnemySpawned <= 0) {
@@ -62,6 +67,15 @@ class EnemySystem extends IteratingSystem {
 							scom.maxLinearSpeed = 5f
 							scom.steeringBehavior = steeringBehavior
 						}
+					}
+
+					//Shoot at player
+					if(lastShot <= 0) {
+						lastShot = enemyShootingInterval
+						Vector2 playerPos = Mapper.bCom.get(levelFactory.player).body.position
+						Vector2 enemyPos = Mapper.bCom.get(it).body.position
+						float shootingAngle = DFUtils.vectorToAngle(DFUtils.aimTo(enemyPos, playerPos))
+						levelFactory.createShot(enemyPos, shootingAngle, BulletComponent.Owner.ENEMY)
 					}
 				}
 			}

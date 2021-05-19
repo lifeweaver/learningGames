@@ -54,7 +54,7 @@ class CollisionSystem extends IteratingSystem {
 					case TypeComponent.TYPES.ENEMY:
 						//Only get hurt by player bullets, not it's own.
 						BulletComponent bul = Mapper.bulletCom.get(collidedEntity)
-						if(bul.owner == BulletComponent.Owner.PLAYER) {
+						if(bul?.owner == BulletComponent.Owner.PLAYER) {
 							destroyAndAddWorth(body, collidedBody, collidedEntity)
 						}
 						break
@@ -130,7 +130,7 @@ class CollisionSystem extends IteratingSystem {
 					case TypeComponent.TYPES.BULLET:
 						//Only get hurt by player bullets, not it's own.
 						BulletComponent bul = Mapper.bulletCom.get(collidedEntity)
-						if(bul.owner == BulletComponent.Owner.PLAYER) {
+						if(bul?.owner == BulletComponent.Owner.PLAYER) {
 							collidedBody.isDead = true
 							body.isDead = true
 						}
