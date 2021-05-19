@@ -21,7 +21,7 @@ class AsteroidSpawningSystem extends IntervalSystem {
 	@Override
 	void updateInterval() {
 		int asteroids = engine.getEntities().each {
-			Mapper.typeCom.get(it).type == TypeComponent.TYPES.ASTEROID
+			Mapper.typeCom.get(it)?.type == TypeComponent.TYPES.ASTEROID
 		}.size()
 
 		if(asteroids < maxAsteroids) {
