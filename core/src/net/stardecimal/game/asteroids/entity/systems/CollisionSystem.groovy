@@ -116,6 +116,17 @@ class CollisionSystem extends IteratingSystem {
 				SdBodyComponent body = Mapper.bCom.get(entity)
 				SdBodyComponent collidedBody = Mapper.bCom.get(collidedEntity)
 				switch (collidedType) {
+					case TypeComponent.TYPES.ASTEROID:
+					case TypeComponent.TYPES.MEDIUM_ASTEROID:
+					case TypeComponent.TYPES.MINI_ASTEROID:
+						body.isDead = true
+						break
+
+					case TypeComponent.TYPES.BULLET:
+						collidedBody.isDead = true
+						body.isDead = true
+						break
+
 					case TypeComponent.TYPES.PLAYER:
 						if(collidedBody.invulnerabilityTime > 0) {
 							break
