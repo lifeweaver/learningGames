@@ -56,7 +56,7 @@ class LevelFactory implements DefaultLevelFactory {
 		playerTex = atlas.findRegion("asteroids/player")
 		enemyTex = atlas.findRegion("asteroids/enemy")
 		asteroidTex = atlas.findRegion("asteroids/asteroid")
-		shotTex = DFUtils.makeTextureRegion(0.25, 0.25, '#FFFFFF')
+		shotTex = DFUtils.makeTextureRegion(1, 1, '#FFFFFF')
 
 		enemyBlownUp = assetManager.manager.get(SdAssetManager.enemyBlownUp)
 		playerBlownUp = assetManager.manager.get(SdAssetManager.playerBlownUp)
