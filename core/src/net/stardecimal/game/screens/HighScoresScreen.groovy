@@ -58,12 +58,12 @@ class HighScoresScreen extends ScreenAdapter {
 
 		//Loop over high scores
 		def jsonSlurper = new JsonSlurper()
-		def parsedJson = jsonSlurper.parseText(highScores.getHighScores())
+		def parsedJson = jsonSlurper.parseText(highScores.getHighScores(levelFactory.gameName))
 		parsedJson.each { Map highScore ->
 			Label nameLabel = new Label("${highScore['name']}:", skin)
 			Label scoreLabel = new Label("${highScore['score'].toString().padLeft(10, '0')}", skin)
-			table.add(nameLabel).align(Align.left).padRight(200)
-			table.add(scoreLabel).align(Align.right)
+			table.add(nameLabel).align(Align.left).uniformX()
+			table.add(scoreLabel).align(Align.right).uniformX()
 			table.row().padTop(10)
 		}
 
