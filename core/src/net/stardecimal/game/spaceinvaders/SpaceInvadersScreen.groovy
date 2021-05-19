@@ -16,6 +16,7 @@ class SpaceInvadersScreen extends ScreenAdapter implements GameScreen {
 	SpaceInvadersScreen(final MyGames game) {
 		init(game, LevelFactory.class)
 		levelFactory = (LevelFactory) lvlFactory
+		levelFactory.gameName = 'space_invaders'
 
 		engine.addSystem(new PlayerControlSystem(levelFactory))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))

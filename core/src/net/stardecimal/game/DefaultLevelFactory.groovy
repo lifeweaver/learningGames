@@ -30,6 +30,7 @@ trait DefaultLevelFactory {
 	TextureRegion boundaryTex
 	ParticleEffectManager pem
 	KeyboardController controller
+	String gameName = 'default'
 	int playerScore = 0
 	int enemyScore = 0
 	int playerLives = 0

@@ -14,6 +14,7 @@ import net.stardecimal.game.missilecommand.MissileCommandScreen
 import net.stardecimal.game.pong.PongScreen
 import net.stardecimal.game.screens.EndScreen
 import net.stardecimal.game.screens.GameSelectionScreen
+import net.stardecimal.game.screens.HighScoresScreen
 import net.stardecimal.game.screens.MenuScreen
 import net.stardecimal.game.screens.PauseScreen
 import net.stardecimal.game.screens.PreferencesScreen
@@ -36,6 +37,7 @@ class MyGames extends Game {
 	private PauseScreen pauseScreen
 	private SpaceInvadersScreen spaceInvadersScreen
 	private AsteroidsScreen asteroidsScreen
+	private HighScoresScreen highScoresScreen
 	SdAssetManager assetManager = new SdAssetManager()
 	InputMultiplexer multiplexer = new InputMultiplexer()
 
@@ -50,6 +52,7 @@ class MyGames extends Game {
 	final static int PAUSE = 8
 	final static int SPACE_INVADERS = 9
 	final static int ASTEROIDS = 10
+	final static int HIGH_SCORES = 11
 	Music playingSong
 	int lastMenu = MENU
 	int currentGame
@@ -203,6 +206,13 @@ class MyGames extends Game {
 				lastMenu = screen
 				pauseScreen = pauseScreen ?: new PauseScreen(this)
 				this.setScreen(pauseScreen)
+				break
+
+			case HIGH_SCORES:
+				state = STATE.READY
+				lastMenu = screen
+				highScoresScreen = highScoresScreen ?: new HighScoresScreen(this, this.screen.levelFactory)
+				this.setScreen(highScoresScreen)
 				break
 		}
 	}

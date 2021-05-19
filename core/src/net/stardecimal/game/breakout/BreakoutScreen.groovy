@@ -15,6 +15,7 @@ class BreakoutScreen extends ScreenAdapter implements GameScreen {
 	BreakoutScreen(final MyGames game) {
 		init(game, LevelFactory.class)
 		levelFactory = (LevelFactory) lvlFactory
+		levelFactory.gameName = 'breakout'
 
 		engine.addSystem(new PlayerControlSystem(levelFactory.controller))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))

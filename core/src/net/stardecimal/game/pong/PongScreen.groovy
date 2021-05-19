@@ -17,6 +17,7 @@ class PongScreen extends ScreenAdapter implements GameScreen {
 	PongScreen(final MyGames game) {
 		init(game, LevelFactory.class)
 		levelFactory = (LevelFactory) lvlFactory
+		levelFactory.gameName = 'pong'
 
 		engine.addSystem(new PlayerControlSystem(levelFactory.controller))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))

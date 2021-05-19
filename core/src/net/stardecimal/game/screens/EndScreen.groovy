@@ -29,17 +29,14 @@ class EndScreen extends ScreenAdapter {
 	EndScreen(MyGames game, DefaultLevelFactory lvlFactory) {
 		parent = game
 		levelFactory = lvlFactory
+		skin = parent.assetManager.manager.get("skin/glassy-ui.json")
 	}
 
 	@Override
 	void show() {
-		// get skin
-		skin = parent.assetManager.manager.get("skin/glassy-ui.json")
-//		atlas = parent.assetManager.manager.get("images/loading.atlas")
-//		background = atlas.findRegion("flamebackground")
-
-		// create button to go back to manu
+		// create button to go back to menu
 		TextButton menuButton = new TextButton("Back", skin, "small")
+		TextButton highScoresButton = new TextButton("High Scores", skin, "small")
 
 		// create button listener
 		menuButton.addListener(new ChangeListener() {
@@ -50,14 +47,20 @@ class EndScreen extends ScreenAdapter {
 			}
 		})
 
+		highScoresButton.addListener(new ChangeListener() {
+			@Override
+			void changed(ChangeEvent event, Actor actor) {
+				parent.changeScreen(MyGames.HIGH_SCORES)
+			}
+		})
+
 		// create stage and set it as input processor
 		stage = new Stage(new ScreenViewport())
 		Gdx.input.setInputProcessor(stage)
 
-		// create table to layout iutems we will add
+		// create table to layout items we will add
 		Table table = new Table()
 		table.setFillParent(true)
-//		table.setBackground(new TiledDrawable(background))
 
 		//create a Labels showing the score and some credits
 		Label labelScore = new Label("Score " + levelFactory.playerScore, skin)
@@ -78,7 +81,8 @@ class EndScreen extends ScreenAdapter {
 		table.add(labelCredits3).uniformX().align(Align.left)
 		table.add(labelCredits4).uniformX().align(Align.left)
 		table.row().padTop(50)
-		table.add(menuButton).colspan(2)
+		table.add(menuButton)
+		table.add(highScoresButton).align(Align.right)
 
 		//add table to stage
 		stage.addActor(table)

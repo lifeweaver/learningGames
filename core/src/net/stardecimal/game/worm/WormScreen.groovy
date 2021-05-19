@@ -16,6 +16,7 @@ class WormScreen extends ScreenAdapter implements GameScreen {
 	WormScreen(final MyGames game) {
 		init(game, LevelFactory.class)
 		levelFactory = (LevelFactory) lvlFactory
+		levelFactory.gameName = 'worm'
 
 		engine.addSystem(new PlayerControlSystem(levelFactory))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))
