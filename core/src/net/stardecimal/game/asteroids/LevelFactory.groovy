@@ -68,7 +68,6 @@ class LevelFactory implements DefaultLevelFactory {
 
 	//TODO:
 	//Make enemy shoot
-	//High score list and initials etc. JMD
 	//Blow up animation?
 	//hyperspace or shield
 
