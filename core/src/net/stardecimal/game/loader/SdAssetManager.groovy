@@ -28,6 +28,7 @@ class SdAssetManager {
 
 	final static String enemyMissileTrail = "input/missile_command/enemyMissileTrail.pe"
 	final static String flames = "input/asteroids/flames.pe"
+	final static String shield = "input/asteroids/shield.pe"
 	final static String explosionParticle = "input/missile_command/explosion.pe"
 	final static String boom = "input/missile_command/boom.wav"
 	final static String targeting_beep = "input/missile_command/targeting_beep.wav"
@@ -45,6 +46,7 @@ class SdAssetManager {
 		manager.load(enemyMissileTrail, ParticleEffect)
 		manager.load(explosionParticle, ParticleEffect)
 		manager.load(flames, ParticleEffect)
+		manager.load(shield, ParticleEffect)
 	}
 
 	void queueAddImages() {

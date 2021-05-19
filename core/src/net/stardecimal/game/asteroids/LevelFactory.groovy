@@ -20,6 +20,7 @@ import net.stardecimal.game.DefaultHud
 import net.stardecimal.game.DefaultLevelFactory
 import net.stardecimal.game.ParticleEffectManager
 import net.stardecimal.game.ai.SteeringPresets
+import net.stardecimal.game.asteroids.entity.components.ShieldComponent
 import net.stardecimal.game.asteroids.entity.systems.PlayerControlSystem
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
@@ -61,15 +62,11 @@ class LevelFactory implements DefaultLevelFactory {
 		enemyBlownUp = assetManager.manager.get(SdAssetManager.enemyBlownUp)
 		playerBlownUp = assetManager.manager.get(SdAssetManager.playerBlownUp)
 		playerFiring = assetManager.manager.get(SdAssetManager.playerFiring)
-		pem.addParticleEffect(ParticleEffectManager.FLAMES , assetManager.manager.get(SdAssetManager.flames))
+		pem.addParticleEffect(ParticleEffectManager.FLAMES, assetManager.manager.get(SdAssetManager.flames))
+		pem.addParticleEffect(ParticleEffectManager.SHIELD, assetManager.manager.get(SdAssetManager.shield))
 
 		log.info("level factory initialized")
 	}
-
-	//TODO:
-	//Blow up animation?
-	//hyperspace or shield
-
 
 	void createPlayer(OrthographicCamera cam) {
 		//Reset controls on death
@@ -86,6 +83,7 @@ class LevelFactory implements DefaultLevelFactory {
 		TypeComponent type = engine.createComponent(TypeComponent)
 		VelocityComponent velCom = engine.createComponent(VelocityComponent)
 		ParticleEffectComponent pec = engine.createComponent(ParticleEffectComponent)
+		ShieldComponent shieldCom = engine.createComponent(ShieldComponent)
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
 
 		playerCom.cam = cam
@@ -114,6 +112,7 @@ class LevelFactory implements DefaultLevelFactory {
 		pec.killOnParentBodyDeath = true
 		pec.timeTilDeath = 1000000000000
 
+		entity.add(shieldCom)
 		entity.add(pec)
 		entity.add(velCom)
 		entity.add(sdBody)

@@ -1,22 +1,27 @@
 package net.stardecimal.game.asteroids.entity.systems
 
+import com.badlogic.ashley.core.ComponentMapper
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Vector2
 import net.stardecimal.game.MyGames
+import net.stardecimal.game.ParticleEffectManager
 import net.stardecimal.game.asteroids.LevelFactory
+import net.stardecimal.game.asteroids.entity.components.ShieldComponent
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.ScoreComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TypeComponent
+import net.stardecimal.game.entity.components.VelocityComponent
 
 class CollisionSystem extends IteratingSystem {
 	final LevelFactory levelFactory
 	final MyGames parent
+	static final ComponentMapper<ShieldComponent> shieldMapper = ComponentMapper.getFor(ShieldComponent.class)
 
 
 	@SuppressWarnings('unchecked')
@@ -64,6 +69,17 @@ class CollisionSystem extends IteratingSystem {
 							body.isDead = true
 							break
 						}
+
+						//The shield will absorb bullet hits.
+						ShieldComponent shieldCom = shieldMapper.get(collidedEntity)
+						if(shieldCom.currentHits > 0) {
+							shieldCom.currentHits--
+							body.isDead = true
+							println("test: ${collidedBody.body.position}")
+							levelFactory.makeParticleEffect(ParticleEffectManager.SHIELD, collidedBody.body.position.x, collidedBody.body.position.y)
+							break
+						}
+
 						OrthographicCamera cam = Mapper.playerCom.get(collidedEntity).cam
 						collidedBody.isDead = true
 						body.isDead = true

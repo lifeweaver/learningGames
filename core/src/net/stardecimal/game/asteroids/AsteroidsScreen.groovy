@@ -30,7 +30,7 @@ class AsteroidsScreen extends ScreenAdapter implements GameScreen {
 		levelFactory.createPlayer(camera)
 		levelFactory.playerLives = 3
 
-//		parent.recorder = new GifRecorder(batch)
+		parent.recorder = new GifRecorder(batch)
 	}
 
 	void resetWorld() {

@@ -32,6 +32,13 @@ asteroids/player
   orig: 10, 10
   offset: 0, 0
   index: -1
+asteroids/shield
+  rotate: false
+  xy: 86, 8
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
 missile_command/bomberPlane
   rotate: false
   xy: 167, 28
@@ -55,7 +62,7 @@ missile_command/crosshairs
   index: -1
 missile_command/defenderMissile
   rotate: false
-  xy: 450, 52
+  xy: 98, 10
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -167,7 +174,7 @@ space_invaders/enemy4
   index: -1
 space_invaders/enemyShot
   rotate: false
-  xy: 98, 8
+  xy: 462, 50
   size: 3, 10
   orig: 3, 10
   offset: 0, 0
@@ -181,14 +188,14 @@ space_invaders/player
   index: -1
 space_invaders/playerShot
   rotate: false
-  xy: 103, 8
+  xy: 467, 50
   size: 3, 10
   orig: 3, 10
   offset: 0, 0
   index: -1
 space_invaders/shield
   rotate: false
-  xy: 86, 8
+  xy: 450, 50
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
