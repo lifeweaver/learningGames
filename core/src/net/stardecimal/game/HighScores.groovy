@@ -2,6 +2,8 @@ package net.stardecimal.game
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
+import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
 
 class HighScores {
 	private static final String PREF_HIGH_SCORES = "high_scores"
@@ -18,5 +20,21 @@ class HighScores {
 	void setHighScores(String game, String highScores) {
 		getPrefs(game).putString(PREF_HIGH_SCORES, highScores)
 		getPrefs(game).flush()
+	}
+
+	void addScore(String game, String name, score) {
+		String scores = getHighScores(game)
+		List parsedJson = new JsonSlurper().parseText(scores) as ArrayList
+		parsedJson.add([name: name, score: score])
+		List sortedScores = parsedJson.sort {
+			it['score'] as int
+		}.reverse()
+
+		while(sortedScores.size() > 5) {
+			sortedScores.removeLast()
+		}
+
+		def jsonScores = new JsonBuilder(sortedScores).toString()
+		setHighScores(game, jsonScores)
 	}
 }

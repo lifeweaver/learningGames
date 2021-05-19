@@ -10,12 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent
-import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import net.stardecimal.game.DefaultLevelFactory
+import net.stardecimal.game.HighScores
 import net.stardecimal.game.MyGames
 
 class EndScreen extends ScreenAdapter {
@@ -37,6 +38,8 @@ class EndScreen extends ScreenAdapter {
 		// create button to go back to menu
 		TextButton menuButton = new TextButton("Back", skin, "small")
 		TextButton highScoresButton = new TextButton("High Scores", skin, "small")
+		TextButton submitButton = new TextButton("Submit", skin, "small")
+		TextField name = new TextField(null, skin)
 
 		// create button listener
 		menuButton.addListener(new ChangeListener() {
@@ -50,6 +53,15 @@ class EndScreen extends ScreenAdapter {
 		highScoresButton.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeEvent event, Actor actor) {
+				parent.changeScreen(MyGames.HIGH_SCORES)
+			}
+		})
+
+		submitButton.addListener(new ChangeListener() {
+			@Override
+			void changed(ChangeEvent event, Actor actor) {
+				levelFactory.playerScore
+				new HighScores().addScore(levelFactory.gameName, name.text ?: 'Anonymous', levelFactory.playerScore.toString())
 				parent.changeScreen(MyGames.HIGH_SCORES)
 			}
 		})
@@ -69,9 +81,13 @@ class EndScreen extends ScreenAdapter {
 		Label labelCredits2 = new Label("Lifeweaver", skin)
 		Label labelCredits3 = new Label("Art Design by ", skin)
 		Label labelCredits4 = new Label("Lifeweaver", skin)
+		Label labelName = new Label("Name: ", skin)
 
 		// add items to table
 		table.add(labelScore).colspan(2)
+		table.row().padTop(10)
+		table.add(labelName)
+		table.add(name)
 		table.row().padTop(10)
 		table.add(labelCredits).colspan(2)
 		table.row().padTop(10)
@@ -81,11 +97,13 @@ class EndScreen extends ScreenAdapter {
 		table.add(labelCredits3).uniformX().align(Align.left)
 		table.add(labelCredits4).uniformX().align(Align.left)
 		table.row().padTop(50)
-		table.add(menuButton)
-		table.add(highScoresButton).align(Align.right)
+		table.add(menuButton).align(Align.left)
+		table.add(highScoresButton).align(Align.center)
+		table.add(submitButton).align(Align.right)
 
 		//add table to stage
 		stage.addActor(table)
+		stage.setKeyboardFocus(name)
 
 	}
 

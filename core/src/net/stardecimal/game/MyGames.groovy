@@ -197,7 +197,7 @@ class MyGames extends Game {
 			case ENDGAME:
 				state = STATE.OVER
 				lastMenu = screen
-				endScreen = endScreen ?: new EndScreen(this, this.screen.levelFactory)
+				endScreen = new EndScreen(this, this.screen.levelFactory)
 				this.setScreen(endScreen)
 				break
 
@@ -211,7 +211,7 @@ class MyGames extends Game {
 			case HIGH_SCORES:
 				state = STATE.READY
 				lastMenu = screen
-				highScoresScreen = highScoresScreen ?: new HighScoresScreen(this, this.screen.levelFactory)
+				highScoresScreen = new HighScoresScreen(this, this.screen.levelFactory)
 				this.setScreen(highScoresScreen)
 				break
 		}
