@@ -97,9 +97,9 @@ class EndScreen extends ScreenAdapter {
 		table.add(labelCredits3).uniformX().align(Align.left)
 		table.add(labelCredits4).uniformX().align(Align.left)
 		table.row().padTop(50)
-		table.add(menuButton).align(Align.left)
-		table.add(highScoresButton).align(Align.center)
-		table.add(submitButton).align(Align.right)
+		table.add(menuButton).uniformX()
+		table.add(highScoresButton).uniformX()
+		table.add(submitButton).uniformX()
 
 		//add table to stage
 		stage.addActor(table)
