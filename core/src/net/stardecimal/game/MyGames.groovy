@@ -19,6 +19,7 @@ import net.stardecimal.game.screens.MenuScreen
 import net.stardecimal.game.screens.PauseScreen
 import net.stardecimal.game.screens.PreferencesScreen
 import net.stardecimal.game.spaceinvaders.SpaceInvadersScreen
+import net.stardecimal.game.tetris.TetrisScreen
 import net.stardecimal.game.worm.WormScreen
 
 class MyGames extends Game {
@@ -38,6 +39,7 @@ class MyGames extends Game {
 	private SpaceInvadersScreen spaceInvadersScreen
 	private AsteroidsScreen asteroidsScreen
 	private HighScoresScreen highScoresScreen
+	private TetrisScreen tetrisScreen
 	SdAssetManager assetManager = new SdAssetManager()
 	InputMultiplexer multiplexer = new InputMultiplexer()
 
@@ -53,6 +55,7 @@ class MyGames extends Game {
 	final static int SPACE_INVADERS = 9
 	final static int ASTEROIDS = 10
 	final static int HIGH_SCORES = 11
+	final static int TETRIS = 12
 	Music playingSong
 	int lastMenu = MENU
 	int currentGame
@@ -172,6 +175,18 @@ class MyGames extends Game {
 				}
 
 				this.setScreen(asteroidsScreen)
+				state = STATE.RUNNING
+				break
+
+			case TETRIS:
+				gameChange(screen)
+				if(!asteroidsScreen) {
+					tetrisScreen = new TetrisScreen(this)
+				} else if(lastMenu != PAUSE) {
+					tetrisScreen.resetWorld()
+				}
+
+				this.setScreen(tetrisScreen)
 				state = STATE.RUNNING
 				break
 
