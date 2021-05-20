@@ -180,7 +180,7 @@ class MyGames extends Game {
 
 			case TETRIS:
 				gameChange(screen)
-				if(!asteroidsScreen) {
+				if(!tetrisScreen) {
 					tetrisScreen = new TetrisScreen(this)
 				} else if(lastMenu != PAUSE) {
 					tetrisScreen.resetWorld()
