@@ -8,6 +8,7 @@ class VelocityComponent implements Component, Pool.Poolable {
 	Vector2 linearVelocity = new Vector2(0, 0)
 	float angularVelocity = 0
 	boolean removeAfterProcessing = true
+	boolean applyVelocityToJointedBodies = true
 
 
 	@Override
@@ -15,5 +16,6 @@ class VelocityComponent implements Component, Pool.Poolable {
 		linearVelocity = new Vector2(0, 0)
 		angularVelocity = 0
 		removeAfterProcessing = true
+		applyVelocityToJointedBodies = true
 	}
 }

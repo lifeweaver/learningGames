@@ -51,6 +51,14 @@ class PhysicsSystem extends IteratingSystem {
 				if(velCom) {
 					bodyComp.body.linearVelocity = velCom.linearVelocity
 					bodyComp.body.angularVelocity = velCom.angularVelocity
+
+					if(velCom.applyVelocityToJointedBodies) {
+						bodyComp.body.jointList.each {
+							it.other.linearVelocity = velCom.linearVelocity
+							it.other.angularVelocity = velCom.angularVelocity
+						}
+					}
+
 					if(velCom.removeAfterProcessing) {
 						entity.remove(VelocityComponent)
 					}
