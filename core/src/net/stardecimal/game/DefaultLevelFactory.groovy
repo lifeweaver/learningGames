@@ -89,7 +89,7 @@ trait DefaultLevelFactory {
 		TextureComponent texture = engine.createComponent(TextureComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
 
-		//Divide by the PPM then by 22 unless they are zero
+		//Divide by the PPM then by 2 unless they are zero
 		float x = pos.x != 0 ? pos.x / RenderingSystem.PPM / 2 as float : pos.x
 		float y = pos.y != 0 ? pos.y / RenderingSystem.PPM / 2 as float : pos.y
 
