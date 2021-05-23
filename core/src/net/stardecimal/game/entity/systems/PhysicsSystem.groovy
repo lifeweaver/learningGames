@@ -46,7 +46,6 @@ class PhysicsSystem extends IteratingSystem {
 				Vector2 position = bodyComp.body.position
 				tfm.position.x = position.x
 				tfm.position.y = position.y
-				tfm.rotation = bodyComp.body.angle * MathUtils.radiansToDegrees as float
 
 				VelocityComponent velCom = Mapper.velCom.get(entity)
 				if(velCom) {
