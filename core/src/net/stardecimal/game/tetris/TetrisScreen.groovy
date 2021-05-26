@@ -11,6 +11,15 @@ import net.stardecimal.game.tetris.entity.systems.PlayerControlSystem
 class TetrisScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 
+	//TODO:
+	//create lines to show grid size
+	//move to top center
+	//look at the random bag thing for choosing the pieces
+	//clear lines
+	//update score
+	//show preview block
+	//show level
+
 	TetrisScreen(final MyGames game) {
 		init(game, LevelFactory.class)
 		levelFactory = (LevelFactory) lvlFactory

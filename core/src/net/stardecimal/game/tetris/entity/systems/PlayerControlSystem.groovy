@@ -36,11 +36,11 @@ class PlayerControlSystem extends IteratingSystem {
 		screenSize = RenderingSystem.getScreenSizeInMeters()
 		maxX = levelFactory.grid.first().size()
 
-		if(controller.left && System.currentTimeMillis() - lastKey > 200) {
+		if(controller.left && System.currentTimeMillis() - lastKey > 100) {
 			move(entity, transCom, false)
 		}
 
-		if(controller.right && System.currentTimeMillis() - lastKey > 200) {
+		if(controller.right && System.currentTimeMillis() - lastKey > 100) {
 			move(entity, transCom)
 		}
 
@@ -56,7 +56,7 @@ class PlayerControlSystem extends IteratingSystem {
 			levelFactory.speedUp = 0
 		}
 
-		if(controller.spacbar && System.currentTimeMillis() - lastKey > 200) {
+		if(controller.spacbar && System.currentTimeMillis() - lastKey > 100) {
 			lastKey = System.currentTimeMillis()
 			levelFactory.speedUp = 0.75
 		}
