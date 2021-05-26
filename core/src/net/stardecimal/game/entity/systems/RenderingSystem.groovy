@@ -138,26 +138,28 @@ class RenderingSystem extends SortedIteratingSystem {
 
 				float w2 = 0f
 				float h2 = 0f
-				b.body.fixtureList.each { Fixture fixture ->
-					if(fixture) {
-						if(fixture.shape.type == Shape.Type.Circle) {
-							w2 += fixture.shape.radius * 4
-							h2 += fixture.shape.radius * 4
-						} else if(fixture.shape.type == Shape.Type.Polygon) {
-							PolygonShape shape = fixture.shape as PolygonShape
-							Vector2 vector = new Vector2()
+				if(b) {
+					b.body.fixtureList.each { Fixture fixture ->
+						if(fixture) {
+							if(fixture.shape.type == Shape.Type.Circle) {
+								w2 += fixture.shape.radius * 4
+								h2 += fixture.shape.radius * 4
+							} else if(fixture.shape.type == Shape.Type.Polygon) {
+								PolygonShape shape = fixture.shape as PolygonShape
+								Vector2 vector = new Vector2()
 
-							// code that may be better some how? from https://gist.github.com/nooone/8363982
-							BoundingBox boundingBox
-							shape.getVertex(0, vector)
-							vector = fixture.body.getWorldPoint(vector)
-							boundingBox = new BoundingBox(new Vector3(vector, 0), new Vector3(vector, 0))
-							for (int i = 1; i < shape.vertexCount; i++) {
-								shape.getVertex(i, vector)
-								boundingBox.ext(new Vector3(fixture.body.getWorldPoint(vector), 0))
+								// code that may be better some how? from https://gist.github.com/nooone/8363982
+								BoundingBox boundingBox
+								shape.getVertex(0, vector)
+								vector = fixture.body.getWorldPoint(vector)
+								boundingBox = new BoundingBox(new Vector3(vector, 0), new Vector3(vector, 0))
+								for (int i = 1; i < shape.vertexCount; i++) {
+									shape.getVertex(i, vector)
+									boundingBox.ext(new Vector3(fixture.body.getWorldPoint(vector), 0))
+								}
+								w2 = boundingBox.width
+								h2 = boundingBox.height
 							}
-							w2 = boundingBox.width
-							h2 = boundingBox.height
 						}
 					}
 				}
