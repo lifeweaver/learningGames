@@ -12,6 +12,8 @@ class TextureComponent implements Component, Pool.Poolable {
 	Texture texture = null
 	float offsetX = 0
 	float offsetY = 0
+	float initialOffsetX = 0
+	float initialOffsetY = 0
 
 	@Override
 	void reset() {
@@ -20,6 +22,8 @@ class TextureComponent implements Component, Pool.Poolable {
 		animation = null
 		offsetX = 0
 		offsetY = 0
+		initialOffsetX = 0
+		initialOffsetY = 0
 	}
 
 }
