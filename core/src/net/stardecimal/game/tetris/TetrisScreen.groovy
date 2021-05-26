@@ -5,6 +5,8 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
+import net.stardecimal.game.tetris.entity.systems.MovementSystem
+import net.stardecimal.game.tetris.entity.systems.PlayerControlSystem
 
 class TetrisScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
@@ -14,15 +16,19 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 		levelFactory = (LevelFactory) lvlFactory
 		levelFactory.gameName = 'tetris'
 
-//		engine.addSystem(new PlayerControlSystem(levelFactory))
+		engine.addSystem(new PlayerControlSystem(levelFactory, camera))
+		engine.addSystem(new MovementSystem(levelFactory))
 		// engine.addSystem(new BlockSpawningSystem(levelFactory))
-		levelFactory.createPlayer(camera)
+
 		levelFactory.playerLives = 0
+		levelFactory.spawnRandomBlock()
 	}
 
 	void resetWorld() {
 		reset()
-		levelFactory.createPlayer(camera)
+		levelFactory.createBoundaries(true, false)
+		levelFactory.grid = levelFactory.generateCleanGrid()
+		levelFactory.spawnRandomBlock()
 		levelFactory.playerScore = 0
 		levelFactory.playerLives = 0
 	}
