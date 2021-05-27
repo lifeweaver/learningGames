@@ -230,6 +230,11 @@ class LevelFactory implements DefaultLevelFactory {
 		Collections.shuffle(blockTypes)
 		createBlock(blockTypes.first())
 
+		//End game if the spawned block wasn't a valid move.
+		if(!isValidMove(player)) {
+			playerLives--
+		}
+
 //		createBlock(BlockComponent.BlockType.I)
 //		createBlock(BlockComponent.BlockType.J)
 //		createBlock(BlockComponent.BlockType.L)

@@ -13,7 +13,6 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 
 	//TODO:
-	//if a new block spawns on an existing one, game over
 	//look at the random bag thing for choosing the pieces
 	//clear lines
 	//update score
@@ -52,7 +51,7 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 			engine.update(delta)
 
 			//Move to end game screen once all lives used up
-			if(levelFactory.playerLives > 0) {
+			if(levelFactory.playerLives == -1) {
 				parent.changeScreen(parent.ENDGAME)
 			}
 
