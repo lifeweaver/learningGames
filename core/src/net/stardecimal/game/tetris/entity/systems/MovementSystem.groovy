@@ -45,7 +45,7 @@ class MovementSystem extends IteratingSystem {
 				Vector2 bottomLeft = levelFactory.determineBottomLeft(transCom, Mapper.texCom.get(it))
 
 				//If hits what I'm calling the floor
-				if(bottomLeft.y <= 1) {
+				if(bottomLeft.y <= levelFactory.gridBottom) {
 					levelFactory.collision(it)
 					return
 				}

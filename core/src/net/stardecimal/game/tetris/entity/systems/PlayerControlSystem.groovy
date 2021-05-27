@@ -34,7 +34,7 @@ class PlayerControlSystem extends IteratingSystem {
 	protected void processEntity(Entity entity, float deltaTime) {
 		TransformComponent transCom = Mapper.transCom.get(entity)
 		screenSize = RenderingSystem.getScreenSizeInMeters()
-		maxX = levelFactory.grid.first().size()
+		maxX = levelFactory.gridWidth
 
 		if(controller.left && System.currentTimeMillis() - lastKey > 100) {
 			move(entity, transCom, false)

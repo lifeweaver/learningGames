@@ -13,7 +13,6 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 
 	//TODO:
-	//move to top center
 	//if a new block spawns on an existing one, game over
 	//look at the random bag thing for choosing the pieces
 	//clear lines
@@ -68,10 +67,10 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 			parent.recorder.update()
 		}
 
-		levelFactory.drawDebugLine(new Vector2(0, 0), new Vector2(0, 18), camera.combined)
-		levelFactory.drawDebugLine(new Vector2(0, 18), new Vector2(10, 18), camera.combined)
-		levelFactory.drawDebugLine(new Vector2(10, 18), new Vector2(10, 0), camera.combined)
-		levelFactory.drawDebugLine(new Vector2(10, 0), new Vector2(0, 0), camera.combined)
+		levelFactory.drawDebugLine(new Vector2(0, levelFactory.gridBottom), new Vector2(0, levelFactory.gridTop), camera.combined)
+		levelFactory.drawDebugLine(new Vector2(0, levelFactory.gridTop), new Vector2(10, levelFactory.gridTop), camera.combined)
+		levelFactory.drawDebugLine(new Vector2(10, levelFactory.gridTop), new Vector2(10, levelFactory.gridBottom), camera.combined)
+		levelFactory.drawDebugLine(new Vector2(10, levelFactory.gridBottom), new Vector2(0, levelFactory.gridBottom), camera.combined)
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.TextureComponent
 import net.stardecimal.game.entity.components.TransformComponent
 import net.stardecimal.game.entity.components.TypeComponent
+import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
 import net.stardecimal.game.tetris.entity.components.ActiveComponent
 import net.stardecimal.game.tetris.entity.components.BlockComponent
@@ -29,6 +30,10 @@ class LevelFactory implements DefaultLevelFactory {
 	float speedUp = 0f
 	List<int[]> grid
 	static final ComponentMapper<BlockComponent> blockCom = ComponentMapper.getFor(BlockComponent.class)
+	static int gridHeight = 18
+	static int gridWidth = 10
+	int gridTop = RenderingSystem.screenSizeInMeters.y / RenderingSystem.PPM as int
+	int gridBottom = gridTop - gridHeight
 
 	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		init(en, assetManager)
@@ -134,8 +139,6 @@ class LevelFactory implements DefaultLevelFactory {
 	}
 
 	static List<int[]> generateCleanGrid() {
-		int gridHeight = 18
-		int gridWidth = 10
 		List<int[]> thisGrid = []
 		gridHeight.times {height ->
 			def row = []
@@ -193,7 +196,7 @@ class LevelFactory implements DefaultLevelFactory {
 		List<int[]> filled = getBlockTypeFilled(blockType, transCom.rotation)
 		Vector2 bottomLeft = determineBottomLeft(transCom, texCom)
 		int startX = bottomLeft.x as int
-		int startY = bottomLeft.y as int
+		int startY = bottomLeft.y - (gridBottom - 1) as int
 
 		int yDifference = 0
 		int xDifference = 0
@@ -219,6 +222,7 @@ class LevelFactory implements DefaultLevelFactory {
 			}
 			print("\n")
 		}
+		println("")
 	}
 
 	void spawnRandomBlock() {
@@ -282,9 +286,8 @@ class LevelFactory implements DefaultLevelFactory {
 		blockCom.blockType = blockType
 		updateBlockDisplay(blockCom.blockType, texture)
 		type.type = TypeComponent.TYPES.PLAYER
-		position.position.x = grid.first().size() / 2
-		position.position.y = grid.size() - 2
-
+		position.position.x = gridWidth / 2
+		position.position.y = gridTop - 3
 
 		entity.add(blockCom)
 		entity.add(activeCom)
