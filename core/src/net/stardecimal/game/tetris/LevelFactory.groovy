@@ -17,7 +17,6 @@ import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.TextureComponent
 import net.stardecimal.game.entity.components.TransformComponent
 import net.stardecimal.game.entity.components.TypeComponent
-import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
 import net.stardecimal.game.tetris.entity.components.ActiveComponent
 import net.stardecimal.game.tetris.entity.components.BlockComponent

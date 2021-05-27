@@ -2,9 +2,13 @@ package net.stardecimal.game
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.maps.tiled.TiledMap
+import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
@@ -22,6 +26,7 @@ import org.slf4j.LoggerFactory
 
 trait DefaultLevelFactory {
 	static final Logger log = LoggerFactory.getLogger(DefaultLevelFactory)
+	static ShapeRenderer shapeRenderer = new ShapeRenderer()
 	BodyFactory bodyFactory
 	World world
 	PooledEngine engine
@@ -215,4 +220,27 @@ trait DefaultLevelFactory {
 
 		return aabbQueryCallback.collisionBodies
 	}
+
+//	https://stackoverflow.com/a/30781020/2137125
+	static void drawDebugLine(Vector2 start, Vector2 end, int lineWidth, Color color, Matrix4 projectionMatrix)
+	{
+		Gdx.gl.glLineWidth(lineWidth)
+		shapeRenderer.setProjectionMatrix(projectionMatrix)
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
+		shapeRenderer.setColor(color)
+		shapeRenderer.line(start, end)
+		shapeRenderer.end()
+		Gdx.gl.glLineWidth(1)
+	}
+
+	static void drawDebugLine(Vector2 start, Vector2 end, Matrix4 projectionMatrix) {
+		Gdx.gl.glLineWidth(2);
+		shapeRenderer.setProjectionMatrix(projectionMatrix)
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
+		shapeRenderer.setColor(Color.WHITE)
+		shapeRenderer.line(start, end)
+		shapeRenderer.end()
+		Gdx.gl.glLineWidth(1)
+	}
+
 }

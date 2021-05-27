@@ -3,6 +3,7 @@ package net.stardecimal.game.tetris
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.math.Vector2
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.tetris.entity.systems.MovementSystem
@@ -12,8 +13,8 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 
 	//TODO:
-	//create lines to show grid size
 	//move to top center
+	//if a new block spawns on an existing one, game over
 	//look at the random bag thing for choosing the pieces
 	//clear lines
 	//update score
@@ -66,6 +67,11 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 		if(parent.recorder) {
 			parent.recorder.update()
 		}
+
+		levelFactory.drawDebugLine(new Vector2(0, 0), new Vector2(0, 18), camera.combined)
+		levelFactory.drawDebugLine(new Vector2(0, 18), new Vector2(10, 18), camera.combined)
+		levelFactory.drawDebugLine(new Vector2(10, 18), new Vector2(10, 0), camera.combined)
+		levelFactory.drawDebugLine(new Vector2(10, 0), new Vector2(0, 0), camera.combined)
 	}
 
 	@Override
