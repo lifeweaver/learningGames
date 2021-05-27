@@ -178,7 +178,7 @@ class LevelFactory implements DefaultLevelFactory {
 	int adjustedWidth(Entity entity, boolean max=true) {
 		TextureComponent texCom = Mapper.texCom.get(entity)
 		TransformComponent transCom = Mapper.transCom.get(entity)
-		BlockComponent.BlockType blockType = blockCom.get(entity).blockType
+		BlockComponent.BlockType blockType = blockCom.get(entity).type
 		List<int[]> filled = getBlockTypeFilled(blockType, transCom.rotation)
 		Vector2 bottomLeft = determineBottomLeft(transCom, texCom)
 
@@ -192,7 +192,7 @@ class LevelFactory implements DefaultLevelFactory {
 	List<int[]> calculateGrid(Entity entity, List<int[]> thisGrid) {
 		TextureComponent texCom = Mapper.texCom.get(entity)
 		TransformComponent transCom = Mapper.transCom.get(entity)
-		BlockComponent.BlockType blockType = blockCom.get(entity).blockType
+		BlockComponent.BlockType blockType = blockCom.get(entity).type
 		List<int[]> filled = getBlockTypeFilled(blockType, transCom.rotation)
 		Vector2 bottomLeft = determineBottomLeft(transCom, texCom)
 		int startX = bottomLeft.x as int
@@ -288,8 +288,8 @@ class LevelFactory implements DefaultLevelFactory {
 		ActiveComponent activeCom = engine.createComponent(ActiveComponent)
 		BlockComponent blockCom = engine.createComponent(BlockComponent)
 
-		blockCom.blockType = blockType
-		updateBlockDisplay(blockCom.blockType, texture)
+		blockCom.type = blockType
+		updateBlockDisplay(blockCom.type, texture)
 		type.type = TypeComponent.TYPES.PLAYER
 		position.position.x = gridWidth / 2
 		position.position.y = gridTop - 3

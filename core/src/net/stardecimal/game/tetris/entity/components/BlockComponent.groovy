@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Pool
 
 class BlockComponent implements Component, Pool.Poolable {
 	static enum BlockType { I, J, L, O, S, T, Z }
-	BlockType blockType = null
+	BlockType type = null
 
 	//3 wide block types
 	static List<BlockType> threeWideBlocks = [
@@ -18,6 +18,6 @@ class BlockComponent implements Component, Pool.Poolable {
 
 	@Override
 	void reset() {
-		blockType = null
+		type = null
 	}
 }

@@ -78,7 +78,7 @@ class PlayerControlSystem extends IteratingSystem {
 
 		//Change texture offsets to account for the rotation
 		int testValue = Math.abs(playerBody.rotation) as int
-		BlockComponent.BlockType blockType = levelFactory.blockCom.get(entity).blockType
+		BlockComponent.BlockType blockType = levelFactory.blockCom.get(entity).type
 		if(blockType == BlockComponent.BlockType.I) {
 			if(testValue == 90 || testValue == 270) {
 				texCom.offsetY = 0.5
