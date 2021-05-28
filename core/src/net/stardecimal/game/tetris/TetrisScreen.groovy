@@ -13,8 +13,8 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 
 	//TODO:
-	//look at the random bag thing for choosing the pieces
 	//clear lines
+	//speed up
 	//update score
 	//show preview block
 	//show level

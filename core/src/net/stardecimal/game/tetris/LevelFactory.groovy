@@ -3,12 +3,14 @@ package net.stardecimal.game.tetris
 import com.badlogic.ashley.core.ComponentMapper
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
+import net.stardecimal.game.DFUtils
 import net.stardecimal.game.DefaultHud
 import net.stardecimal.game.DefaultLevelFactory
 import net.stardecimal.game.entity.components.CollisionComponent
@@ -254,7 +256,39 @@ class LevelFactory implements DefaultLevelFactory {
 		grid = calculateGrid(entity, grid)
 		displayGrid(grid)
 
+		//Replace block with single blocks
+		replaceBlockWithSingleBlocks(entity)
+		player = null
+		engine.removeEntity(entity)
+
 		spawnRandomBlock()
+	}
+
+	void replaceBlockWithSingleBlocks(Entity entity) {
+		BlockComponent blockComponent = blockCom.get(entity)
+		TransformComponent transCom = Mapper.transCom.get(entity)
+		TextureComponent texCom = Mapper.texCom.get(entity)
+		List<int[]> filled = getBlockTypeFilled(blockComponent.type, transCom.rotation)
+		Vector2 bottomLeft = determineBottomLeft(transCom, texCom)
+		int startX = bottomLeft.x as int
+		int startY = bottomLeft.y - (gridBottom - 1) as int
+
+		int yDifference = 0
+		int xDifference = 0
+		filled.each {row ->
+			xDifference = 0
+			row.each {column ->
+				//Only add a block there is it's a 1
+				if(column) {
+					float x = startX + xDifference + 0.5
+					float y = startY + yDifference + gridBottom - 0.5
+					createBlock(blockComponent.type, new Vector2(x, y), blockComponent.color)
+				}
+				xDifference += 1
+			}
+			yDifference += 1
+		}
+
 	}
 
 	static Vector2 determineBottomLeft(TransformComponent transCom, TextureComponent texCom) {
@@ -275,70 +309,82 @@ class LevelFactory implements DefaultLevelFactory {
 		return new Vector2(Math.round(x), Math.round(y))
 	}
 
-	void createBlock(BlockComponent.BlockType blockType) {
+	void createBlock(BlockComponent.BlockType blockType, Vector2 startPos=new Vector2(gridWidth / 2, gridTop - 3), Color color=null) {
 		//Reset controls on death
 		controller.reset()
 
 		Entity entity = engine.createEntity()
 		TransformComponent position = engine.createComponent(TransformComponent)
 		TextureComponent texture = engine.createComponent(TextureComponent)
-		PlayerComponent playerCom = engine.createComponent(PlayerComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
-		CollisionComponent colCom = engine.createComponent(CollisionComponent)
-		ActiveComponent activeCom = engine.createComponent(ActiveComponent)
-		BlockComponent blockCom = engine.createComponent(BlockComponent)
 
-		blockCom.type = blockType
-		updateBlockDisplay(blockCom.type, texture)
-		type.type = TypeComponent.TYPES.PLAYER
-		position.position.x = gridWidth / 2
-		position.position.y = gridTop - 3
+		//If there is a block type, that means it's a new block, otherwise it's a 1 by 1 block
+		if(!color) {
+			PlayerComponent playerCom = engine.createComponent(PlayerComponent)
+			ActiveComponent activeCom = engine.createComponent(ActiveComponent)
+			BlockComponent blockCom = engine.createComponent(BlockComponent)
+			blockCom.type = blockType
+			updateBlockDisplay(blockCom, texture)
+			type.type = TypeComponent.TYPES.PLAYER
 
-		entity.add(blockCom)
-		entity.add(activeCom)
-		entity.add(colCom)
+			entity.add(blockCom)
+			entity.add(activeCom)
+			entity.add(playerCom)
+		} else {
+			texture.region = DFUtils.makeTextureRegion(1, 1, color)
+			type.type = TypeComponent.TYPES.OTHER
+		}
+
+		position.position.x = startPos.x
+		position.position.y = startPos.y
+
 		entity.add(position)
 		entity.add(texture)
-		entity.add(playerCom)
 		entity.add(type)
 		engine.addEntity(entity)
 		player = entity
 	}
 
-	void updateBlockDisplay(BlockComponent.BlockType blockType, TextureComponent texture) {
+	void updateBlockDisplay(BlockComponent blockComponent, TextureComponent texture) {
 		texture.initialOffsetX = 0.5
 		texture.offsetX = texture.initialOffsetX
 
-		switch(blockType) {
+		switch(blockComponent.type) {
 			case BlockComponent.BlockType.I:
 				texture.region = iTex
+				blockComponent.color = Color.valueOf('30C7EDFF')
 				break
 
 			case BlockComponent.BlockType.J:
 				texture.region = jTex
+				blockComponent.color = Color.valueOf('5866AFFF')
 				break
 
 			case BlockComponent.BlockType.L:
 				texture.region = lTex
+				blockComponent.color = Color.valueOf('EF7922FF')
 				break
 
 			case BlockComponent.BlockType.O:
 				texture.region = oTex
+				blockComponent.color = Color.valueOf('F5D507FF')
 				texture.initialOffsetX = 0
 				texture.offsetX = texture.initialOffsetX
 				break
 
 			case BlockComponent.BlockType.S:
 				texture.region = sTex
+				blockComponent.color = Color.valueOf('40B73FFF')
 				break
 
 			case BlockComponent.BlockType.T:
 				texture.region = tTex
-
+				blockComponent.color = Color.valueOf('AE4D9EFF')
 				break
 
 			case BlockComponent.BlockType.Z:
 				texture.region = zTex
+				blockComponent.color = Color.valueOf('EF202BFF')
 				break
 		}
 	}
