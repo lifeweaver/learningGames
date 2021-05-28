@@ -37,6 +37,8 @@ class LevelFactory implements DefaultLevelFactory {
 	static int gridWidth = 10
 	int gridTop = RenderingSystem.screenSizeInMeters.y / RenderingSystem.PPM as int
 	int gridBottom = gridTop - gridHeight
+	BlockComponent.BlockType nextBlock
+	Entity previewBlock
 
 	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		init(en, assetManager)
@@ -54,6 +56,8 @@ class LevelFactory implements DefaultLevelFactory {
 		zTex = atlas.findRegion("tetris/z")
 
 		grid = generateCleanGrid()
+		nextBlock = randomBlock()
+		updatePreviewGrid()
 
 		log.info("level factory initialized")
 	}
@@ -233,10 +237,23 @@ class LevelFactory implements DefaultLevelFactory {
 		println("")
 	}
 
-	void spawnRandomBlock() {
+	static BlockComponent.BlockType randomBlock() {
 		List blockTypes = BlockComponent.BlockType.values().toList()
 		Collections.shuffle(blockTypes)
-		createBlock(blockTypes.first())
+		return blockTypes.first()
+	}
+
+	void updatePreviewGrid() {
+		if(previewBlock) {
+			engine.removeEntity(previewBlock)
+		}
+		previewBlock = createBlock(nextBlock, new Vector2(14, 27), null, TypeComponent.TYPES.SCENERY)
+	}
+
+	void spawnRandomBlock() {
+		createBlock(nextBlock)
+		nextBlock = randomBlock()
+		updatePreviewGrid()
 
 //		createBlock(BlockComponent.BlockType.I)
 //		createBlock(BlockComponent.BlockType.J)
@@ -313,14 +330,11 @@ class LevelFactory implements DefaultLevelFactory {
 		return new Vector2(Math.round(x), Math.round(y))
 	}
 
-	void createBlock(BlockComponent.BlockType blockType, Vector2 startPos=new Vector2(gridWidth / 2, gridTop - 3), Color color=null) {
-		//Reset controls on death
-		controller.reset()
-
+	Entity createBlock(BlockComponent.BlockType blockType, Vector2 startPos=new Vector2(gridWidth / 2, gridTop - 3), Color color=null, int type=0) {
 		Entity entity = engine.createEntity()
 		TransformComponent position = engine.createComponent(TransformComponent)
 		TextureComponent texture = engine.createComponent(TextureComponent)
-		TypeComponent type = engine.createComponent(TypeComponent)
+		TypeComponent typeCom = engine.createComponent(TypeComponent)
 
 		//If there is a block type, that means it's a new block, otherwise it's a 1 by 1 block
 		if(!color) {
@@ -329,14 +343,20 @@ class LevelFactory implements DefaultLevelFactory {
 			BlockComponent blockCom = engine.createComponent(BlockComponent)
 			blockCom.type = blockType
 			updateBlockDisplay(blockCom, texture)
-			type.type = TypeComponent.TYPES.PLAYER
+			typeCom.type = type ?: TypeComponent.TYPES.PLAYER
 
-			entity.add(blockCom)
-			entity.add(activeCom)
-			entity.add(playerCom)
+			if(typeCom.type == TypeComponent.TYPES.PLAYER) {
+				//Reset controls on death
+				controller.reset()
+
+				entity.add(blockCom)
+				entity.add(activeCom)
+				entity.add(playerCom)
+				player = entity
+			}
 		} else {
 			texture.region = DFUtils.makeTextureRegion(1, 1, color)
-			type.type = TypeComponent.TYPES.OTHER
+			typeCom.type = TypeComponent.TYPES.OTHER
 		}
 
 		position.position.x = startPos.x
@@ -344,9 +364,9 @@ class LevelFactory implements DefaultLevelFactory {
 
 		entity.add(position)
 		entity.add(texture)
-		entity.add(type)
+		entity.add(typeCom)
 		engine.addEntity(entity)
-		player = entity
+		return entity
 	}
 
 	void updateBlockDisplay(BlockComponent blockComponent, TextureComponent texture) {

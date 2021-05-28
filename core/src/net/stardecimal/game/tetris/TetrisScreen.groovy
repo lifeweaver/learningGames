@@ -16,7 +16,6 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 	//TODO:
 	//speed up
 	//update score
-	//show preview block
 	//show level
 
 	TetrisScreen(final MyGames game) {
@@ -66,10 +65,17 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 			parent.recorder.update()
 		}
 
+		//Main grid
 		levelFactory.drawDebugLine(new Vector2(0, levelFactory.gridBottom), new Vector2(0, levelFactory.gridTop), camera.combined)
 		levelFactory.drawDebugLine(new Vector2(0, levelFactory.gridTop), new Vector2(10, levelFactory.gridTop), camera.combined)
 		levelFactory.drawDebugLine(new Vector2(10, levelFactory.gridTop), new Vector2(10, levelFactory.gridBottom), camera.combined)
 		levelFactory.drawDebugLine(new Vector2(10, levelFactory.gridBottom), new Vector2(0, levelFactory.gridBottom), camera.combined)
+
+		//Preview grid
+		levelFactory.drawDebugLine(new Vector2(12, levelFactory.gridTop - 5), new Vector2(12, levelFactory.gridTop), camera.combined)
+		levelFactory.drawDebugLine(new Vector2(12, levelFactory.gridTop), new Vector2(17, levelFactory.gridTop), camera.combined)
+		levelFactory.drawDebugLine(new Vector2(17, levelFactory.gridTop), new Vector2(17, levelFactory.gridTop - 5), camera.combined)
+		levelFactory.drawDebugLine(new Vector2(17, levelFactory.gridTop - 5), new Vector2(12, levelFactory.gridTop - 5), camera.combined)
 	}
 
 	@Override
