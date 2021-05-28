@@ -14,7 +14,15 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 
 	//TODO:
-	//speed up
+	//increment the levels
+	//speed up the game as the level gets higher
+	//Show block placement preview
+	//Allow to immediately place a block to speed up initial game.
+	//Give bonus scores if multiple lines are cleared at once
+	//Adjust score for clearing line based on blocks used to create it
+	//Adjust score based on how long it's been since the last line clear
+	//Add onscreen buttons so the game could be played on a touch screen
+	//Add sound effects?
 
 	TetrisScreen(final MyGames game) {
 		init(game, LevelFactory.class)
