@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.math.Vector2
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
+import net.stardecimal.game.tetris.entity.systems.LineClearingSystem
 import net.stardecimal.game.tetris.entity.systems.MovementSystem
 import net.stardecimal.game.tetris.entity.systems.PlayerControlSystem
 
@@ -13,7 +14,7 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 
 	//TODO:
-	//clear lines
+	//I was able to rotate the I into the left wall
 	//speed up
 	//update score
 	//show preview block
@@ -26,7 +27,7 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 
 		engine.addSystem(new PlayerControlSystem(levelFactory, camera))
 		engine.addSystem(new MovementSystem(levelFactory))
-		// engine.addSystem(new BlockSpawningSystem(levelFactory))
+		engine.addSystem(new LineClearingSystem(levelFactory))
 
 		levelFactory.playerLives = 0
 		levelFactory.spawnRandomBlock()

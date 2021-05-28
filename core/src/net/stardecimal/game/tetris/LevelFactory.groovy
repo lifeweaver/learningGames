@@ -31,7 +31,8 @@ class LevelFactory implements DefaultLevelFactory {
 	float fallingRateIncrease = 0f
 	float speedUp = 0f
 	List<int[]> grid
-	static final ComponentMapper<BlockComponent> blockCom = ComponentMapper.getFor(BlockComponent.class)
+	static final ComponentMapper<BlockComponent> blockMapper = ComponentMapper.getFor(BlockComponent.class)
+	static final ComponentMapper<ActiveComponent> activeMapper = ComponentMapper.getFor(ActiveComponent.class)
 	static int gridHeight = 18
 	static int gridWidth = 10
 	int gridTop = RenderingSystem.screenSizeInMeters.y / RenderingSystem.PPM as int
@@ -180,7 +181,7 @@ class LevelFactory implements DefaultLevelFactory {
 	int adjustedWidth(Entity entity, boolean max=true) {
 		TextureComponent texCom = Mapper.texCom.get(entity)
 		TransformComponent transCom = Mapper.transCom.get(entity)
-		BlockComponent.BlockType blockType = blockCom.get(entity).type
+		BlockComponent.BlockType blockType = blockMapper.get(entity).type
 		List<int[]> filled = getBlockTypeFilled(blockType, transCom.rotation)
 		Vector2 bottomLeft = determineBottomLeft(transCom, texCom)
 
@@ -194,7 +195,7 @@ class LevelFactory implements DefaultLevelFactory {
 	List<int[]> calculateGrid(Entity entity, List<int[]> thisGrid) {
 		TextureComponent texCom = Mapper.texCom.get(entity)
 		TransformComponent transCom = Mapper.transCom.get(entity)
-		BlockComponent.BlockType blockType = blockCom.get(entity).type
+		BlockComponent.BlockType blockType = blockMapper.get(entity).type
 		List<int[]> filled = getBlockTypeFilled(blockType, transCom.rotation)
 		Vector2 bottomLeft = determineBottomLeft(transCom, texCom)
 		int startX = bottomLeft.x as int
@@ -248,9 +249,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 	void collision(Entity entity) {
 		entity.remove(PlayerComponent)
-		entity.remove(CollisionComponent)
 		entity.remove(ActiveComponent)
-		Mapper.typeCom.get(entity).type = TypeComponent.TYPES.OTHER
 
 		//Update main grid
 		grid = calculateGrid(entity, grid)
@@ -265,7 +264,7 @@ class LevelFactory implements DefaultLevelFactory {
 	}
 
 	void replaceBlockWithSingleBlocks(Entity entity) {
-		BlockComponent blockComponent = blockCom.get(entity)
+		BlockComponent blockComponent = blockMapper.get(entity)
 		TransformComponent transCom = Mapper.transCom.get(entity)
 		TextureComponent texCom = Mapper.texCom.get(entity)
 		List<int[]> filled = getBlockTypeFilled(blockComponent.type, transCom.rotation)

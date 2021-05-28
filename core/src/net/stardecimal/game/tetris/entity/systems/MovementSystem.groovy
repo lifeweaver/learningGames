@@ -23,6 +23,7 @@ class MovementSystem extends IteratingSystem {
 		super(Family.all(TransformComponent.class, ActiveComponent.class).get())
 		this.bodiesQueue = new Array<Entity>()
 		levelFactory = lvlFactory
+		priority = 20
 	}
 
 	@Override
