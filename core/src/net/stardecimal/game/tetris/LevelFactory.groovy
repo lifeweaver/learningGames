@@ -206,6 +206,11 @@ class LevelFactory implements DefaultLevelFactory {
 		filled.each {row ->
 			xDifference = 0
 			row.each {column ->
+				//Kick out if x is negative
+				if(startX + xDifference < 0) {
+					throw new ArrayIndexOutOfBoundsException()
+				}
+
 				//Only fill if it's not already filled
 				if(thisGrid[startY + yDifference][startX + xDifference] == 0) {
 					thisGrid[startY + yDifference][startX + xDifference] = column
@@ -233,11 +238,6 @@ class LevelFactory implements DefaultLevelFactory {
 		Collections.shuffle(blockTypes)
 		createBlock(blockTypes.first())
 
-		//End game if the spawned block wasn't a valid move.
-		if(!isValidMove(player)) {
-			playerLives--
-		}
-
 //		createBlock(BlockComponent.BlockType.I)
 //		createBlock(BlockComponent.BlockType.J)
 //		createBlock(BlockComponent.BlockType.L)
@@ -245,6 +245,11 @@ class LevelFactory implements DefaultLevelFactory {
 //		createBlock(BlockComponent.BlockType.S)
 //		createBlock(BlockComponent.BlockType.T)
 //		createBlock(BlockComponent.BlockType.Z)
+
+		//End game if the spawned block wasn't a valid move.
+		if(!isValidMove(player)) {
+			playerLives--
+		}
 	}
 
 	void collision(Entity entity) {

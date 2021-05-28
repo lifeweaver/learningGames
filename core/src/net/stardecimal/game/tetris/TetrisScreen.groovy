@@ -14,7 +14,6 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 
 	//TODO:
-	//I was able to rotate the I into the left wall
 	//speed up
 	//update score
 	//show preview block
