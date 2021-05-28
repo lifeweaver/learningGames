@@ -58,6 +58,7 @@ class LineClearingSystem extends IteratingSystem {
 				updateGrid(entity)
 				engine.removeEntity(entity)
 			}
+			levelFactory.playerScore = levelFactory.playerScore +  100
 		}
 
 		//Find all blocks above each line cleared and move them down 1 block starting from the top

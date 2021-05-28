@@ -15,8 +15,6 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 
 	//TODO:
 	//speed up
-	//update score
-	//show level
 
 	TetrisScreen(final MyGames game) {
 		init(game, LevelFactory.class)
@@ -56,7 +54,7 @@ class TetrisScreen extends ScreenAdapter implements GameScreen {
 
 			if(levelFactory.hud) {
 				levelFactory.hud.setScore(levelFactory.playerScore)
-				levelFactory.hud.setLives(levelFactory.playerLives)
+				levelFactory.hud.setLevel(levelFactory.level)
 			}
 		}
 

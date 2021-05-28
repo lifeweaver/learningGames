@@ -11,9 +11,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
 import net.stardecimal.game.DFUtils
-import net.stardecimal.game.DefaultHud
 import net.stardecimal.game.DefaultLevelFactory
-import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.TextureComponent
@@ -37,6 +35,7 @@ class LevelFactory implements DefaultLevelFactory {
 	static int gridWidth = 10
 	int gridTop = RenderingSystem.screenSizeInMeters.y / RenderingSystem.PPM as int
 	int gridBottom = gridTop - gridHeight
+	int level = 0
 	BlockComponent.BlockType nextBlock
 	Entity previewBlock
 
@@ -420,7 +419,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 	@Override
 	def createHud(SpriteBatch batch) {
-		hud = new DefaultHud(batch)
+		hud = new TetrisHud(batch)
 		return hud
 	}
 }
