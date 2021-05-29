@@ -18,7 +18,7 @@ trait GameScreen {
 	Entity player
 	DefaultLevelFactory lvlFactory
 
-	void init(final MyGames game, Class instance) {
+	void init(final MyGames game, Class leveFactoryClass, Class renderingConstantsClass=null) {
 		this.parent = game
 
 		parent.assetManager.queueAddSounds()
@@ -26,12 +26,13 @@ trait GameScreen {
 		parent.assetManager.queueAddIndividualAssets()
 		parent.assetManager.manager.finishLoading()
 		engine = new PooledEngine()
-		lvlFactory = (DefaultLevelFactory) instance.newInstance(engine, parent.assetManager)
+		lvlFactory = (DefaultLevelFactory) leveFactoryClass.newInstance(engine, parent.assetManager)
 		lvlFactory.controller = new KeyboardController()
 		parent.multiplexer.addProcessor(lvlFactory.controller)
 
 		batch = new SpriteBatch()
-		RenderingSystem renderingSystem = new RenderingSystem(batch)
+		DefaultRenderingConstants defaultRenderingConstants = renderingConstantsClass ? (DefaultRenderingConstants) renderingConstantsClass.newInstance() : null
+		RenderingSystem renderingSystem = new RenderingSystem(batch, defaultRenderingConstants)
 		renderingSystem.addTiledMapBackground(lvlFactory.generateBackground())
 		renderingSystem.addHud(lvlFactory.createHud(batch))
 		camera = renderingSystem.camera

@@ -11,6 +11,7 @@ import net.stardecimal.game.asteroids.AsteroidsScreen
 import net.stardecimal.game.breakout.BreakoutScreen
 import net.stardecimal.game.loader.SdAssetManager
 import net.stardecimal.game.missilecommand.MissileCommandScreen
+import net.stardecimal.game.pacman.PacmanScreen
 import net.stardecimal.game.pong.PongScreen
 import net.stardecimal.game.screens.EndScreen
 import net.stardecimal.game.screens.GameSelectionScreen
@@ -40,6 +41,7 @@ class MyGames extends Game {
 	private AsteroidsScreen asteroidsScreen
 	private HighScoresScreen highScoresScreen
 	private TetrisScreen tetrisScreen
+	private PacmanScreen pacmanScreen
 	SdAssetManager assetManager = new SdAssetManager()
 	InputMultiplexer multiplexer = new InputMultiplexer()
 
@@ -56,6 +58,7 @@ class MyGames extends Game {
 	final static int ASTEROIDS = 10
 	final static int HIGH_SCORES = 11
 	final static int TETRIS = 12
+	final static int PACMAN = 13
 	Music playingSong
 	int lastMenu = MENU
 	int currentGame
@@ -96,6 +99,10 @@ class MyGames extends Game {
 			spaceInvadersScreen = null
 			asteroidsScreen?.dispose()
 			asteroidsScreen = null
+			tetrisScreen?.dispose()
+			tetrisScreen = null
+			pacmanScreen?.dispose()
+			pacmanScreen = null
 		}
 
 		currentGame = screen
@@ -190,6 +197,17 @@ class MyGames extends Game {
 				state = STATE.RUNNING
 				break
 
+			case PACMAN:
+				gameChange(screen)
+				if(!pacmanScreen) {
+					pacmanScreen = new PacmanScreen(this)
+				} else if(lastMenu != PAUSE) {
+					pacmanScreen.resetWorld()
+				}
+
+				this.setScreen(pacmanScreen)
+				state = STATE.RUNNING
+				break
 			case MENU:
 				state = STATE.READY
 				lastMenu = screen

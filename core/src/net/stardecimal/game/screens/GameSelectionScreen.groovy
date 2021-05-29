@@ -56,9 +56,10 @@ class GameSelectionScreen extends ScreenAdapter {
 		TextButton spaceInvaders = new TextButton("Space Invaders", skin)
 		TextButton asteroids = new TextButton("Asteroids", skin)
 		TextButton tetris = new TextButton("Tetris", skin)
+		TextButton pacman = new TextButton("Pacman", skin)
 		TextButton back = new TextButton("Back", skin)
 
-		[pingPong, worm, breakout, missileCommand, spaceInvaders, asteroids, tetris, back].each {
+		[pingPong, worm, breakout, missileCommand, spaceInvaders, asteroids, tetris, pacman, back].each {
 //			it.setTransform(true)
 //			it.setScale(0.7)
 			it.label.setFontScale(0.5)
@@ -75,8 +76,10 @@ class GameSelectionScreen extends ScreenAdapter {
 		innerTable.add(spaceInvaders)
 		innerTable.add(asteroids)
 		innerTable.row()
-		innerTable.add(back)
 		innerTable.add(tetris)
+		innerTable.add(pacman)
+		innerTable.row()
+		innerTable.add(back)
 
 		stage.setScrollFocus(scroll)
 		scroll.validate()
@@ -141,6 +144,13 @@ class GameSelectionScreen extends ScreenAdapter {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
 				parent.changeScreen(MyGames.TETRIS)
+			}
+		})
+
+		pacman.addListener(new ChangeListener() {
+			@Override
+			void changed(ChangeListener.ChangeEvent event, Actor actor) {
+				parent.changeScreen(MyGames.PACMAN)
 			}
 		})
 	}

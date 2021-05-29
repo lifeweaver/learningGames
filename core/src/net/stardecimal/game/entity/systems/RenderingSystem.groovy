@@ -19,6 +19,9 @@ import com.badlogic.gdx.physics.box2d.Fixture
 import com.badlogic.gdx.physics.box2d.PolygonShape
 import com.badlogic.gdx.physics.box2d.Shape
 import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.viewport.FitViewport
+import com.badlogic.gdx.utils.viewport.Viewport
+import net.stardecimal.game.DefaultRenderingConstants
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TextureComponent
@@ -31,13 +34,13 @@ import net.stardecimal.game.entity.components.TransformComponent
  */
 
 class RenderingSystem extends SortedIteratingSystem {
-	static final float PPM = 16.0f //amount of pixels each metre of box2d objects contains
+	static float PPM = 16.0f //amount of pixels each metre of box2d objects contains
 
 	// this gets the height and width of our camera frustrum based off the width and height of the screen and our pixel per meter ratio
-	static final float FRUSTUM_WIDTH = Gdx.graphics.width / PPM
-	static final float FRUSTUM_HEIGHT = Gdx.graphics.height / PPM
+	static float FRUSTUM_WIDTH = Gdx.graphics.width / PPM
+	static float FRUSTUM_HEIGHT = Gdx.graphics.height / PPM
 
-	static final float PIXELS_TO_METRES = 1.0f // get the ration for converting pixels to metres
+	static float PIXELS_TO_METRES = 1.0f // get the ration for converting pixels to metres
 
 	private static Vector2 meterDimensions = new Vector2()
 	private static Vector2 pixelDimensions = new Vector2()
@@ -61,28 +64,46 @@ class RenderingSystem extends SortedIteratingSystem {
 	private Array<Entity> renderQueue // used to allow sorting of images allowing us to draw images on top of each other
 	private Comparator<Entity> comparator // to sort images based on the z position of the transformComponent
 	private OrthographicCamera cam
+	private Viewport viewport
 	private TiledMap background
 	private OrthogonalTiledMapRenderer backgroundRenderer
 	private Matrix4 hudMatrix
 	private def hud
 	private float stateTime = 0
+	DefaultRenderingConstants constants
 
 	@SuppressWarnings('unchecked')
-	RenderingSystem(SpriteBatch batch) {
+	RenderingSystem(SpriteBatch batch, DefaultRenderingConstants defaultConstants=null) {
 		super(Family.all(TransformComponent.class, TextureComponent.class).get(), new ZComparator())
 		priority = 9
 		renderQueue = new Array<Entity>()
-
 		this.batch = batch
+		constants = defaultConstants
 
-		cam = new OrthographicCamera(FRUSTUM_WIDTH, FRUSTUM_HEIGHT)
-		cam.position.set(FRUSTUM_WIDTH / 2f as float, FRUSTUM_HEIGHT / 2f as float, 0)
+		//Override the basic default settings used
+		if(constants) {
+			PPM = constants.PPM
+			PIXELS_TO_METRES = constants.MPP
+			FRUSTUM_WIDTH = constants.WORLD_WIDTH
+			FRUSTUM_HEIGHT = constants.WORLD_HEIGHT
+
+			cam = new OrthographicCamera()
+			viewport = new FitViewport(constants.WORLD_WIDTH, constants.WORLD_HEIGHT, cam)
+			cam.viewportWidth = viewport.worldWidth
+			cam.viewportHeight = viewport.worldHeight
+			cam.position.set(viewport.worldWidth / 2f as float, viewport.worldHeight / 2f as float, 0)
+		} else {
+			cam = new OrthographicCamera(FRUSTUM_WIDTH, FRUSTUM_HEIGHT)
+			cam.position.set(FRUSTUM_WIDTH / 2f as float, FRUSTUM_HEIGHT / 2f as float, 0)
+		}
+
 	}
 
 	void addTiledMapBackground(TiledMap map) {
 		if(map) {
 			background = map
-			backgroundRenderer = new OrthogonalTiledMapRenderer(background, batch)
+			backgroundRenderer = new OrthogonalTiledMapRenderer(background, PIXELS_TO_METRES, batch)
+//			backgroundRenderer = new OrthogonalTiledMapRenderer(background, batch)
 		}
 	}
 
