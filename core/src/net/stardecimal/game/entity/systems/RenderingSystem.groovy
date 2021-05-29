@@ -142,7 +142,7 @@ class RenderingSystem extends SortedIteratingSystem {
 
 			//Override region if animation exists
 			if(tex.animation && !t.isHidden) {
-				tex.region = tex.animation.getKeyFrame(stateTime, true)
+				tex.region = tex.animation.getKeyFrame(stateTime, tex.animation.playMode.toString().containsIgnoreCase('LOOP'))
 			}
 
 			if((tex.region != null || tex.texture != null) && !t.isHidden) {

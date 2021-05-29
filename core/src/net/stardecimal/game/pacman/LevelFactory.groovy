@@ -3,6 +3,7 @@ package net.stardecimal.game.pacman
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -23,7 +24,7 @@ import net.stardecimal.game.loader.SdAssetManager
 
 class LevelFactory implements DefaultLevelFactory {
 	private TextureRegion playerTex, ghost1Tex, ghost2Tex, ghost3Tex, ghost4Tex
-//	private Animation<TextureRegion> enemy1Animation, enemy2Animation, enemy3Animation
+	private Animation<TextureRegion> pacmanAnimation
 //	Sound enemy4Theme, enemyBlownUp, playerBlownUp, playerFiring, background
 //	RandomXS128 rand = new RandomXS128()
 	Entity player
@@ -37,6 +38,7 @@ class LevelFactory implements DefaultLevelFactory {
 		atlas.findRegion("pacman/")
 
 		playerTex = atlas.findRegion("pacman/player")
+		pacmanAnimation = new Animation<TextureRegion>(0.1f, atlas.findRegions("pacman/pacman"), Animation.PlayMode.LOOP)
 
 		log.info("level factory initialized")
 	}
@@ -51,17 +53,18 @@ class LevelFactory implements DefaultLevelFactory {
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
 
 		playerCom.cam = cam
-		sdBody.body = bodyFactory.makeBoxPolyBody(
+		sdBody.body = bodyFactory.makeCirclePolyBody(
 				screenSize.x / RenderingSystem.PPM / 2 as float,
 				3,
-				2,
-				0.75f,
+				0.4,
 				BodyFactory.STONE,
 				BodyDef.BodyType.DynamicBody,
 				true
 		)
 
-		texture.region = playerTex
+		texture.animation = pacmanAnimation
+		position.scale.x = 10
+		position.scale.y = 10
 		type.type = TypeComponent.TYPES.PLAYER
 		sdBody.body.setUserData(entity)
 
