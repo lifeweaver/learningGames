@@ -103,7 +103,6 @@ class RenderingSystem extends SortedIteratingSystem {
 		if(map) {
 			background = map
 			backgroundRenderer = new OrthogonalTiledMapRenderer(background, PIXELS_TO_METRES, batch)
-//			backgroundRenderer = new OrthogonalTiledMapRenderer(background, batch)
 		}
 	}
 
