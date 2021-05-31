@@ -35,13 +35,13 @@ import net.stardecimal.game.entity.components.TransformComponent
  */
 
 class RenderingSystem extends SortedIteratingSystem {
-	static float PPM = 16.0f //amount of pixels each metre of box2d objects contains
+	static float PPM //amount of pixels each metre of box2d objects contains
 
 	// this gets the height and width of our camera frustrum based off the width and height of the screen and our pixel per meter ratio
-	static float FRUSTUM_WIDTH = Gdx.graphics.width / PPM
-	static float FRUSTUM_HEIGHT = Gdx.graphics.height / PPM
+	static float FRUSTUM_WIDTH
+	static float FRUSTUM_HEIGHT
 
-	static float PIXELS_TO_METRES = 1.0f // get the ration for converting pixels to metres
+	static float PIXELS_TO_METRES // get the ration for converting pixels to metres
 
 	private static Vector2 meterDimensions = new Vector2()
 	private static Vector2 pixelDimensions = new Vector2()
@@ -89,6 +89,10 @@ class RenderingSystem extends SortedIteratingSystem {
 		priority = 9
 		renderQueue = new Array<Entity>()
 		this.batch = batch
+		PPM = 16.0f
+		FRUSTUM_WIDTH = Gdx.graphics.width / PPM as float
+		FRUSTUM_HEIGHT = Gdx.graphics.height / PPM as float
+		PIXELS_TO_METRES = 1.0f
 		constants = defaultConstants
 
 		//Override the basic default settings used
