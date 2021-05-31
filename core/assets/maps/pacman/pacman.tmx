@@ -6,7 +6,7 @@
  <tileset firstgid="1" source="pacman.tsx"/>
  <layer id="1" name="Tile Layer 1" width="28" height="35">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACt1W7ZGEIAxlRZ3dY4uwFEvZUiyFUijFUi4cH/cmBhTdmbvZH2/EGBJ55OuplHp+MHqCbsSo1ESwrfv6sGdq/cebUi+Cbd2nwd+XUvMt2PLrjQzl6K+kI9lDf94G/L/lMi4/osNl7HwryZ0HrRcuY3KP147Oxp4+eX9nwc5npTtg97FIKOhv7DF/ip+f1hNhBX68z9mQjgn2ft4L+ht7e3zi/ity5JNycNYMEPeTCc/EmxPOYdN3E+I2y8mWQ/Rxv/Af6A95SzGJ8amQ5+RPN9QD9Ffjp8bnf/FH8oUDczath3gHd3p/0LvHPex3A+Q+1gSpZrfkauXbq8FOMT4xf4/44/nO41Pvx2euy0Ol3w2/95f1T8ZLU597p78j9fOIP8r5qRKfvO9U6yevA2+cJ5ryEmOczRO8v+SewuYJXj83OqwfOcHfGrkSe0qlv4s6/i4j5y7pSv3oLFe1WEU+x/Bt6eSeaRMXrf0d/XWRV/K1jDHGOujjyAnkw2588v6eeOyCHTeGGlOMz1K+X+nv0ryUYMKdY+w54RyZZxOwlvguzUslFPp75rmEv5w/pXkpYtNLrqI0L30SvgGiDSjQUA8AAA==
+   H4sIAAAAAAAACt1WbZKCMAytVBl3Qc/AUTiKR+EoHKVH4Sib2gafaQoUnNkZf7yxxnyY1zRJa4xpvxhngi1EbUxHGEvtzsGmu9O5BCdjHoSx1M5CvF9j+lPw5c+JDOUYL6ej+eN4t+iDOWZfKJPyLToou6X5TSR3HnQepEzIPR4rOok/u/P+9kLkN2p3IO5j0JDRT/yJeEbmT+eOMAE/PmbfkE4T/D2/Z/QTf2t8ov0ROfJJb7C3AlD3XRM+mTfXgt/2xdvz9ybULefnc3GIc7SXsO/xkLdHC/XJZ+SZ4/lctvY4jMd5bAHyeTTeJXJyJd5+6LvHNei6S8x1SzySDxL4Zv25Xfm/9sXthD1B69k5H/fU52q8nK3QzdYnv9+C/N7eu6xPu16fz74c7y877y6vepn7+M56meNtrM+PxVvrn1vj0ZvvFuoT3/Vi/8Q+kKvPA/vEYp8s2CfkfJlnitgncA6oOmIeOSXeFLlSZ8rCfFd1/F1Gzh3r4v5ylCuF87l2PHh/qcNvQ6XPzJG5KJ3vGK+KvFKsoY41VsEcR07YZs98Zx6r4MfVoccszfc3Tj4x37V9idGEO8fac0oeM89NwJTjO7cv5YA1KfbPfgn/uX9q+1JEMkuOIrcvfRP+AMruexFQDwAA
   </data>
  </layer>
 </map>
