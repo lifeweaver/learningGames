@@ -108,6 +108,42 @@ class MyGames extends Game {
 		currentGame = screen
 	}
 
+	def currentScreen() {
+		switch(currentScreen) {
+			case PONG:
+				return pongScreen
+				break
+
+			case WORM:
+				return wormScreen
+				break
+
+			case BREAKOUT:
+				return breakoutScreen
+				break
+
+			case MISSILE_COMMAND:
+				return missileCommandScreen
+				break
+
+			case SPACE_INVADERS:
+				return spaceInvadersScreen
+				break
+
+			case ASTEROIDS:
+				return asteroidsScreen
+				break
+
+			case TETRIS:
+				return tetrisScreen
+				break
+
+			case PACMAN:
+				return pacmanScreen
+				break
+		}
+	}
+
 	void changeScreen(int screen) {
 		currentScreen = screen
 		Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow)
