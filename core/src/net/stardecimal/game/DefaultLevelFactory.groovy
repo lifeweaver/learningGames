@@ -266,12 +266,12 @@ trait DefaultLevelFactory {
 
 		width.times {
 			float x = offsetX + it * tileWidth as float
-			lvlFactory.drawDebugLine(new Vector2(x, 0), new Vector2(x, screenSize.y), combined, 0.5)
+			lvlFactory.drawDebugLine(new Vector2(x, 0), new Vector2(x, screenSize.y), combined, 0.1)
 		}
 
 		height.times {
 			float y = it * tileHeight as float
-			lvlFactory.drawDebugLine(new Vector2(offsetX, y), new Vector2(offsetX + (width - 1) * tileWidth as float, y), combined, 0.5)
+			lvlFactory.drawDebugLine(new Vector2(offsetX, y), new Vector2(offsetX + (width - 1) * tileWidth as float, y), combined, 0.1)
 		}
 	}
 
