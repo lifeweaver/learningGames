@@ -3,15 +3,16 @@ package net.stardecimal.game.pacman
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
+import net.stardecimal.game.RenderingConstants
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
+import net.stardecimal.game.pacman.entity.systems.CollisionSystem
 import net.stardecimal.game.pacman.entity.systems.PlayerControlSystem
 
 class PacmanScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 
 	//TODO:
-	//map collision using the properties.
 	//pellet
 	//power pellet
 	//ghost
@@ -19,7 +20,7 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 
 
 	PacmanScreen(final MyGames game) {
-		init(game, LevelFactory.class, RenderingConstants.class)
+		init(game, LevelFactory.class, new RenderingConstants())
 		levelFactory = (LevelFactory) lvlFactory
 		levelFactory.gameName = 'pacman'
 
@@ -35,7 +36,7 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 		//pacman 13x13?
 
 		engine.addSystem(new PlayerControlSystem(levelFactory))
-//		engine.addSystem(new CollisionSystem(parent, levelFactory))
+		engine.addSystem(new CollisionSystem(parent, levelFactory))
 //		engine.addSystem(new EnemySystem(levelFactory))
 
 //		levelFactory.createBoundaries()

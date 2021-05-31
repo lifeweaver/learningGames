@@ -3,15 +3,23 @@ package net.stardecimal.game.loader
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.ParticleEffectLoader
 import com.badlogic.gdx.assets.loaders.SkinLoader
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.ParticleEffect
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.maps.tiled.TiledMap
+import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 
 class SdAssetManager {
 	final AssetManager manager = new AssetManager()
+
+	SdAssetManager() {
+		//Allow loading of TiledMaps
+		manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()))
+	}
 
 	// Textures
 	final static String gameImages = 'atlas.atlas'
@@ -39,6 +47,8 @@ class SdAssetManager {
 	final static String playerBlownUp = "input/space_invaders/playerBlownUp.wav"
 	final static String playerFiring = "input/space_invaders/playerFiring.wav"
 
+	final static String pacmanMap = "maps/pacman/pacman.tmx"
+
 //	final static String playingSong = 'music/Rolemusic_-_pl4y1ng.mp3'
 //
 
@@ -47,6 +57,7 @@ class SdAssetManager {
 		manager.load(explosionParticle, ParticleEffect)
 		manager.load(flames, ParticleEffect)
 		manager.load(shield, ParticleEffect)
+		manager.load(pacmanMap, TiledMap)
 	}
 
 	void queueAddImages() {

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.maps.tiled.TiledMap
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
@@ -21,7 +22,7 @@ import com.badlogic.gdx.physics.box2d.Shape
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
-import net.stardecimal.game.DefaultRenderingConstants
+import net.stardecimal.game.RenderingConstants
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TextureComponent
@@ -50,8 +51,18 @@ class RenderingSystem extends SortedIteratingSystem {
 		return  meterDimensions
 	}
 
+	static Vector2 getScreenSizeInMetersWorld() {
+		meterDimensions.set(FRUSTUM_WIDTH * PIXELS_TO_METRES as float, FRUSTUM_HEIGHT * PIXELS_TO_METRES as float)
+		return  meterDimensions
+	}
+
 	static Vector2 getScreenSizeInPixes() {
 		pixelDimensions.set(Gdx.graphics.width, Gdx.graphics.height)
+		return pixelDimensions
+	}
+
+	static Vector2 getScreenSizeInPixesWorld() {
+		pixelDimensions.set(FRUSTUM_WIDTH, FRUSTUM_HEIGHT)
 		return pixelDimensions
 	}
 
@@ -70,10 +81,10 @@ class RenderingSystem extends SortedIteratingSystem {
 	private Matrix4 hudMatrix
 	private def hud
 	private float stateTime = 0
-	DefaultRenderingConstants constants
+	RenderingConstants constants
 
 	@SuppressWarnings('unchecked')
-	RenderingSystem(SpriteBatch batch, DefaultRenderingConstants defaultConstants=null) {
+	RenderingSystem(SpriteBatch batch, defaultConstants=null) {
 		super(Family.all(TransformComponent.class, TextureComponent.class).get(), new ZComparator())
 		priority = 9
 		renderQueue = new Array<Entity>()
@@ -88,7 +99,7 @@ class RenderingSystem extends SortedIteratingSystem {
 			FRUSTUM_HEIGHT = constants.WORLD_HEIGHT
 
 			cam = new OrthographicCamera()
-			viewport = new FitViewport(constants.WORLD_WIDTH, constants.WORLD_HEIGHT, cam)
+			viewport = new FitViewport(FRUSTUM_WIDTH, FRUSTUM_HEIGHT, cam)
 			cam.viewportWidth = viewport.worldWidth
 			cam.viewportHeight = viewport.worldHeight
 			cam.position.set(viewport.worldWidth / 2f as float, viewport.worldHeight / 2f as float, 0)
@@ -102,6 +113,22 @@ class RenderingSystem extends SortedIteratingSystem {
 	void addTiledMapBackground(TiledMap map) {
 		if(map) {
 			background = map
+
+			if(background.properties.get("ScaleMap")) {
+				TiledMapTileLayer firstLayer = (TiledMapTileLayer) background.layers.first()
+
+				// Use whatever is larger to do the scaling and offset
+				if(firstLayer.height >= firstLayer.width) {
+					PIXELS_TO_METRES = FRUSTUM_HEIGHT / (firstLayer.height * firstLayer.tileHeight)
+					def offsetX = (FRUSTUM_WIDTH - (firstLayer.width * PIXELS_TO_METRES * firstLayer.tileWidth))
+					firstLayer.offsetX = offsetX > 1 ? offsetX  * (1 / PIXELS_TO_METRES) / 2 as float : 0
+				} else {
+					PIXELS_TO_METRES = FRUSTUM_WIDTH / (firstLayer.width * firstLayer.tileWidth)
+					def offsetY = (FRUSTUM_HEIGHT - (firstLayer.height * PIXELS_TO_METRES * firstLayer.tileHeight))
+					firstLayer.offsetY = offsetY > 1 ? offsetY  * (1 / PIXELS_TO_METRES) / 2 as float : 0
+				}
+			}
+
 			backgroundRenderer = new OrthogonalTiledMapRenderer(background, PIXELS_TO_METRES, batch)
 		}
 	}
@@ -125,9 +152,9 @@ class RenderingSystem extends SortedIteratingSystem {
 		}
 
 		// update camera and sprite batch
-		cam.update()
+		viewport ? viewport.camera.update() : camera.update()
 		if(backgroundRenderer) {
-			backgroundRenderer.setView(cam)
+			backgroundRenderer.setView((OrthographicCamera) viewport?.camera ?: camera)
 			backgroundRenderer.render()
 		}
 
@@ -277,6 +304,6 @@ class RenderingSystem extends SortedIteratingSystem {
 	}
 
 	OrthographicCamera getCamera() {
-		return cam
+		return viewport?.camera ?: cam
 	}
 }
