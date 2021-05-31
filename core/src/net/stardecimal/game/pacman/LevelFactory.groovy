@@ -29,7 +29,6 @@ class LevelFactory implements DefaultLevelFactory {
 //	Sound enemy4Theme, enemyBlownUp, playerBlownUp, playerFiring, background
 //	RandomXS128 rand = new RandomXS128()
 	Entity player
-	TiledMap map
 	TiledMapTileLayer collisionLayer
 
 	LevelFactory(PooledEngine en, SdAssetManager assetManager) {

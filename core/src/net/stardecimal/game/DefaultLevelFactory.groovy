@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.maps.tiled.TiledMap
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
@@ -36,6 +37,7 @@ trait DefaultLevelFactory {
 	ParticleEffectManager pem
 	KeyboardController controller
 	String gameName = 'default'
+	TiledMap map
 	int playerScore = 0
 	int enemyScore = 0
 	int playerLives = 0
@@ -222,8 +224,7 @@ trait DefaultLevelFactory {
 	}
 
 //	https://stackoverflow.com/a/30781020/2137125
-	static void drawDebugLine(Vector2 start, Vector2 end, int lineWidth, Color color, Matrix4 projectionMatrix)
-	{
+	static void drawDebugLine(Vector2 start, Vector2 end, int lineWidth, Color color, Matrix4 projectionMatrix) {
 		Gdx.gl.glLineWidth(lineWidth)
 		shapeRenderer.setProjectionMatrix(projectionMatrix)
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
@@ -233,14 +234,45 @@ trait DefaultLevelFactory {
 		Gdx.gl.glLineWidth(1)
 	}
 
-	static void drawDebugLine(Vector2 start, Vector2 end, Matrix4 projectionMatrix) {
-		Gdx.gl.glLineWidth(2);
+	static void drawDebugLine(Vector2 start, Vector2 end, Matrix4 projectionMatrix, float width=2) {
+		Gdx.gl.glLineWidth(width)
 		shapeRenderer.setProjectionMatrix(projectionMatrix)
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
 		shapeRenderer.setColor(Color.WHITE)
 		shapeRenderer.line(start, end)
 		shapeRenderer.end()
 		Gdx.gl.glLineWidth(1)
+	}
+
+	static void  drawGrid(lvlFactory, Matrix4 combined) {
+		float tileWidth, tileHeight, offsetX, width, height
+		Vector2 screenSize
+		if(lvlFactory?.map) {
+			TiledMapTileLayer collisionLayer = (TiledMapTileLayer) lvlFactory.map.layers.first()
+			tileWidth = collisionLayer.tileWidth * RenderingSystem.PIXELS_TO_METRES as float
+			tileHeight = collisionLayer.tileHeight * RenderingSystem.PIXELS_TO_METRES as float
+			offsetX = collisionLayer.offsetX / (1 / RenderingSystem.PIXELS_TO_METRES)
+			screenSize = RenderingSystem.getScreenSizeInPixesWorld()
+			width = collisionLayer.width + 1
+			height = collisionLayer.height
+		} else {
+			tileWidth = 1
+			tileHeight = 1
+			offsetX = 0
+			screenSize = RenderingSystem.getScreenSizeInMeters()
+			width = screenSize.x
+			height = screenSize.y
+		}
+
+		width.times {
+			float x = offsetX + it * tileWidth as float
+			lvlFactory.drawDebugLine(new Vector2(x, 0), new Vector2(x, screenSize.y), combined, 0.5)
+		}
+
+		height.times {
+			float y = it * tileHeight as float
+			lvlFactory.drawDebugLine(new Vector2(offsetX, y), new Vector2(offsetX + (width - 1) * tileWidth as float, y), combined, 0.5)
+		}
 	}
 
 }
