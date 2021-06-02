@@ -69,6 +69,7 @@ class LevelFactory implements DefaultLevelFactory {
 		position.scale.y = 4
 		type.type = TypeComponent.TYPES.PLAYER
 		sdBody.body.setUserData(entity)
+		yAxisCentering(sdBody)
 
 		entity.add(colCom)
 		entity.add(sdBody)
@@ -82,6 +83,22 @@ class LevelFactory implements DefaultLevelFactory {
 		return entity
 	}
 
+	void yAxisCentering(SdBodyComponent playerBody) {
+		float tileHeight = collisionLayer.tileHeight * RenderingSystem.PIXELS_TO_METRES as float
+		float yAxisMisalignment = (playerBody.body.position.y / tileHeight) % 1 as float
+
+		if(Math.abs(tileHeight / 2 - yAxisMisalignment) < 0.01) {
+			//do nothing
+			return
+		} else if(yAxisMisalignment > tileHeight / 2) {
+			yAxisMisalignment = yAxisMisalignment - tileHeight / 2 as float
+			playerBody.body.setTransform(playerBody.body.position.x, playerBody.body.position.y - yAxisMisalignment as float, 0)
+		} else {
+			yAxisMisalignment = tileHeight / 2 - yAxisMisalignment as float
+			playerBody.body.setTransform(playerBody.body.position.x, playerBody.body.position.y + yAxisMisalignment as float, 0)
+		}
+	}
+
 	Vector2 tilePosition(float x, float y) {
 		Vector2 point = new Vector2(x, y)
 		float tileHeight = collisionLayer.tileHeight * RenderingSystem.PIXELS_TO_METRES as float
@@ -91,6 +108,16 @@ class LevelFactory implements DefaultLevelFactory {
 		int tileX = (point.x - offsetX) / tileWidth as int
 		int tileY = point.y * (collisionLayer.height / (collisionLayer.height * tileHeight)) as int
 		return new Vector2(tileX, tileY)
+	}
+
+	Vector2 gamePosition(int x, int y) {
+		float tileHeight = collisionLayer.tileHeight * RenderingSystem.PIXELS_TO_METRES as float
+		float tileWidth = collisionLayer.tileWidth * RenderingSystem.PIXELS_TO_METRES as float
+		def offsetX = collisionLayer.offsetX / (1 / RenderingSystem.PIXELS_TO_METRES)
+
+		float gameX = x * tileWidth + offsetX as float
+		float gameY = y / (collisionLayer.height / (collisionLayer.height * tileHeight)) as float
+		return new Vector2(gameX, gameY)
 	}
 
 	boolean isCellBlocked(float gameX, float gameY) {
