@@ -33,22 +33,22 @@ class PlayerControlSystem extends IteratingSystem {
 		SdBodyComponent playerBody = Mapper.bCom.get(entity)
 
 		if (controller.left && shouldChangeVelocity(playerBody, deltaTime)) {
-			playerBody.body.setLinearVelocity(-3f, 0)
+			playerBody.body.setLinearVelocity(-6f, 0)
 			Mapper.transCom.get(entity).rotation = 0
 		}
 
 		if (controller.right && shouldChangeVelocity(playerBody)) {
-			playerBody.body.setLinearVelocity(+3f, 0)
+			playerBody.body.setLinearVelocity(+6f, 0)
 			Mapper.transCom.get(entity).rotation = 180
 		}
 
 		if (controller.up && shouldChangeVelocity(playerBody)) {
-			playerBody.body.setLinearVelocity(0, +4f)
+			playerBody.body.setLinearVelocity(0, +6f)
 			Mapper.transCom.get(entity).rotation = 270
 		}
 
 		if (controller.down && shouldChangeVelocity(playerBody)) {
-			playerBody.body.setLinearVelocity(0, -4f)
+			playerBody.body.setLinearVelocity(0, -6f)
 			Mapper.transCom.get(entity).rotation = 90
 		}
 		if(controller.spacbar) {
