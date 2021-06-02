@@ -13,7 +13,6 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 
 	//TODO:
-	//power pellet
 	//ghost
 	//fruit
 
@@ -38,11 +37,8 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 		engine.addSystem(new CollisionSystem(parent, levelFactory))
 //		engine.addSystem(new EnemySystem(levelFactory))
 
-//		levelFactory.createBoundaries()
 		levelFactory.createPlayer(camera)
 //		levelFactory.createEnemies()
-//		levelFactory.createShields()
-//		levelFactory.playerLives = 3
 
 //		parent.recorder = new GifRecorder(batch)
 	}
@@ -51,11 +47,9 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 		reset()
 		levelFactory.playerScore = 0
 		levelFactory.enemyScore = 0
-		levelFactory.playerLives = 3
-//		levelFactory.createBoundaries()
-//		levelFactory.createPlayer(camera)
+		levelFactory.playerLives = 0
+		levelFactory.createPlayer(camera)
 //		levelFactory.createEnemies()
-//		levelFactory.createShields()
 	}
 
 

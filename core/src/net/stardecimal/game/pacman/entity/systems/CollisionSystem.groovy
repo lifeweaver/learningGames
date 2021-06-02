@@ -12,6 +12,7 @@ import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.pacman.LevelFactory
+import net.stardecimal.game.pacman.entity.component.PowerUpComponent
 
 class CollisionSystem extends IteratingSystem {
 	final LevelFactory levelFactory
@@ -44,6 +45,15 @@ class CollisionSystem extends IteratingSystem {
 
 		// collisions
 		if (type == TypeComponent.TYPES.PLAYER) {
+			//I'm just sticking this here because I don't want to have an entire system just for this one piece
+			PowerUpComponent powerUpComponent = levelFactory.powerCom.get(entity)
+			if(powerUpComponent && powerUpComponent.activeTime > 0) {
+				powerUpComponent.activeTime -= deltaTime
+				if(powerUpComponent.activeTime <= 0) {
+					levelFactory.powerUp.stop(levelFactory.powerUpId)
+				}
+			}
+
 			if (collidedEntity) {
 				SdBodyComponent collidedBody = Mapper.bCom.get(collidedEntity)
 				SdBodyComponent body = Mapper.bCom.get(entity)
@@ -52,16 +62,19 @@ class CollisionSystem extends IteratingSystem {
 					case TypeComponent.TYPES.OTHER:
 						int worth = Mapper.scoreCom.get(collidedEntity).worth
 						collidedBody.isDead = true
-						//TODO: play sound
 						levelFactory.playerScore = levelFactory.playerScore + worth
 						break
 
 					case TypeComponent.TYPES.ENEMY:
-						//TODO: check if player just ate powerup
-						int worth = Mapper.scoreCom.get(collidedEntity).worth
-						collidedBody.isDead = true
-						body.isDead = true
-						levelFactory.playerScore = levelFactory.playerScore + worth
+						if(powerUpComponent && powerUpComponent.activeTime > 0) {
+							int worth = Mapper.scoreCom.get(collidedEntity).worth
+							collidedBody.isDead = true
+							levelFactory.playerScore = levelFactory.playerScore + worth
+						} else {
+							body.isDead = true
+							levelFactory.gameOverPacMan.play()
+						}
+
 						break
 				}
 				cc.collisionEntity = null
@@ -138,7 +151,18 @@ class CollisionSystem extends IteratingSystem {
 						}
 						if(overPowerUp) {
 							levelFactory.playerScore += 20
-							//TODO: make enemies eatable, add sound?
+							if(!powerUpComponent) {
+								powerUpComponent = engine.createComponent(PowerUpComponent)
+								powerUpComponent.activeTime = 10
+								entity.add(powerUpComponent)
+							} else {
+								powerUpComponent.activeTime += 10
+							}
+
+							if(levelFactory.powerUpId) {
+								levelFactory.powerUp.stop(levelFactory.powerUpId)
+							}
+							levelFactory.powerUpId = levelFactory.powerUp.play()
 						}
 					}
 				}

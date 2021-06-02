@@ -1,5 +1,6 @@
 package net.stardecimal.game.pacman
 
+import com.badlogic.ashley.core.ComponentMapper
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.audio.Sound
@@ -17,20 +18,24 @@ import net.stardecimal.game.DefaultHud
 import net.stardecimal.game.DefaultLevelFactory
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.PlayerComponent
+import net.stardecimal.game.entity.components.ScoreComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TextureComponent
 import net.stardecimal.game.entity.components.TransformComponent
 import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
+import net.stardecimal.game.pacman.entity.component.PowerUpComponent
 
 class LevelFactory implements DefaultLevelFactory {
 	private TextureRegion playerTex, ghost1Tex, ghost2Tex, ghost3Tex, ghost4Tex
 	private Animation<TextureRegion> pacmanAnimation
-	Sound eatPelletA, eatPelletB, nextPelletSound
+	Sound eatPelletA, eatPelletB, nextPelletSound, gameOverPacMan, powerUp
+	long powerUpId
 //	RandomXS128 rand = new RandomXS128()
 	Entity player
 	TiledMapTileLayer collisionLayer
+	ComponentMapper<PowerUpComponent> powerCom = ComponentMapper.getFor(PowerUpComponent.class)
 
 	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		init(en, assetManager)
@@ -43,6 +48,8 @@ class LevelFactory implements DefaultLevelFactory {
 		pacmanAnimation = new Animation<TextureRegion>(0.1f, atlas.findRegions("pacman/pacman"), Animation.PlayMode.LOOP)
 		eatPelletA = assetManager.manager.get(SdAssetManager.eatPelletA)
 		eatPelletB = assetManager.manager.get(SdAssetManager.eatPelletB)
+		gameOverPacMan = assetManager.manager.get(SdAssetManager.gameOverPacMan)
+		powerUp = assetManager.manager.get(SdAssetManager.powerUp)
 		nextPelletSound = eatPelletA
 
 		log.info("level factory initialized")
