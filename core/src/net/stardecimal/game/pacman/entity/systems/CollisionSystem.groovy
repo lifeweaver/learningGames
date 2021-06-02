@@ -3,6 +3,7 @@ package net.stardecimal.game.pacman.entity.systems
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.math.Vector2
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.entity.components.CollisionComponent
@@ -91,6 +92,7 @@ class CollisionSystem extends IteratingSystem {
 				}
 
 				if(collisionX || (collisionY && body.body.linearVelocity.x)) {
+					Mapper.texCom.get(entity).animation.playMode = Animation.PlayMode.NORMAL
 					//Reverse the velocity
 					float xVel = body.body.linearVelocity.x * -1 as float
 					body.body.setLinearVelocity(0, 0)
@@ -102,6 +104,7 @@ class CollisionSystem extends IteratingSystem {
 				}
 
 				if(collisionY || (collisionX && body.body.linearVelocity.y)) {
+					Mapper.texCom.get(entity).animation.playMode = Animation.PlayMode.NORMAL
 					//Reverse the velocity
 					float yVel = body.body.linearVelocity.y * -1 as float
 					body.body.setLinearVelocity(0, 0)

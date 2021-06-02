@@ -14,7 +14,6 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 
 	//TODO:
 	//power pellet
-	//Make animation only run when moving
 	//ghost
 	//fruit
 

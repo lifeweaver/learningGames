@@ -3,6 +3,7 @@ package net.stardecimal.game.pacman.entity.systems
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.math.Vector2
 import net.stardecimal.game.KeyboardController
 import net.stardecimal.game.entity.components.Mapper
@@ -33,22 +34,26 @@ class PlayerControlSystem extends IteratingSystem {
 		SdBodyComponent playerBody = Mapper.bCom.get(entity)
 
 		if (controller.left && shouldChangeVelocity(playerBody, deltaTime)) {
-			playerBody.body.setLinearVelocity(-6f, 0)
+			Mapper.texCom.get(entity).animation.playMode = Animation.PlayMode.LOOP
+			playerBody.body.setLinearVelocity(-3f, 0)
 			Mapper.transCom.get(entity).rotation = 0
 		}
 
 		if (controller.right && shouldChangeVelocity(playerBody)) {
-			playerBody.body.setLinearVelocity(+6f, 0)
+			Mapper.texCom.get(entity).animation.playMode = Animation.PlayMode.LOOP
+			playerBody.body.setLinearVelocity(+3f, 0)
 			Mapper.transCom.get(entity).rotation = 180
 		}
 
 		if (controller.up && shouldChangeVelocity(playerBody)) {
-			playerBody.body.setLinearVelocity(0, +6f)
+			Mapper.texCom.get(entity).animation.playMode = Animation.PlayMode.LOOP
+			playerBody.body.setLinearVelocity(0, +3f)
 			Mapper.transCom.get(entity).rotation = 270
 		}
 
 		if (controller.down && shouldChangeVelocity(playerBody)) {
-			playerBody.body.setLinearVelocity(0, -6f)
+			Mapper.texCom.get(entity).animation.playMode = Animation.PlayMode.LOOP
+			playerBody.body.setLinearVelocity(0, -3f)
 			Mapper.transCom.get(entity).rotation = 90
 		}
 		if(controller.spacbar) {
