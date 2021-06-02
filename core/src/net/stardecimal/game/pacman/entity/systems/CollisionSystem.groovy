@@ -72,9 +72,9 @@ class CollisionSystem extends IteratingSystem {
 				boolean isGoingUp = body.body.linearVelocity.y > 0
 
 				if(isGoingLeft) {
-					collisionY = levelFactory.isCellBlocked(pos.x - playerWidth as float, pos.y)
+					collisionX = levelFactory.isCellBlocked(pos.x - playerWidth as float, pos.y)
 				} else if(isGoingRight) {
-					collisionY = levelFactory.isCellBlocked(pos.x + playerWidth as float, pos.y)
+					collisionX = levelFactory.isCellBlocked(pos.x + playerWidth as float, pos.y)
 				}
 
 				if(isGoingDown) {
