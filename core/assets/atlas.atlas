@@ -6,42 +6,42 @@ filter: Nearest, Nearest
 repeat: none
 asteroids/asteroid
   rotate: false
-  xy: 166, 8
+  xy: 273, 29
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 asteroids/enemy
   rotate: false
-  xy: 328, 29
+  xy: 313, 3
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 asteroids/particle
   rotate: false
-  xy: 248, 29
+  xy: 205, 29
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 asteroids/player
   rotate: false
-  xy: 360, 17
+  xy: 325, 3
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 asteroids/shield
   rotate: false
-  xy: 364, 29
+  xy: 333, 39
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 missile_command/bomberPlane
   rotate: false
-  xy: 167, 29
+  xy: 124, 29
   size: 45, 32
   orig: 45, 32
   offset: 0, 0
@@ -55,14 +55,14 @@ missile_command/city
   index: -1
 missile_command/crosshairs
   rotate: false
-  xy: 214, 29
+  xy: 171, 29
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 missile_command/defenderMissile
   rotate: false
-  xy: 360, 41
+  xy: 321, 27
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -76,21 +76,21 @@ missile_command/enemyMissileTrail
   index: -1
 missile_command/explosion
   rotate: false
-  xy: 352, 29
+  xy: 331, 51
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 missile_command/pre_particle
   rotate: false
-  xy: 282, 29
+  xy: 239, 29
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 missile_command/satellite
   rotate: false
-  xy: 124, 20
+  xy: 345, 8
   size: 41, 41
   orig: 41, 41
   offset: 0, 0
@@ -102,135 +102,142 @@ missile_command/smartBomb
   orig: 16, 16
   offset: 0, 0
   index: -1
-pacman/pacman
+pacman/ghost1
   rotate: false
   xy: 20, 6
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
-  index: 0
+  index: -1
 pacman/pacman
   rotate: false
   xy: 35, 6
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
-  index: 1
+  index: 0
 pacman/pacman
   rotate: false
   xy: 50, 6
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
+  index: 1
+pacman/pacman
+  rotate: false
+  xy: 65, 6
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
   index: 2
 pong/paddle
   rotate: false
-  xy: 389, 21
+  xy: 400, 21
   size: 10, 40
   orig: 10, 40
   offset: 0, 0
   index: -1
 pong/pingPong
   rotate: false
-  xy: 360, 51
+  xy: 325, 15
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 space_invaders/barrier
   rotate: false
-  xy: 316, 29
+  xy: 313, 15
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 space_invaders/enemy1
   rotate: false
-  xy: 82, 7
+  xy: 97, 7
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 0
 space_invaders/enemy1
   rotate: false
-  xy: 96, 7
+  xy: 111, 7
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 1
 space_invaders/enemy2
   rotate: false
-  xy: 110, 7
+  xy: 285, 5
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 0
 space_invaders/enemy2
   rotate: false
-  xy: 124, 6
+  xy: 299, 5
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 1
 space_invaders/enemy3
   rotate: false
-  xy: 138, 6
+  xy: 307, 27
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 0
 space_invaders/enemy3
   rotate: false
-  xy: 152, 6
+  xy: 317, 49
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 1
 space_invaders/enemy4
   rotate: false
-  xy: 340, 29
+  xy: 321, 37
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 space_invaders/enemyShot
   rotate: false
-  xy: 372, 51
+  xy: 333, 27
   size: 3, 10
   orig: 3, 10
   offset: 0, 0
   index: -1
 space_invaders/player
   rotate: false
-  xy: 65, 9
+  xy: 80, 9
   size: 15, 10
   orig: 15, 10
   offset: 0, 0
   index: -1
 space_invaders/playerShot
   rotate: false
-  xy: 372, 17
+  xy: 337, 15
   size: 3, 10
   orig: 3, 10
   offset: 0, 0
   index: -1
 space_invaders/shield
   rotate: false
-  xy: 360, 5
+  xy: 343, 51
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 tetris/i
   rotate: false
-  xy: 65, 3
+  xy: 80, 3
   size: 1, 4
   orig: 1, 4
   offset: 0, 0
   index: -1
 tetris/i2
   rotate: false
-  xy: 377, 21
+  xy: 388, 21
   size: 10, 40
   orig: 10, 40
   offset: 0, 0
@@ -244,7 +251,7 @@ tetris/j
   index: -1
 tetris/j2
   rotate: false
-  xy: 178, 7
+  xy: 125, 7
   size: 30, 20
   orig: 30, 20
   offset: 0, 0
@@ -258,7 +265,7 @@ tetris/l
   index: -1
 tetris/l2
   rotate: false
-  xy: 210, 7
+  xy: 157, 7
   size: 30, 20
   orig: 30, 20
   offset: 0, 0
@@ -272,7 +279,7 @@ tetris/o
   index: -1
 tetris/o2
   rotate: false
-  xy: 338, 41
+  xy: 285, 19
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
@@ -286,7 +293,7 @@ tetris/s
   index: -1
 tetris/s2
   rotate: false
-  xy: 242, 7
+  xy: 189, 7
   size: 30, 20
   orig: 30, 20
   offset: 0, 0
@@ -300,7 +307,7 @@ tetris/t
   index: -1
 tetris/t2
   rotate: false
-  xy: 274, 7
+  xy: 221, 7
   size: 30, 20
   orig: 30, 20
   offset: 0, 0
@@ -314,21 +321,21 @@ tetris/z
   index: -1
 tetris/z2
   rotate: false
-  xy: 306, 7
+  xy: 253, 7
   size: 30, 20
   orig: 30, 20
   offset: 0, 0
   index: -1
 worm/fruit
   rotate: false
-  xy: 316, 41
+  xy: 273, 41
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 worm/worm
   rotate: false
-  xy: 338, 7
+  xy: 295, 41
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
