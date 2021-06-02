@@ -48,6 +48,8 @@ class SdAssetManager {
 	final static String playerFiring = "input/space_invaders/playerFiring.wav"
 
 	final static String pacmanMap = "maps/pacman/pacman.tmx"
+	final static String eatPelletA = "input/pacman/107_Free_Retro_Game_Sounds/Another_Wakka_parta.wav"
+	final static String eatPelletB = "input/pacman/107_Free_Retro_Game_Sounds/Another_Wakka_partb.wav"
 
 //	final static String playingSong = 'music/Rolemusic_-_pl4y1ng.mp3'
 //
@@ -92,6 +94,9 @@ class SdAssetManager {
 		manager.load(enemyBlownUp, Sound)
 		manager.load(playerBlownUp, Sound)
 		manager.load(playerFiring, Sound)
+
+		manager.load(eatPelletA, Sound)
+		manager.load(eatPelletB, Sound)
 	}
 
 	void queueAddMusic() {

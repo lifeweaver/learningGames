@@ -2,6 +2,7 @@ package net.stardecimal.game.pacman
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -26,7 +27,7 @@ import net.stardecimal.game.loader.SdAssetManager
 class LevelFactory implements DefaultLevelFactory {
 	private TextureRegion playerTex, ghost1Tex, ghost2Tex, ghost3Tex, ghost4Tex
 	private Animation<TextureRegion> pacmanAnimation
-//	Sound enemy4Theme, enemyBlownUp, playerBlownUp, playerFiring, background
+	Sound eatPelletA, eatPelletB, nextPelletSound
 //	RandomXS128 rand = new RandomXS128()
 	Entity player
 	TiledMapTileLayer collisionLayer
@@ -40,6 +41,9 @@ class LevelFactory implements DefaultLevelFactory {
 
 		playerTex = atlas.findRegion("pacman/player")
 		pacmanAnimation = new Animation<TextureRegion>(0.1f, atlas.findRegions("pacman/pacman"), Animation.PlayMode.LOOP)
+		eatPelletA = assetManager.manager.get(SdAssetManager.eatPelletA)
+		eatPelletB = assetManager.manager.get(SdAssetManager.eatPelletB)
+		nextPelletSound = eatPelletA
 
 		log.info("level factory initialized")
 	}
@@ -122,22 +126,23 @@ class LevelFactory implements DefaultLevelFactory {
 
 	boolean isCellBlocked(float gameX, float gameY) {
 		Vector2 tilePos = tilePosition(gameX, gameY)
-		int tileX = tilePos.x as int
-		int tileY = tilePos.y as int
-
-		TiledMapTileLayer.Cell cell = collisionLayer.getCell(tileX, tileY)
-//		println("x: ${x}, y: ${y}, tileX: ${tileX}, tileY: ${tileY}, test: ${cell?.tile ? cell.tile.properties.get('blocked') == true : false}")
-
-		return cell && cell.tile ? cell.tile.properties.get('blocked') == true : false
+		return isCellBlocked(tilePos)
 	}
 
-	//
 	boolean isCellBlocked(Vector2 tilePos) {
+		return isCell('blocked', true, tilePos)
+	}
+
+	boolean isCell(String property, value, Vector2 tilePos) {
+		TiledMapTileLayer.Cell cell = getCell(tilePos)
+		return cell && cell.tile ? cell.tile.properties.get(property) == value : false
+	}
+
+	TiledMapTileLayer.Cell getCell(Vector2 tilePos) {
 		int tileX = tilePos.x as int
 		int tileY = tilePos.y as int
 
-		TiledMapTileLayer.Cell cell = collisionLayer.getCell(tileX, tileY)
-		return cell && cell.tile ? cell.tile.properties.get('blocked') == true : true
+		return collisionLayer.getCell(tileX, tileY)
 	}
 
 	@Override

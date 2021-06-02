@@ -9,17 +9,24 @@ import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.TypeComponent
+import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.pacman.LevelFactory
 
 class CollisionSystem extends IteratingSystem {
 	final LevelFactory levelFactory
 	final MyGames parent
+	float tileHeight
+	float tileWidth
+	def offsetX
 
 	@SuppressWarnings('unchecked')
 	CollisionSystem(MyGames game, LevelFactory lvlFactory) {
 		super(Family.all(CollisionComponent.class).get())
 		parent = game
 		levelFactory = lvlFactory
+		tileHeight = levelFactory.collisionLayer.tileHeight * RenderingSystem.PIXELS_TO_METRES as float
+		tileWidth = levelFactory.collisionLayer.tileWidth * RenderingSystem.PIXELS_TO_METRES as float
+		offsetX = levelFactory.collisionLayer.offsetX / (1 / RenderingSystem.PIXELS_TO_METRES)
 	}
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
@@ -102,6 +109,34 @@ class CollisionSystem extends IteratingSystem {
 					while(levelFactory.isCellBlocked(body.body.position.x, body.body.position.y)) {
 						float newY = body.body.position.y + (yVel * deltaTime) as float
 						body.body.setTransform(body.body.position.x, newY, 0)
+					}
+				}
+
+				//Pellet checking
+				Vector2 tilePos = levelFactory.tilePosition(body.body.position.x, body.body.position.y)
+				boolean overPellet = levelFactory.isCell('pellet', true, tilePos)
+				boolean overPowerUp = levelFactory.isCell('powerup', true, tilePos)
+				if(overPellet || overPowerUp) {
+					Vector2 tileGamePos = levelFactory.gamePosition(tilePos.x as int, tilePos.y as int)
+					def tileCenterX = tileGamePos.x + tileWidth / 2
+					def tileCenterY = tileGamePos.y + tileHeight / 2
+					if(Math.abs(body.body.position.x - tileCenterX) < 0.07 && Math.abs(body.body.position.y - tileCenterY) < 0.07) {
+						//Remove tile, showing black background
+						levelFactory.getCell(tilePos).setTile(null)
+
+						if(overPellet) {
+							levelFactory.playerScore += 10
+							levelFactory.nextPelletSound.play()
+							if(levelFactory.nextPelletSound == levelFactory.eatPelletA) {
+								levelFactory.nextPelletSound = levelFactory.eatPelletB
+							} else {
+								levelFactory.nextPelletSound = levelFactory.eatPelletA
+							}
+						}
+						if(overPowerUp) {
+							levelFactory.playerScore += 20
+							//TODO: make enemies eatable, add sound?
+						}
 					}
 				}
 			}

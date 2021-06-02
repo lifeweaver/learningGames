@@ -13,8 +13,8 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 
 	//TODO:
-	//pellet
 	//power pellet
+	//Make animation only run when moving
 	//ghost
 	//fruit
 
