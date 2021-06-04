@@ -44,6 +44,7 @@
  <tile id="8">
   <properties>
    <property name="blocked" type="bool" value="true"/>
+   <property name="node" type="bool" value="true"/>
    <property name="passibleByGhosts" type="bool" value="true"/>
   </properties>
  </tile>
@@ -57,13 +58,20 @@
    <property name="blocked" type="bool" value="true"/>
   </properties>
  </tile>
+ <tile id="11">
+  <properties>
+   <property name="node" type="bool" value="true"/>
+  </properties>
+ </tile>
  <tile id="12">
   <properties>
+   <property name="node" type="bool" value="true"/>
    <property name="powerup" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="13">
   <properties>
+   <property name="node" type="bool" value="true"/>
    <property name="pellet" type="bool" value="true"/>
   </properties>
  </tile>

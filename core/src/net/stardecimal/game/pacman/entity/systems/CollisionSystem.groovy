@@ -4,7 +4,9 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.g2d.Animation
+import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile
 import com.badlogic.gdx.math.Vector2
+import net.stardecimal.game.DFUtils
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
@@ -20,6 +22,7 @@ class CollisionSystem extends IteratingSystem {
 	float tileHeight
 	float tileWidth
 	def offsetX
+	StaticTiledMapTile blankTile
 
 	@SuppressWarnings('unchecked')
 	CollisionSystem(MyGames game, LevelFactory lvlFactory) {
@@ -29,6 +32,8 @@ class CollisionSystem extends IteratingSystem {
 		tileHeight = levelFactory.collisionLayer.tileHeight * RenderingSystem.PIXELS_TO_METRES as float
 		tileWidth = levelFactory.collisionLayer.tileWidth * RenderingSystem.PIXELS_TO_METRES as float
 		offsetX = levelFactory.collisionLayer.offsetX / (1 / RenderingSystem.PIXELS_TO_METRES)
+		blankTile = new StaticTiledMapTile(DFUtils.makeTextureRegion(8, 8, '#000000'))
+		blankTile.properties.put('node', true)
 	}
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
@@ -138,7 +143,7 @@ class CollisionSystem extends IteratingSystem {
 					def tileCenterY = tileGamePos.y + tileHeight / 2
 					if(Math.abs(body.body.position.x - tileCenterX) < 0.07 && Math.abs(body.body.position.y - tileCenterY) < 0.07) {
 						//Remove tile, showing black background
-						levelFactory.getCell(tilePos).setTile(null)
+						levelFactory.getCell(tilePos).setTile(blankTile)
 
 						if(overPellet) {
 							levelFactory.playerScore += 10
