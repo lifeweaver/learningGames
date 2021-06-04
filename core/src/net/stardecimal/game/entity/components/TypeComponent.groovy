@@ -27,6 +27,10 @@ class TypeComponent implements Component, Pool.Poolable {
 			ASTEROID: 18,
 			MINI_ASTEROID: 19,
 			MEDIUM_ASTEROID: 20,
+			BLINKY: 21,
+			PINKY: 22,
+			INKY: 23,
+			CLYDE: 24,
 			DEFAULT: 999
 	]
 
