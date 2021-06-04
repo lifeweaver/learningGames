@@ -65,7 +65,7 @@ class PlayerControlSystem extends IteratingSystem {
 		Vector2 tilePos = levelFactory.tilePosition(body.body.position.x, body.body.position.y)
 		switch (true) {
 			case controller.left:
-				def nextTileCenter = levelFactory.gamePosition(tilePos.x - 1 as int, tilePos.y as int).y + tileHeight / 2
+				def nextTileCenter = levelFactory.gamePosition(tilePos.x - 1 as int, tilePos.y as int).y
 				if(body.body.linearVelocity.y != 0 && Math.abs(nextTileCenter - body.body.position.y) > 0.06) {
 					return false
 				}
@@ -73,7 +73,7 @@ class PlayerControlSystem extends IteratingSystem {
 				break
 
 			case controller.right:
-				def nextTileCenter = levelFactory.gamePosition(tilePos.x + 1 as int, tilePos.y as int).y + tileHeight / 2
+				def nextTileCenter = levelFactory.gamePosition(tilePos.x + 1 as int, tilePos.y as int).y
 				if(body.body.linearVelocity.y != 0 && Math.abs(nextTileCenter - body.body.position.y) > 0.06) {
 					return false
 				}
@@ -81,7 +81,7 @@ class PlayerControlSystem extends IteratingSystem {
 				break
 
 			case controller.up:
-				def nextTileCenter = levelFactory.gamePosition(tilePos.x as int, tilePos.y + 1 as int).x + tileWidth / 2
+				def nextTileCenter = levelFactory.gamePosition(tilePos.x as int, tilePos.y + 1 as int).x
 				if(body.body.linearVelocity.x != 0 && Math.abs(nextTileCenter - body.body.position.x) > 0.03) {
 					return false
 				}
@@ -89,7 +89,7 @@ class PlayerControlSystem extends IteratingSystem {
 				break
 
 			case controller.down:
-				def nextTileCenter = levelFactory.gamePosition(tilePos.x as int, tilePos.y - 1 as int).x + tileWidth / 2
+				def nextTileCenter = levelFactory.gamePosition(tilePos.x as int, tilePos.y - 1 as int).x
 				if(body.body.linearVelocity.x != 0 && Math.abs(nextTileCenter - body.body.position.x) > 0.03) {
 					return false
 				}

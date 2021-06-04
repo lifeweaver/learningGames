@@ -110,6 +110,10 @@ class LevelFactory implements DefaultLevelFactory {
 		}
 	}
 
+	Vector2 tilePosition(Vector2 pos) {
+		return tilePosition(pos.x, pos.y)
+	}
+
 	Vector2 tilePosition(float x, float y) {
 		Vector2 point = new Vector2(x, y)
 		float tileHeight = collisionLayer.tileHeight * RenderingSystem.PIXELS_TO_METRES as float
@@ -121,6 +125,10 @@ class LevelFactory implements DefaultLevelFactory {
 		return new Vector2(tileX, tileY)
 	}
 
+	Vector2 gamePosition(float x, float y) {
+		return gamePosition(x as int, y as int)
+	}
+
 	Vector2 gamePosition(int x, int y) {
 		float tileHeight = collisionLayer.tileHeight * RenderingSystem.PIXELS_TO_METRES as float
 		float tileWidth = collisionLayer.tileWidth * RenderingSystem.PIXELS_TO_METRES as float
@@ -128,6 +136,10 @@ class LevelFactory implements DefaultLevelFactory {
 
 		float gameX = x * tileWidth + offsetX as float
 		float gameY = y / (collisionLayer.height / (collisionLayer.height * tileHeight)) as float
+
+		gameX += tileWidth / 2
+		gameY += tileHeight / 2
+
 		return new Vector2(gameX, gameY)
 	}
 

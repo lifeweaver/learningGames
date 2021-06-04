@@ -139,8 +139,8 @@ class CollisionSystem extends IteratingSystem {
 				boolean overPowerUp = levelFactory.isCell('powerup', true, tilePos)
 				if(overPellet || overPowerUp) {
 					Vector2 tileGamePos = levelFactory.gamePosition(tilePos.x as int, tilePos.y as int)
-					def tileCenterX = tileGamePos.x + tileWidth / 2
-					def tileCenterY = tileGamePos.y + tileHeight / 2
+					def tileCenterX = tileGamePos.x
+					def tileCenterY = tileGamePos.y
 					if(Math.abs(body.body.position.x - tileCenterX) < 0.07 && Math.abs(body.body.position.y - tileCenterY) < 0.07) {
 						//Remove tile, showing black background
 						levelFactory.getCell(tilePos).setTile(blankTile)
