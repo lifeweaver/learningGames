@@ -70,7 +70,10 @@ class CollisionSystem extends IteratingSystem {
 						levelFactory.playerScore = levelFactory.playerScore + worth
 						break
 
-					case TypeComponent.TYPES.ENEMY:
+					case TypeComponent.TYPES.BLINKY:
+					case TypeComponent.TYPES.PINKY:
+					case TypeComponent.TYPES.INKY:
+					case TypeComponent.TYPES.CLYDE:
 						if(powerUpComponent && powerUpComponent.activeTime > 0) {
 							int worth = Mapper.scoreCom.get(collidedEntity).worth
 							collidedBody.isDead = true
