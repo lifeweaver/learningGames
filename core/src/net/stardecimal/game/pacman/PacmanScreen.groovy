@@ -7,13 +7,15 @@ import net.stardecimal.game.RenderingConstants
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.pacman.entity.systems.CollisionSystem
+import net.stardecimal.game.pacman.entity.systems.EnemySystem
 import net.stardecimal.game.pacman.entity.systems.PlayerControlSystem
 
 class PacmanScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 
 	//TODO:
-	//ghost
+	//make individual ghost heuristics
+	//add fleeing behavior when player gets powerup
 	//fruit
 
 
@@ -22,23 +24,11 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 		levelFactory = (LevelFactory) lvlFactory
 		levelFactory.gameName = 'pacman'
 
-		//28 wide
-		//36 total high
-		//31 high - game map
-		//8x8 squares
-		//2x2 pellet dot in middle
-		//8x8 power pellet
-		//each corridor should be 16x16, so two blocks
-
-		//Ghosts 14x14?
-		//pacman 13x13?
-
 		engine.addSystem(new PlayerControlSystem(levelFactory))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))
-//		engine.addSystem(new EnemySystem(levelFactory))
+		engine.addSystem(new EnemySystem(levelFactory))
 
 		levelFactory.createPlayer(camera)
-//		levelFactory.createEnemies()
 
 //		parent.recorder = new GifRecorder(batch)
 	}
@@ -49,7 +39,6 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 		levelFactory.enemyScore = 0
 		levelFactory.playerLives = 0
 		levelFactory.createPlayer(camera)
-//		levelFactory.createEnemies()
 	}
 
 
@@ -67,6 +56,43 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 
 			levelFactory.hud.setScore(levelFactory.playerScore)
 			levelFactory.hud.setLives(levelFactory.playerLives)
+
+//			//Draw nodes and paths for debugging
+//			PacGraph blinkyGraph = engine.getSystem(EnemySystem).blinkyGraph
+//			levelFactory.shapeRenderer.setProjectionMatrix(camera.combined)
+//
+//			blinkyGraph.pacPaths.each {
+//				//draw from
+//				levelFactory.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+//				levelFactory.shapeRenderer.setColor(0.8f, 0.88f, 0.95f, 1) //blue
+//				Vector2 fromGamePos = levelFactory.gamePosition(it.fromNode.x, it.fromNode.y)
+//				levelFactory.shapeRenderer.circle(fromGamePos.x, fromGamePos.y, 0.1)
+//				levelFactory.shapeRenderer.end()
+//
+//				levelFactory.shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
+//				levelFactory.shapeRenderer.setColor(1, 1, 1, 1)
+//				levelFactory.shapeRenderer.circle(fromGamePos.x, fromGamePos.y, 0.1)
+//				levelFactory.shapeRenderer.end()
+//
+//				//draw to
+//				levelFactory.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+//				levelFactory.shapeRenderer.setColor(0.57f, 0.76f, 0.48f, 1) //green
+//				Vector2 toGamePos = levelFactory.gamePosition(it.toNode.x, it.toNode.y)
+//				levelFactory.shapeRenderer.circle(toGamePos.x, toGamePos.y, 0.1)
+//				levelFactory.shapeRenderer.end()
+//
+//				levelFactory.shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
+//				levelFactory.shapeRenderer.setColor(1, 1, 1, 1)
+//				levelFactory.shapeRenderer.circle(toGamePos.x, toGamePos.y, 0.1)
+//				levelFactory.shapeRenderer.end()
+//
+//
+//				//draw line between
+//				levelFactory.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+//				levelFactory.shapeRenderer.setColor(1, 1, 1, 1)
+//				levelFactory.shapeRenderer.rectLine(fromGamePos.x, fromGamePos.y, toGamePos.x, toGamePos.y, 0.1)
+//				levelFactory.shapeRenderer.end()
+//			}
 		}
 
 		// Gif Recorder support

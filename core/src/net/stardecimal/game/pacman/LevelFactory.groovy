@@ -11,15 +11,21 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
+import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import net.stardecimal.game.BodyFactory
 import net.stardecimal.game.DefaultHud
 import net.stardecimal.game.DefaultLevelFactory
+import net.stardecimal.game.ai.DefaultHeuristic
+import net.stardecimal.game.entity.components.AiComponent
 import net.stardecimal.game.entity.components.CollisionComponent
+import net.stardecimal.game.entity.components.EnemyComponent
 import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.ScoreComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
+import net.stardecimal.game.entity.components.StateComponent
+import net.stardecimal.game.entity.components.SteeringComponent
 import net.stardecimal.game.entity.components.TextureComponent
 import net.stardecimal.game.entity.components.TransformComponent
 import net.stardecimal.game.entity.components.TypeComponent
@@ -32,7 +38,7 @@ class LevelFactory implements DefaultLevelFactory {
 	private Animation<TextureRegion> pacmanAnimation
 	Sound eatPelletA, eatPelletB, nextPelletSound, gameOverPacMan, powerUp
 	long powerUpId
-//	RandomXS128 rand = new RandomXS128()
+	RandomXS128 rand = new RandomXS128()
 	Entity player
 	TiledMapTileLayer collisionLayer
 	ComponentMapper<PowerUpComponent> powerCom = ComponentMapper.getFor(PowerUpComponent.class)
@@ -45,6 +51,10 @@ class LevelFactory implements DefaultLevelFactory {
 		atlas.findRegion("pacman/")
 
 		playerTex = atlas.findRegion("pacman/player")
+		ghost1Tex = atlas.findRegion("pacman/ghost1")
+		ghost2Tex = atlas.findRegion("pacman/ghost2")
+		ghost3Tex = atlas.findRegion("pacman/ghost3")
+		ghost4Tex = atlas.findRegion("pacman/ghost4")
 		pacmanAnimation = new Animation<TextureRegion>(0.1f, atlas.findRegions("pacman/pacman"), Animation.PlayMode.LOOP)
 		eatPelletA = assetManager.manager.get(SdAssetManager.eatPelletA)
 		eatPelletB = assetManager.manager.get(SdAssetManager.eatPelletB)
@@ -69,15 +79,15 @@ class LevelFactory implements DefaultLevelFactory {
 		sdBody.body = bodyFactory.makeCirclePolyBody(
 				screenSize.x / 2 as float,
 				8,
-				1.5,
-				BodyFactory.STONE,
+				0.5,
+				BodyFactory.STEEL,
 				BodyDef.BodyType.DynamicBody,
 				true
 		)
 
 		texture.animation = pacmanAnimation
-		position.scale.x = 4
-		position.scale.y = 4
+		position.scale.x = 12
+		position.scale.y = 12
 		type.type = TypeComponent.TYPES.PLAYER
 		sdBody.body.setUserData(entity)
 		yAxisCentering(sdBody)
@@ -90,6 +100,73 @@ class LevelFactory implements DefaultLevelFactory {
 		entity.add(type)
 		engine.addEntity(entity)
 		player = entity
+
+		return entity
+	}
+
+	Entity createGhost(Vector2 startPos, int ghostType=TypeComponent.TYPES.BLINKY) {
+		Entity entity = engine.createEntity()
+		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+		TransformComponent position = engine.createComponent(TransformComponent)
+		TextureComponent texture = engine.createComponent(TextureComponent)
+		TypeComponent type = engine.createComponent(TypeComponent)
+		EnemyComponent enemyComponent = engine.createComponent(EnemyComponent)
+		AiComponent aiComponent = engine.createComponent(AiComponent)
+		SteeringComponent steeringComponent = engine.createComponent(SteeringComponent)
+		StateComponent stateComponent = engine.createComponent(StateComponent)
+		ScoreComponent scoreCom = engine.createComponent(ScoreComponent)
+		scoreCom.worth = 50
+
+		sdBody.body = bodyFactory.makeCirclePolyBody(
+				startPos.x,
+				startPos.y,
+				0.5,
+				BodyFactory.NOTHING,
+				BodyDef.BodyType.KinematicBody,
+				true,
+				true
+		)
+
+		//TODO: set heuristic later for each type
+		aiComponent.heuristic = new DefaultHeuristic()
+		switch(ghostType) {
+			case TypeComponent.TYPES.BLINKY:
+				texture.region = ghost1Tex
+				break
+
+			case TypeComponent.TYPES.PINKY:
+				texture.region = ghost2Tex
+				break
+
+			case TypeComponent.TYPES.INKY:
+				texture.region = ghost3Tex
+				break
+
+			case TypeComponent.TYPES.CLYDE:
+				texture.region = ghost4Tex
+				break
+		}
+
+		position.scale.x = 12
+		position.scale.y = 12
+		type.type = ghostType
+		sdBody.body.setUserData(entity)
+		yAxisCentering(sdBody)
+
+		steeringComponent.body = sdBody.body
+		steeringComponent.maxLinearSpeed = 3f
+		stateComponent.state = StateComponent.STATE_NORMAL
+
+		entity.add(stateComponent)
+		entity.add(steeringComponent)
+		entity.add(aiComponent)
+		entity.add(enemyComponent)
+		entity.add(scoreCom)
+		entity.add(sdBody)
+		entity.add(position)
+		entity.add(texture)
+		entity.add(type)
+		engine.addEntity(entity)
 
 		return entity
 	}
