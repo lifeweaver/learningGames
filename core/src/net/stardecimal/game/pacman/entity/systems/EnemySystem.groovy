@@ -3,6 +3,7 @@ package net.stardecimal.game.pacman.entity.systems
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.ai.pfa.DefaultGraphPath
 import com.badlogic.gdx.ai.pfa.GraphPath
 import com.badlogic.gdx.ai.steer.SteeringBehavior
 import com.badlogic.gdx.ai.steer.behaviors.Seek
@@ -20,12 +21,16 @@ import net.stardecimal.game.entity.components.SteeringComponent
 import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.pacman.LevelFactory
 import net.stardecimal.game.pacman.ai.PacGraph
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class EnemySystem extends IteratingSystem {
 	LevelFactory levelFactory
 	private Array<Entity> enemyQueue
 	PacGraph graph
 	long lastRepath = System.currentTimeMillis()
+	GraphPath<GenericNode> blinkyPatrolPath, pinkyPatrolPath, inkyPatrolPath, clydePatrolPath
+	private static final Logger log = LoggerFactory.getLogger(EnemySystem)
 
 	@SuppressWarnings("unchecked")
 	EnemySystem(LevelFactory lvlFactory) {
@@ -44,11 +49,13 @@ class EnemySystem extends IteratingSystem {
 		enemyQueue.each {
 			//Update ghost goal
 			AiComponent aiComponent = Mapper.aiCom.get(it)
+			StateComponent stateComponent = Mapper.stateCom.get(it)
+			stateComponent.time -= deltaTime
 			if(!aiComponent.graphPath) {
-				aiComponent.graphPath = buildPath(it)
+				aiComponent.graphPath = determinePath(it, stateComponent)
 			} else {
 				if(System.currentTimeMillis() - lastRepath > 100) {
-					aiComponent.graphPath = buildPath(it)
+					aiComponent.graphPath = determinePath(it, stateComponent)
 				}
 			}
 
@@ -58,7 +65,7 @@ class EnemySystem extends IteratingSystem {
 				it == start
 			} + 1
 
-			nextIndex = aiComponent.graphPath?.size() == nextIndex ? nextIndex - 1 : nextIndex
+			nextIndex = aiComponent.graphPath?.size() == nextIndex ? 0 : nextIndex
 			GenericNode next = ((GraphPath<GenericNode>) aiComponent.graphPath).get(nextIndex)
 
 			if(next) {
@@ -66,12 +73,8 @@ class EnemySystem extends IteratingSystem {
 
 				//Update the steering to move toward the next location
 				SteeringComponent steeringComponent = Mapper.sCom.get(it)
-				//TODO: look at pursue
-				SteeringBehavior<Vector2> steeringBehavior = new Seek<Vector2>(steeringComponent,new SdLocation(position: nextGamePos, orientation: 0))
+				SteeringBehavior<Vector2> steeringBehavior = new Seek<Vector2>(steeringComponent, new SdLocation(position: nextGamePos, orientation: 0))
 				steeringComponent.steeringBehavior = steeringBehavior
-
-				StateComponent stateComponent = Mapper.stateCom.get(it)
-				stateComponent.state = StateComponent.STATE_MOVING
 			}
 		}
 
@@ -92,6 +95,10 @@ class EnemySystem extends IteratingSystem {
 			}
 		}
 		return null
+	}
+
+	GenericNode getNode(Vector2 tilePos) {
+		return (GenericNode) graph.nodes.find { it.x == tilePos.x && it.y == tilePos.y}
 	}
 
 	void createGhostsIfAnyDead() {
@@ -164,16 +171,283 @@ class EnemySystem extends IteratingSystem {
 		}
 	}
 
-	GraphPath<GenericNode> buildPath(Entity entity) {
-		GenericNode start = getNode(entity)
-		//TODO: If it can't find the player node, start patrol?
-		GenericNode dest = getNode(levelFactory.player) ?: graph.nodes.get(levelFactory.rand.nextInt(graph.nodes.size))
+	GraphPath<GenericNode> buildPath(GenericNode start, GenericNode dest, Entity entity) {
+		//Set to random if not set
+		dest = dest ?: graph.nodes.get(levelFactory.rand.nextInt(graph.nodes.size))
 		if(start && dest) {
 			return graph.findPath(start, dest, Mapper.aiCom.get(entity)?.heuristic)
 		} else {
-			println("Either start and dest were null: start: ${start}, dest: ${dest}")
+			log.debug("Either start and dest were null: start: ${start}, dest: ${dest}")
 		}
 		return null
+	}
+
+	GraphPath<GenericNode> determinePatrolPath(Entity entity, GenericNode start) {
+		GenericNode dest = null
+
+		//Update to patrol path, each ghost has a different one
+		switch(Mapper.typeCom.get(entity).type) {
+			case TypeComponent.TYPES.BLINKY:
+				//Top right
+				buildBlinkyPatrolPath()
+
+				//send to patrol node
+				//if already on patrol path, return it
+				if(blinkyPatrolPath.contains(start)) {
+					return blinkyPatrolPath
+				}
+
+				//else get a path to the patrol path
+				dest = blinkyPatrolPath.first()
+				break
+
+			case TypeComponent.TYPES.PINKY:
+				//Top left
+				buildPinkyPatrolPath()
+
+				//send to patrol node
+				//if already on patrol path, return it
+				if(pinkyPatrolPath.contains(start)) {
+					return pinkyPatrolPath
+				}
+
+				//else get a path to the patrol path
+				dest = pinkyPatrolPath.first()
+				break
+
+			case TypeComponent.TYPES.INKY:
+				//Bottom right
+				buildInkyPatrolPath()
+
+				//send to patrol node
+				//if already on patrol path, return it
+				if(inkyPatrolPath.contains(start)) {
+					return inkyPatrolPath
+				}
+
+				//else get a path to the patrol path
+				dest = inkyPatrolPath.first()
+				break
+
+			case TypeComponent.TYPES.CLYDE:
+				//Bottom left
+				buildClydePatrolPath()
+
+				//send to patrol node
+				//if already on patrol path, return it
+				if(clydePatrolPath.contains(start)) {
+					return clydePatrolPath
+				}
+
+				//else get a path to the patrol path
+				dest = clydePatrolPath.first()
+				break
+		}
+
+		return buildPath(start, dest, entity)
+	}
+
+	GraphPath<GenericNode> determinePath(Entity entity, StateComponent stateComponent) {
+		GenericNode start = getNode(entity)
+		GenericNode dest = null
+
+		/*
+		 * Should ghosts only flee if they see the player powered up?
+		 * Should ghosts only attack if they can actually see the player?
+		 */
+
+		//Start the patrol
+		if(stateComponent.state == StateComponent.STATE_NORMAL) {
+			stateComponent.state = StateComponent.STATE_PATROL
+
+			//Only patrol for a certain amount of seconds
+			stateComponent.time = 20
+		}
+
+		if(stateComponent.state == StateComponent.STATE_PATROL) {
+			if(stateComponent.time < 0) {
+				//Switch to seeking if the patrol time is up
+				stateComponent.state = StateComponent.STATE_SEEKING
+			} else {
+				return determinePatrolPath(entity, start)
+			}
+		}
+
+		if(stateComponent.state == StateComponent.STATE_FLEEING) {
+			if(levelFactory.powerCom.get(levelFactory.player).activeTime <= 0) {
+				stateComponent.state = StateComponent.STATE_SEEKING
+			} else {
+				//Keep fleeing
+				//TODO: pick new path? can't use flee steering behavior because it won't respect the walls?
+
+				//Get current player node
+
+				//Build path using nodes farthest away?
+
+			}
+		}
+
+		if(stateComponent.state == StateComponent.STATE_SEEKING) {
+			dest = getNode(levelFactory.player)
+		}
+
+		return buildPath(start, dest, entity)
+	}
+
+	void buildBlinkyPatrolPath() {
+		if(blinkyPatrolPath) {
+			return
+		}
+
+		blinkyPatrolPath = new DefaultGraphPath<>()
+		[
+				new Vector2(26.0,31.0),
+				new Vector2(26.0,30.0),
+				new Vector2(26.0,29.0),
+				new Vector2(26.0,28.0),
+				new Vector2(26.0,27.0),
+				new Vector2(25.0,27.0),
+				new Vector2(24.0,27.0),
+				new Vector2(23.0,27.0),
+				new Vector2(22.0,27.0),
+				new Vector2(21.0,27.0),
+				new Vector2(21.0,28.0),
+				new Vector2(21.0,29.0),
+				new Vector2(21.0,30.0),
+				new Vector2(21.0,31.0),
+				new Vector2(22.0,31.0),
+				new Vector2(23.0,31.0),
+				new Vector2(24.0,31.0),
+				new Vector2(25.0,31.0)
+		].each {tilePos ->
+			GenericNode foundNode = getNode(tilePos)
+			blinkyPatrolPath.add(foundNode)
+		}
+	}
+
+	void buildPinkyPatrolPath() {
+		if(pinkyPatrolPath) {
+			return
+		}
+
+		pinkyPatrolPath = new DefaultGraphPath<>()
+		[
+				new Vector2(1.0,31.0),
+				new Vector2(2.0,31.0),
+				new Vector2(3.0,31.0),
+				new Vector2(4.0,31.0),
+				new Vector2(5.0,31.0),
+				new Vector2(6.0,31.0),
+				new Vector2(6.0,30.0),
+				new Vector2(6.0,29.0),
+				new Vector2(6.0,28.0),
+				new Vector2(6.0,27.0),
+				new Vector2(5.0,27.0),
+				new Vector2(4.0,27.0),
+				new Vector2(3.0,27.0),
+				new Vector2(2.0,27.0),
+				new Vector2(1.0,27.0),
+				new Vector2(1.0,28.0),
+				new Vector2(1.0,29.0),
+				new Vector2(1.0,30.0)
+		].each {tilePos ->
+			GenericNode foundNode = getNode(tilePos)
+			pinkyPatrolPath.add(foundNode)
+		}
+	}
+
+	void buildInkyPatrolPath() {
+		if(inkyPatrolPath) {
+			return
+		}
+
+		inkyPatrolPath = new DefaultGraphPath<>()
+		[
+				new Vector2(26.0,3.0),
+				new Vector2(25.0,3.0),
+				new Vector2(24.0,3.0),
+				new Vector2(23.0,3.0),
+				new Vector2(22.0,3.0),
+				new Vector2(21.0,3.0),
+				new Vector2(20.0,3.0),
+				new Vector2(19.0,3.0),
+				new Vector2(18.0,3.0),
+				new Vector2(17.0,3.0),
+				new Vector2(16.0,3.0),
+				new Vector2(15.0,3.0),
+				new Vector2(15.0,4.0),
+				new Vector2(15.0,5.0),
+				new Vector2(15.0,6.0),
+				new Vector2(16.0,6.0),
+				new Vector2(17.0,6.0),
+				new Vector2(18.0,6.0),
+				new Vector2(18.0,7.0),
+				new Vector2(18.0,8.0),
+				new Vector2(18.0,9.0),
+				new Vector2(19.0,9.0),
+				new Vector2(20.0,9.0),
+				new Vector2(21.0,9.0),
+				new Vector2(21.0,8.0),
+				new Vector2(21.0,7.0),
+				new Vector2(21.0,6.0),
+				new Vector2(22.0,6.0),
+				new Vector2(23.0,6.0),
+				new Vector2(24.0,6.0),
+				new Vector2(25.0,6.0),
+				new Vector2(26.0,6.0),
+				new Vector2(26.0,5.0),
+				new Vector2(26.0,4.0)
+		].each {tilePos ->
+			GenericNode foundNode = getNode(tilePos)
+			inkyPatrolPath.add(foundNode)
+		}
+	}
+
+	void buildClydePatrolPath() {
+		if(clydePatrolPath) {
+			return
+		}
+
+		clydePatrolPath = new DefaultGraphPath<>()
+		[
+				new Vector2(1.0,3.0),
+				new Vector2(2.0,3.0),
+				new Vector2(3.0,3.0),
+				new Vector2(4.0,3.0),
+				new Vector2(5.0,3.0),
+				new Vector2(6.0,3.0),
+				new Vector2(7.0,3.0),
+				new Vector2(8.0,3.0),
+				new Vector2(9.0,3.0),
+				new Vector2(10.0,3.0),
+				new Vector2(11.0,3.0),
+				new Vector2(12.0,3.0),
+				new Vector2(12.0,4.0),
+				new Vector2(12.0,5.0),
+				new Vector2(12.0,6.0),
+				new Vector2(11.0,6.0),
+				new Vector2(10.0,6.0),
+				new Vector2(9.0,6.0),
+				new Vector2(9.0,7.0),
+				new Vector2(9.0,8.0),
+				new Vector2(9.0,9.0),
+				new Vector2(8.0,9.0),
+				new Vector2(7.0,9.0),
+				new Vector2(6.0,9.0),
+				new Vector2(6.0,8.0),
+				new Vector2(6.0,7.0),
+				new Vector2(6.0,6.0),
+				new Vector2(5.0,6.0),
+				new Vector2(4.0,6.0),
+				new Vector2(3.0,6.0),
+				new Vector2(2.0,6.0),
+				new Vector2(1.0,6.0),
+				new Vector2(1.0,5.0),
+				new Vector2(1.0,4.0)
+		].each {tilePos ->
+			GenericNode foundNode = getNode(tilePos)
+			clydePatrolPath.add(foundNode)
+		}
 	}
 
 	@Override

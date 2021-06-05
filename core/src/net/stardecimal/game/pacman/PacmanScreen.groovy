@@ -17,6 +17,9 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 	//make individual ghost heuristics
 	//add fleeing behavior when player gets powerup
 	//fruit
+	//lives
+	//extra life after x score
+	//stop sounds if paused or game ends.
 
 
 	PacmanScreen(final MyGames game) {
