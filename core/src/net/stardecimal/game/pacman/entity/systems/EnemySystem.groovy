@@ -75,6 +75,13 @@ class EnemySystem extends IteratingSystem {
 				SteeringComponent steeringComponent = Mapper.sCom.get(it)
 				SteeringBehavior<Vector2> steeringBehavior = new Seek<Vector2>(steeringComponent, new SdLocation(position: nextGamePos, orientation: 0))
 				steeringComponent.steeringBehavior = steeringBehavior
+
+				//Slow the ghosts down when they are fleeing
+				if(stateComponent.state == StateComponent.STATE_FLEEING) {
+					steeringComponent.maxLinearSpeed = (levelFactory.baseGhostSpeed * levelFactory.ghostSpeedMultiplier) / 3 as float
+				} else {
+					steeringComponent.maxLinearSpeed = levelFactory.baseGhostSpeed * levelFactory.ghostSpeedMultiplier as float
+				}
 			}
 		}
 

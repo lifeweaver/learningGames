@@ -42,6 +42,8 @@ class LevelFactory implements DefaultLevelFactory {
 	Entity player
 	TiledMapTileLayer collisionLayer
 	ComponentMapper<PowerUpComponent> powerCom = ComponentMapper.getFor(PowerUpComponent.class)
+	float baseGhostSpeed = 3
+	float ghostSpeedMultiplier = 1
 
 	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		init(en, assetManager)
@@ -154,7 +156,7 @@ class LevelFactory implements DefaultLevelFactory {
 		yAxisCentering(sdBody)
 
 		steeringComponent.body = sdBody.body
-		steeringComponent.maxLinearSpeed = 3f
+		steeringComponent.maxLinearSpeed = baseGhostSpeed * ghostSpeedMultiplier as float
 		stateComponent.state = StateComponent.STATE_NORMAL
 
 		entity.add(stateComponent)
