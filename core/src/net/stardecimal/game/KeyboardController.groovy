@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2
 class KeyboardController implements InputProcessor {
 
 	boolean left, right, up, down, spacbar
+	boolean w, a, s, d, q, e
 	boolean isMouse1Down, isMouse2Down, isMouse3Down
 	boolean isDragged
 	Vector2 mouseLocation = new Vector2()
@@ -33,6 +34,30 @@ class KeyboardController implements InputProcessor {
 				break
 			case Input.Keys.SPACE:
 				spacbar = true
+				keyProcessed = true
+				break
+			case Input.Keys.W:
+				w = true
+				keyProcessed = true
+				break
+			case Input.Keys.A:
+				a = true
+				keyProcessed = true
+				break
+			case Input.Keys.S:
+				s = true
+				keyProcessed = true
+				break
+			case Input.Keys.D:
+				d = true
+				keyProcessed = true
+				break
+			case Input.Keys.Q:
+				q = true
+				keyProcessed = true
+				break
+			case Input.Keys.E:
+				e = true
 				keyProcessed = true
 				break
 		}
@@ -62,6 +87,30 @@ class KeyboardController implements InputProcessor {
 				break
 			case Input.Keys.SPACE:
 				spacbar = false
+				keyProcessed = true
+				break
+			case Input.Keys.W:
+				w = false
+				keyProcessed = true
+				break
+			case Input.Keys.A:
+				a = false
+				keyProcessed = true
+				break
+			case Input.Keys.S:
+				s = false
+				keyProcessed = true
+				break
+			case Input.Keys.D:
+				d = false
+				keyProcessed = true
+				break
+			case Input.Keys.Q:
+				q = false
+				keyProcessed = true
+				break
+			case Input.Keys.E:
+				e = false
 				keyProcessed = true
 				break
 		}
@@ -131,5 +180,11 @@ class KeyboardController implements InputProcessor {
 		isMouse2Down = false
 		isMouse3Down = false
 		spacbar = false
+		w = false
+		a = false
+		s = false
+		d = false
+		q = false
+		e = false
 	}
 }

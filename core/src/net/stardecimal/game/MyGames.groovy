@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20
 import io.anuke.gif.GifRecorder
 import net.stardecimal.game.asteroids.AsteroidsScreen
 import net.stardecimal.game.breakout.BreakoutScreen
+import net.stardecimal.game.ikari_warriors.IkariWarriorsScreen
 import net.stardecimal.game.loader.SdAssetManager
 import net.stardecimal.game.missilecommand.MissileCommandScreen
 import net.stardecimal.game.pacman.PacmanScreen
@@ -42,6 +43,7 @@ class MyGames extends Game {
 	private HighScoresScreen highScoresScreen
 	private TetrisScreen tetrisScreen
 	private PacmanScreen pacmanScreen
+	private IkariWarriorsScreen ikariWarriorsScreen
 	SdAssetManager assetManager = new SdAssetManager()
 	InputMultiplexer multiplexer = new InputMultiplexer()
 
@@ -59,6 +61,7 @@ class MyGames extends Game {
 	final static int HIGH_SCORES = 11
 	final static int TETRIS = 12
 	final static int PACMAN = 13
+	final static int IKARI_WARRIORS = 14
 	Music playingSong
 	int lastMenu = MENU
 	int currentGame
@@ -103,6 +106,8 @@ class MyGames extends Game {
 			tetrisScreen = null
 			pacmanScreen?.dispose()
 			pacmanScreen = null
+			ikariWarriorsScreen?.dispose()
+			ikariWarriorsScreen = null
 		}
 
 		currentGame = screen
@@ -140,6 +145,10 @@ class MyGames extends Game {
 
 			case PACMAN:
 				return pacmanScreen
+				break
+
+			case IKARI_WARRIORS:
+				return ikariWarriorsScreen
 				break
 		}
 	}
@@ -244,6 +253,19 @@ class MyGames extends Game {
 				this.setScreen(pacmanScreen)
 				state = STATE.RUNNING
 				break
+
+			case IKARI_WARRIORS:
+				gameChange(screen)
+				if(!ikariWarriorsScreen) {
+					ikariWarriorsScreen = new IkariWarriorsScreen(this)
+				} else if(lastMenu != PAUSE) {
+					ikariWarriorsScreen.resetWorld()
+				}
+
+				this.setScreen(ikariWarriorsScreen)
+				state = STATE.RUNNING
+				break
+
 			case MENU:
 				state = STATE.READY
 				lastMenu = screen
