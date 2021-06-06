@@ -149,7 +149,7 @@ class CollisionSystem extends IteratingSystem {
 						levelFactory.getCell(tilePos).setTile(blankTile)
 
 						if(overPellet) {
-							levelFactory.playerScore += 10
+							levelFactory.playerScore += 25
 							levelFactory.nextPelletSound.play()
 							if(levelFactory.nextPelletSound == levelFactory.eatPelletA) {
 								levelFactory.nextPelletSound = levelFactory.eatPelletB
@@ -158,7 +158,7 @@ class CollisionSystem extends IteratingSystem {
 							}
 						}
 						if(overPowerUp) {
-							levelFactory.playerScore += 20
+							levelFactory.playerScore += 50
 							if(!powerUpComponent) {
 								powerUpComponent = engine.createComponent(PowerUpComponent)
 								powerUpComponent.activeTime = 15

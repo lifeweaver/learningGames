@@ -12,12 +12,12 @@ import net.stardecimal.game.pacman.entity.systems.PlayerControlSystem
 
 class PacmanScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
+	int maxScore = 0
 
 	//TODO:
 	//make individual ghost heuristics when is seeking mode
 	//fruit
-	//lives
-	//extra life after x score
+	//Add dying animation
 	//stop sounds if paused or game ends.
 	//make ghosts slow on turns?
 	//update speed of ghosts in different modes
@@ -33,6 +33,7 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 		engine.addSystem(new EnemySystem(levelFactory))
 
 		levelFactory.createPlayer(camera)
+		levelFactory.playerLives = 3
 
 //		parent.recorder = new GifRecorder(batch)
 	}
@@ -41,7 +42,7 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 		reset()
 		levelFactory.playerScore = 0
 		levelFactory.enemyScore = 0
-		levelFactory.playerLives = 0
+		levelFactory.playerLives = 3
 		levelFactory.createPlayer(camera)
 	}
 
@@ -56,6 +57,11 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 			//Move to end game screen once all lives used up
 			if(levelFactory.playerLives == -1) {
 				parent.changeScreen(parent.ENDGAME)
+			}
+
+			if((levelFactory.playerScore - maxScore) / 1000 > 1) {
+				maxScore = levelFactory.playerScore
+				levelFactory.playerLives++
 			}
 
 			levelFactory.hud.setScore(levelFactory.playerScore)
