@@ -294,6 +294,27 @@ class EnemySystem extends IteratingSystem {
 
 		if(stateComponent.state == StateComponent.STATE_SEEKING) {
 			dest = getNode(levelFactory.player)
+			if(dest) {
+				Vector2 newPos = null
+				//TODO: edit dest based on entity type, i.e pinky will try to ambush
+				switch(Mapper.typeCom.get(entity).type) {
+					case TypeComponent.TYPES.BLINKY:
+						//Keep default dest
+						break
+
+					case TypeComponent.TYPES.PINKY:
+						newPos = customPinkySeeking(dest)
+						break
+
+					case TypeComponent.TYPES.INKY:
+//						newPos = customInkySeeking(dest)
+						break
+
+					case TypeComponent.TYPES.CLYDE:
+						break
+				}
+				dest = newPos ? getNode(newPos) : dest
+			}
 		}
 
 		return buildPath(start, dest, entity)
@@ -453,6 +474,48 @@ class EnemySystem extends IteratingSystem {
 			GenericNode foundNode = getNode(tilePos)
 			clydePatrolPath.add(foundNode)
 		}
+	}
+
+	Vector2 customPinkySeeking(GenericNode dest) {
+		//Four tiles ahead of the direction the player is facing
+		//If it's not a navigable tile, just minus one until it's valid
+		float x = 0
+		float y = 0
+		Vector2 newPos = new Vector2()
+		switch(Mapper.transCom.get(levelFactory.player)?.rotation) {
+			case 0: //left
+				x = -4
+				newPos = new Vector2(dest.x + x as float, dest.y + y as float)
+				while(!levelFactory.isCell('node', true, newPos)) {
+					newPos.x++
+				}
+				break
+
+			case 90: //down
+				y = -4
+				newPos = new Vector2(dest.x + x as float, dest.y + y as float)
+				while(!levelFactory.isCell('node', true, newPos)) {
+					newPos.y++
+				}
+				break
+
+			case 180: //right
+				x = 4
+				newPos = new Vector2(dest.x + x as float, dest.y + y as float)
+				while(!levelFactory.isCell('node', true, newPos)) {
+					newPos.x--
+				}
+				break
+
+			case 270: //up
+				y = 4
+				newPos = new Vector2(dest.x + x as float, dest.y + y as float)
+				while(!levelFactory.isCell('node', true, newPos)) {
+					newPos.y--
+				}
+				break
+		}
+		return newPos
 	}
 
 	@Override

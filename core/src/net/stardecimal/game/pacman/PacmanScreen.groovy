@@ -15,7 +15,9 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 	int maxScore = 0
 
 	//TODO:
-	//make individual ghost heuristics when is seeking mode
+	//make tunnel wrap
+	//make inky's special seeking mode behavior
+	//make clyde's special seeking mode behavior
 	//fruit
 	//Add dying animation
 	//stop sounds if paused or game ends.
