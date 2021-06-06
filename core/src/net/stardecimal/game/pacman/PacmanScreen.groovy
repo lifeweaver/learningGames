@@ -20,7 +20,6 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 	//make clyde's special seeking mode behavior
 	//fruit
 	//Add dying animation
-	//stop sounds if paused or game ends.
 	//make ghosts slow on turns?
 	//update speed of ghosts in different modes
 
@@ -114,8 +113,17 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 	}
 
 	@Override
+	void hide() {
+		super.hide()
+		//Pause powerUp music when screen is switched to another, like the pause:
+		levelFactory.powerUp.pause(levelFactory.powerUpId)
+	}
+
+	@Override
 	void show() {
 		Gdx.input.setInputProcessor(parent.multiplexer)
+		//Resume powerUp music in:
+		levelFactory.powerUp.resume(levelFactory.powerUpId)
 	}
 
 	@Override
