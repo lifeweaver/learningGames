@@ -161,10 +161,10 @@ class CollisionSystem extends IteratingSystem {
 							levelFactory.playerScore += 20
 							if(!powerUpComponent) {
 								powerUpComponent = engine.createComponent(PowerUpComponent)
-								powerUpComponent.activeTime = 10
+								powerUpComponent.activeTime = 15
 								entity.add(powerUpComponent)
 							} else {
-								powerUpComponent.activeTime += 10
+								powerUpComponent.activeTime += 15
 							}
 
 							if(levelFactory.powerUpId) {

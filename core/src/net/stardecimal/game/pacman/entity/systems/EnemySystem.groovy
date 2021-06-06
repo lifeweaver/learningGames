@@ -249,12 +249,31 @@ class EnemySystem extends IteratingSystem {
 
 	GraphPath<GenericNode> determinePath(Entity entity, StateComponent stateComponent) {
 		GenericNode start = getNode(entity)
+		GenericNode playerNode = getNode(levelFactory.player)
+		float powerUpActiveTime = levelFactory.powerCom.get(levelFactory.player)?.activeTime ?: 0
 		GenericNode dest = null
 
 		/*
 		 * Should ghosts only flee if they see the player powered up?
 		 * Should ghosts only attack if they can actually see the player?
 		 */
+
+
+		//Check if we should switch on the fleeing
+		if(powerUpActiveTime > 0 && Vector2.dst(start.x, start.y, playerNode.x, playerNode.y) < 5) {
+			stateComponent.state = StateComponent.STATE_FLEEING
+			log.debug("threat detected, new active state: STATE_FLEEING")
+
+			if(stateComponent.state == StateComponent.STATE_FLEEING) {
+				//Keep fleeing
+				//Build path using node farthest away from player
+				dest = graph.nodes.sort {
+					Vector2.dst(it.x, it.y, playerNode.x, playerNode.y)
+				}.last()
+			}
+		} else if(powerUpActiveTime <= 0 && stateComponent.state == StateComponent.STATE_FLEEING) {
+			stateComponent.state = StateComponent.STATE_PATROL
+		}
 
 		//Start the patrol
 		if(stateComponent.state == StateComponent.STATE_NORMAL) {
@@ -270,20 +289,6 @@ class EnemySystem extends IteratingSystem {
 				stateComponent.state = StateComponent.STATE_SEEKING
 			} else {
 				return determinePatrolPath(entity, start)
-			}
-		}
-
-		if(stateComponent.state == StateComponent.STATE_FLEEING) {
-			if(levelFactory.powerCom.get(levelFactory.player).activeTime <= 0) {
-				stateComponent.state = StateComponent.STATE_SEEKING
-			} else {
-				//Keep fleeing
-				//TODO: pick new path? can't use flee steering behavior because it won't respect the walls?
-
-				//Get current player node
-
-				//Build path using nodes farthest away?
-
 			}
 		}
 

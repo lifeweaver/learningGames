@@ -14,12 +14,13 @@ class PacmanScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 
 	//TODO:
-	//make individual ghost heuristics
-	//add fleeing behavior when player gets powerup
+	//make individual ghost heuristics when is seeking mode
 	//fruit
 	//lives
 	//extra life after x score
 	//stop sounds if paused or game ends.
+	//make ghosts slow on turns?
+	//update speed of ghosts in different modes
 
 
 	PacmanScreen(final MyGames game) {
