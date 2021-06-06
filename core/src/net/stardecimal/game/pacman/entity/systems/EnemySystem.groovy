@@ -518,6 +518,56 @@ class EnemySystem extends IteratingSystem {
 		return newPos
 	}
 
+	//TODO: finish inky's seeking behavior
+	Vector2 customInkySeeking(GenericNode dest) {
+		// Two tiles ahead of the player, then double the distance from Blinky's pos on that vector i.e
+		//0I---->T
+		//00P01000
+		//0B000000
+		float x = 0
+		float y = 0
+		Vector2 newPos = new Vector2()
+
+		//Get 2 pos in front of player
+		switch(Mapper.transCom.get(levelFactory.player)?.rotation) {
+			case 0: //left
+				x = -2
+				break
+
+			case 90: //down
+				y = -2
+				break
+
+			case 180: //right
+				x = 2
+				break
+
+			case 270: //up
+				y = 2
+				break
+		}
+		newPos = new Vector2(dest.x + x as float, dest.y + y as float)
+
+		// Blinky's pos
+		Entity blinky = engine.getEntities().find {
+			Mapper.typeCom.get(it).type == TypeComponent.TYPES.BLINKY
+		} as Entity
+		Vector2 blinkyGamePos = Mapper.bCom.get(blinky).body.position
+		Vector2 blinkyTilePos = levelFactory.tilePosition(blinkyGamePos)
+
+		//Get distance
+		float distance = Vector2.dst(blinkyTilePos.x, blinkyTilePos.y, newPos.x, newPos.y) * 2 as float
+
+		//Use distance and vector to calculated new pos
+//		newPos.x = newPos.x * distance as float
+//		newPos.y = newPos.y * distance as float
+//		newPos.add(distance, distance)
+
+
+
+		newPos
+	}
+
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
 		enemyQueue.add(entity)
