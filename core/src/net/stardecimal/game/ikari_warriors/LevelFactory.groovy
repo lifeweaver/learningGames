@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.TiledMap
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
 import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
@@ -27,6 +28,7 @@ class LevelFactory implements DefaultLevelFactory {
 	private TextureRegion playerTex
 	RandomXS128 rand = new RandomXS128()
 	Entity player
+	TiledMapTileLayer collisionLayer
 	int maxPlayerBullets = 99
 	int maxPlayerGrenades = 99
 	int playerBullets = maxPlayerBullets
@@ -58,7 +60,7 @@ class LevelFactory implements DefaultLevelFactory {
 		playerCom.cam = cam
 		sdBody.body = bodyFactory.makeBoxPolyBody(
 				screenSize.x / 2 as float,
-				5,
+				16.5,
 				1,
 				1.25,
 				BodyFactory.STEEL,
@@ -86,7 +88,9 @@ class LevelFactory implements DefaultLevelFactory {
 
 	@Override
 	TiledMap generateBackground() {
-		return null
+		map = assetManager.manager.get(SdAssetManager.ikariWarriorsMap)
+		collisionLayer = (TiledMapTileLayer) map.getLayers().first()
+		return map
 	}
 
 	@Override

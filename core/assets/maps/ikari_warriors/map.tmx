@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="11" height="100" tilewidth="48" tileheight="48" infinite="0" nextlayerid="2" nextobjectid="1">
+ <properties>
+  <property name="ScaleMap--Scrolling--Y" type="bool" value="true"/>
+ </properties>
+ <tileset firstgid="1" source="pipo-map001.tsx"/>
+ <tileset firstgid="137" source="pipo-map001_at.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="11" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztkUEKgCAQRZ2gAxTezW27jtCROmAHKI1m0WAwbgLhPXgInycuDAEAAACgP3bEHzyz8Tk9TnL3i3rkbRD//Za3aNvb0fEXkpvyb3OlTfI2VjZ1NZbWbl/S9tFuxtLaTZWAPXoBBskPfQ==
+  </data>
+ </layer>
+</map>

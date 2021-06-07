@@ -68,28 +68,34 @@ trait DefaultLevelFactory {
 		}
 	}
 
+	void createScrollingYBoundaries(float totalHeight) {
+		createBoundary(new Vector2(0, totalHeight), 0.1, totalHeight)
+		createBoundary(new Vector2(RenderingSystem.screenSizeInPixesWorld.x * 2 as float, totalHeight), 0.1, totalHeight)
+		createBoundary(new Vector2(RenderingSystem.screenSizeInPixesWorld.x, 0.1f), RenderingSystem.screenSizeInPixesWorld.x, 0.1)
+	}
+
 	void createBoundaries(boolean floor=true, boolean ceiling=true, boolean rightWall=true, boolean leftWall=true) {
 		Vector2 screenSize = RenderingSystem.getScreenSizeInMeters()
 		float boundaryWidth = 0.1f
 
 		if(floor) {
-			createBoundary(new Vector2(screenSize.x, 0.1f), screenSize.x, boundaryWidth)
+			createBoundary(new Vector2(screenSize.x, 0.1f), screenSize.x, boundaryWidth, RenderingSystem.PPM)
 		}
 
 		if(ceiling) {
-			createBoundary(new Vector2(screenSize.x, screenSize.y * 2 as float), screenSize.x, boundaryWidth)
+			createBoundary(new Vector2(screenSize.x, screenSize.y * 2 as float), screenSize.x, boundaryWidth, RenderingSystem.PPM)
 		}
 
 		if(rightWall) {
-			createBoundary(new Vector2(screenSize.x * 2 as float, screenSize.y * 2 as float), boundaryWidth, screenSize.y)
+			createBoundary(new Vector2(screenSize.x * 2 as float, screenSize.y * 2 as float), boundaryWidth, screenSize.y, RenderingSystem.PPM)
 		}
 
 		if(leftWall) {
-			createBoundary(new Vector2(0, 0), boundaryWidth, screenSize.y)
+			createBoundary(new Vector2(0, 0), boundaryWidth, screenSize.y, RenderingSystem.PPM)
 		}
 	}
 
-	void createBoundary(Vector2 pos, float width, float height) {
+	void createBoundary(Vector2 pos, float width, float height, float ppm=1) {
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)
@@ -97,8 +103,8 @@ trait DefaultLevelFactory {
 		TypeComponent type = engine.createComponent(TypeComponent)
 
 		//Divide by the PPM then by 2 unless they are zero
-		float x = pos.x != 0 ? pos.x / RenderingSystem.PPM / 2 as float : pos.x
-		float y = pos.y != 0 ? pos.y / RenderingSystem.PPM / 2 as float : pos.y
+		float x = pos.x != 0 ? pos.x / ppm / 2 as float : pos.x
+		float y = pos.y != 0 ? pos.y / ppm / 2 as float : pos.y
 
 		position.position.set(x, y, 0)
 		texture.region = boundaryTex

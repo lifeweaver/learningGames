@@ -5,10 +5,15 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
+import net.stardecimal.game.RenderingConstants
+import net.stardecimal.game.entity.components.Mapper
+import net.stardecimal.game.entity.components.SdBodyComponent
+import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.ikari_warriors.entity.systems.PlayerControlSystem
 
 class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
+	RenderingSystem renderingSystem
 
 	//TODO:
 	//everything
@@ -23,6 +28,8 @@ class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
 	 *     - flame thrower?
 	 *     - can go under water
 	 *       - only hurt by grenades then
+	 *     - spawn from beyond view, from top and sides?
+	 *     - can move about
 	 *
 	 *  - tank
 	 *    - immune to enemy bullets
@@ -92,16 +99,23 @@ class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
 	 *
 	 *
 	 * Basic road map:
-	 *  - player movement
+	 *  - bullet shooting
 	 *  - player looking
-	 *  - scrolling map
+	 *    - just use different textures and start the shot with a different angle, and different start pos
 	 *  - shooting
-	 *
+	 * 624 high 13
+	 * 528 wide? 11
 	 */
 
 	IkariWarriorsScreen(final MyGames game) {
-//		init(game, LevelFactory.class, new RenderingConstants())
-		init(game, LevelFactory.class)
+		def renderingConstants = new RenderingConstants()
+		renderingConstants.WORLD_PIXEL_WIDTH = 624
+		renderingConstants.WORLD_PIXEL_HEIGHT = 528
+
+		renderingConstants.WORLD_WIDTH = renderingConstants.WORLD_PIXEL_WIDTH / renderingConstants.PPM
+		renderingConstants.WORLD_HEIGHT = renderingConstants.WORLD_PIXEL_HEIGHT / renderingConstants.PPM
+		init(game, LevelFactory.class, new RenderingConstants())
+//		init(game, LevelFactory.class)
 		levelFactory = (LevelFactory) lvlFactory
 		levelFactory.gameName = 'ikariWarriors'
 
@@ -109,8 +123,10 @@ class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
 		engine.addSystem(new PlayerControlSystem(levelFactory))
 //		engine.addSystem(new CollisionSystem(parent, levelFactory))
 //		engine.addSystem(new EnemySystem(levelFactory))
+		renderingSystem = engine.getSystem(RenderingSystem)
 
-		levelFactory.createBoundaries(true, false)
+		float totalHeight = (levelFactory.collisionLayer.tileHeight * RenderingSystem.PIXELS_TO_METRES) * levelFactory.collisionLayer.height as float
+		levelFactory.createScrollingYBoundaries(totalHeight)
 		levelFactory.createPlayer(camera)
 		levelFactory.playerLives = 3
 
@@ -122,7 +138,8 @@ class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
 		levelFactory.playerScore = 0
 		levelFactory.enemyScore = 0
 		levelFactory.playerLives = 3
-		levelFactory.createBoundaries(true, false)
+		float totalHeight = (levelFactory.collisionLayer.tileHeight * RenderingSystem.PIXELS_TO_METRES) * levelFactory.collisionLayer.height as float
+		levelFactory.createScrollingYBoundaries(totalHeight)
 		levelFactory.createPlayer(camera)
 	}
 
@@ -132,6 +149,14 @@ class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
 		if(parent.state == MyGames.STATE.RUNNING) {
 			Gdx.gl.glClearColor(0,0,0, 1)
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+			//Update the camera location before updating the systems.
+			if(levelFactory.player) {
+				SdBodyComponent playerBody = Mapper.bCom.get(levelFactory.player)
+				//TODO: figure out how to calculate the 16.5 instead of hardcoding it, and make sure to change it when you create the player.
+				if(playerBody && playerBody.body.position.y >= 16.5) {
+					renderingSystem.getCamera().position.y = playerBody.body.position.y
+				}
+			}
 			engine.update(delta)
 
 			//Move to end game screen once all lives used up

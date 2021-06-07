@@ -133,6 +133,11 @@ class RenderingSystem extends SortedIteratingSystem {
 				}
 			}
 
+			if(background.properties.get("ScaleMap--Scrolling--Y")) {
+				TiledMapTileLayer firstLayer = (TiledMapTileLayer) background.layers.first()
+				PIXELS_TO_METRES = FRUSTUM_WIDTH / (firstLayer.width * firstLayer.tileWidth)
+			}
+
 			backgroundRenderer = new OrthogonalTiledMapRenderer(background, PIXELS_TO_METRES, batch)
 		}
 	}

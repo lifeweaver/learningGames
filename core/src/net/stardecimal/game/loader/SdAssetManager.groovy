@@ -53,6 +53,8 @@ class SdAssetManager {
 	final static String gameOverPacMan = "input/pacman/107_Free_Retro_Game_Sounds/Game_Over_Music_2.wav"
 	final static String powerUp = "input/pacman/107_Free_Retro_Game_Sounds/He_is_a_plumber.wav"
 
+	final static String ikariWarriorsMap = "maps/ikari_warriors/map.tmx"
+
 //	final static String playingSong = 'music/Rolemusic_-_pl4y1ng.mp3'
 //
 
@@ -62,6 +64,7 @@ class SdAssetManager {
 		manager.load(flames, ParticleEffect)
 		manager.load(shield, ParticleEffect)
 		manager.load(pacmanMap, TiledMap)
+		manager.load(ikariWarriorsMap, TiledMap)
 	}
 
 	void queueAddImages() {
