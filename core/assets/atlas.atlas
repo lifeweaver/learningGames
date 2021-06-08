@@ -39,6 +39,41 @@ asteroids/shield
   orig: 10, 10
   offset: 0, 0
   index: -1
+ikari_warriors/explosion
+  rotate: false
+  xy: 341, 10
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+missile_command/explosion
+  rotate: false
+  xy: 341, 10
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+ikari_warriors/grenade
+  rotate: false
+  xy: 409, 22
+  size: 20, 40
+  orig: 20, 40
+  offset: 0, 0
+  index: -1
+ikari_warriors/pre_particle
+  rotate: false
+  xy: 239, 30
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+missile_command/pre_particle
+  rotate: false
+  xy: 239, 30
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 ikari_warriors/shot
   rotate: false
   xy: 295, 42
@@ -79,20 +114,6 @@ missile_command/enemyMissileTrail
   xy: 49, 4
   size: 1, 1
   orig: 1, 1
-  offset: 0, 0
-  index: -1
-missile_command/explosion
-  rotate: false
-  xy: 341, 10
-  size: 10, 10
-  orig: 10, 10
-  offset: 0, 0
-  index: -1
-missile_command/pre_particle
-  rotate: false
-  xy: 239, 30
-  size: 32, 32
-  orig: 32, 32
   offset: 0, 0
   index: -1
 missile_command/satellite
@@ -160,7 +181,7 @@ pacman/pacman
   index: 2
 pong/paddle
   rotate: false
-  xy: 421, 22
+  xy: 443, 22
   size: 10, 40
   orig: 10, 40
   offset: 0, 0
@@ -265,7 +286,7 @@ tetris/i
   index: -1
 tetris/i2
   rotate: false
-  xy: 409, 22
+  xy: 431, 22
   size: 10, 40
   orig: 10, 40
   offset: 0, 0

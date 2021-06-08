@@ -55,6 +55,9 @@ class SdAssetManager {
 
 	final static String ikariWarriorsMap = "maps/ikari_warriors/map.tmx"
 	final static String ikariWarriorsShot = "input/ikari_warriors/shot.wav"
+	final static String ikariWarriorsGrenade = "input/ikari_warriors/boom.wav"
+	final static String ikariWarriorsGrenadeWhistle = "input/ikari_warriors/grenadeWhistle.wav"
+	final static String ikariWarriorsExplosionParticle = "input/ikari_warriors/explosion.pe"
 
 //	final static String playingSong = 'music/Rolemusic_-_pl4y1ng.mp3'
 //
@@ -62,6 +65,7 @@ class SdAssetManager {
 	void queueAddIndividualAssets() {
 		manager.load(enemyMissileTrail, ParticleEffect)
 		manager.load(explosionParticle, ParticleEffect)
+		manager.load(ikariWarriorsExplosionParticle, ParticleEffect)
 		manager.load(flames, ParticleEffect)
 		manager.load(shield, ParticleEffect)
 		manager.load(pacmanMap, TiledMap)
@@ -106,9 +110,9 @@ class SdAssetManager {
 		manager.load(gameOverPacMan, Sound)
 		manager.load(powerUp, Sound)
 
-
-
 		manager.load(ikariWarriorsShot, Sound)
+		manager.load(ikariWarriorsGrenade, Sound)
+		manager.load(ikariWarriorsGrenadeWhistle, Sound)
 	}
 
 	void queueAddMusic() {
