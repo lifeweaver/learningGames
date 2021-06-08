@@ -31,6 +31,7 @@ class TypeComponent implements Component, Pool.Poolable {
 			PINKY: 22,
 			INKY: 23,
 			CLYDE: 24,
+			GRENADE: 25,
 			DEFAULT: 999
 	]
 

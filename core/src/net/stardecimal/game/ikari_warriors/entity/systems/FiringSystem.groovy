@@ -3,17 +3,17 @@ package net.stardecimal.game.ikari_warriors.entity.systems
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
-import net.stardecimal.game.MyGames
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
+import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.ikari_warriors.LevelFactory
 
-class BulletSystem extends IteratingSystem {
+class FiringSystem extends IteratingSystem {
 	LevelFactory levelFactory
 
 	@SuppressWarnings("unchecked")
-	BulletSystem(LevelFactory lvlFactory) {
+	FiringSystem(LevelFactory lvlFactory) {
 		super(Family.all(BulletComponent.class).get())
 		this.levelFactory = lvlFactory
 	}
@@ -34,6 +34,9 @@ class BulletSystem extends IteratingSystem {
 
 		if(bullet.maxLife < 0) {
 			bullet.isDead = true
+			if(Mapper.typeCom.get(entity).type == TypeComponent.TYPES.GRENADE) {
+				levelFactory.createBoom(b2body.body.position)
+			}
 		}
 
 		//check if bullet is dead

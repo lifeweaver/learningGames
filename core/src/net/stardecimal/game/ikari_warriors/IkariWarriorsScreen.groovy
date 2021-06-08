@@ -9,7 +9,7 @@ import net.stardecimal.game.RenderingConstants
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
-import net.stardecimal.game.ikari_warriors.entity.systems.BulletSystem
+import net.stardecimal.game.ikari_warriors.entity.systems.FiringSystem
 import net.stardecimal.game.ikari_warriors.entity.systems.PlayerControlSystem
 
 class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
@@ -117,7 +117,7 @@ class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
 
 
 		engine.addSystem(new PlayerControlSystem(levelFactory))
-		engine.addSystem(new BulletSystem(levelFactory))
+		engine.addSystem(new FiringSystem(levelFactory))
 //		engine.addSystem(new CollisionSystem(parent, levelFactory))
 //		engine.addSystem(new EnemySystem(levelFactory))
 		renderingSystem = engine.getSystem(RenderingSystem)

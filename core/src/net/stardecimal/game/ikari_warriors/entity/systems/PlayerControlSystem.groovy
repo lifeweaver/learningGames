@@ -15,6 +15,7 @@ class PlayerControlSystem extends IteratingSystem {
 	LevelFactory levelFactory
 	float speed = 5
 	long lastShot = System.currentTimeMillis()
+	long lastGrenade = System.currentTimeMillis()
 	long lastTurn = System.currentTimeMillis()
 
 	@SuppressWarnings("unchecked")
@@ -54,8 +55,9 @@ class PlayerControlSystem extends IteratingSystem {
 			playerBody.body.setTransform(playerBody.body.position.x, playerBody.body.position.y, playerBody.body.angle - (MathUtils.degreesToRadians * 45) as float)
 		}
 
-		if (controller.left) {
-			//TODO: grenade
+		if (controller.left && System.currentTimeMillis() - lastGrenade > 1000) {
+			lastGrenade = System.currentTimeMillis()
+			levelFactory.playerGrenade(playerBody.body.position, playerBody.body.angle)
 		}
 
 		if (controller.right && System.currentTimeMillis() - lastShot > 300) {
