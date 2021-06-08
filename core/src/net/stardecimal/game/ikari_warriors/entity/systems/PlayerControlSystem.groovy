@@ -14,6 +14,8 @@ class PlayerControlSystem extends IteratingSystem {
 	KeyboardController controller
 	LevelFactory levelFactory
 	float speed = 5
+	long lastShot = System.currentTimeMillis()
+	long lastTurn = System.currentTimeMillis()
 
 	@SuppressWarnings("unchecked")
 	PlayerControlSystem(LevelFactory lvlFactory) {
@@ -42,12 +44,23 @@ class PlayerControlSystem extends IteratingSystem {
 			playerBody.body.setLinearVelocity(playerBody.body.linearVelocity.x, MathUtils.lerp(playerBody.body.linearVelocity.y, -speed, 0.2f))
 		}
 
+		if (controller.q && System.currentTimeMillis() - lastTurn > 300) {
+			lastTurn = System.currentTimeMillis()
+			playerBody.body.setTransform(playerBody.body.position.x, playerBody.body.position.y, playerBody.body.angle + (MathUtils.degreesToRadians * 45) as float)
+		}
+
+		if (controller.e && System.currentTimeMillis() - lastTurn > 300) {
+			lastTurn = System.currentTimeMillis()
+			playerBody.body.setTransform(playerBody.body.position.x, playerBody.body.position.y, playerBody.body.angle - (MathUtils.degreesToRadians * 45) as float)
+		}
+
 		if (controller.left) {
 			//TODO: grenade
 		}
 
-		if (controller.left) {
-			//TODO: shoot
+		if (controller.right && System.currentTimeMillis() - lastShot > 300) {
+			lastShot = System.currentTimeMillis()
+			levelFactory.playerShoot()
 		}
 
 		if (!controller.a && !controller.d) {

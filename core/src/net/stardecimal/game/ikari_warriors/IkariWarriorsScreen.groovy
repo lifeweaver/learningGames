@@ -9,6 +9,7 @@ import net.stardecimal.game.RenderingConstants
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
+import net.stardecimal.game.ikari_warriors.entity.systems.BulletSystem
 import net.stardecimal.game.ikari_warriors.entity.systems.PlayerControlSystem
 
 class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
@@ -97,30 +98,26 @@ class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
 	 *  - short range, maybe half the screen height?
 	 *  - don't collide with each other
 	 *
-	 *
 	 * Basic road map:
-	 *  - bullet shooting
 	 *  - player looking
 	 *    - just use different textures and start the shot with a different angle, and different start pos
 	 *  - shooting
-	 * 624 high 13
-	 * 528 wide? 11
 	 */
 
 	IkariWarriorsScreen(final MyGames game) {
 		def renderingConstants = new RenderingConstants()
 		renderingConstants.WORLD_PIXEL_WIDTH = 624
 		renderingConstants.WORLD_PIXEL_HEIGHT = 528
-
 		renderingConstants.WORLD_WIDTH = renderingConstants.WORLD_PIXEL_WIDTH / renderingConstants.PPM
 		renderingConstants.WORLD_HEIGHT = renderingConstants.WORLD_PIXEL_HEIGHT / renderingConstants.PPM
+
 		init(game, LevelFactory.class, new RenderingConstants())
-//		init(game, LevelFactory.class)
 		levelFactory = (LevelFactory) lvlFactory
 		levelFactory.gameName = 'ikariWarriors'
 
 
 		engine.addSystem(new PlayerControlSystem(levelFactory))
+		engine.addSystem(new BulletSystem(levelFactory))
 //		engine.addSystem(new CollisionSystem(parent, levelFactory))
 //		engine.addSystem(new EnemySystem(levelFactory))
 		renderingSystem = engine.getSystem(RenderingSystem)

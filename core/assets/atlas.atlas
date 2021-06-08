@@ -27,16 +27,23 @@ asteroids/particle
   index: -1
 asteroids/player
   rotate: false
-  xy: 343, 52
+  xy: 354, 38
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 asteroids/shield
   rotate: false
-  xy: 335, 12
+  xy: 359, 52
   size: 10, 10
   orig: 10, 10
+  offset: 0, 0
+  index: -1
+ikari_warriors/shot
+  rotate: false
+  xy: 295, 42
+  size: 20, 20
+  orig: 20, 20
   offset: 0, 0
   index: -1
 missile_command/bomberPlane
@@ -62,7 +69,7 @@ missile_command/crosshairs
   index: -1
 missile_command/defenderMissile
   rotate: false
-  xy: 335, 2
+  xy: 353, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -76,7 +83,7 @@ missile_command/enemyMissileTrail
   index: -1
 missile_command/explosion
   rotate: false
-  xy: 335, 24
+  xy: 341, 10
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
@@ -90,7 +97,7 @@ missile_command/pre_particle
   index: -1
 missile_command/satellite
   rotate: false
-  xy: 359, 9
+  xy: 366, 9
   size: 41, 41
   orig: 41, 41
   offset: 0, 0
@@ -153,14 +160,14 @@ pacman/pacman
   index: 2
 pong/paddle
   rotate: false
-  xy: 414, 22
+  xy: 421, 22
   size: 10, 40
   orig: 10, 40
   offset: 0, 0
   index: -1
 pong/pingPong
   rotate: false
-  xy: 340, 40
+  xy: 343, 24
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
@@ -174,56 +181,56 @@ space_invaders/barrier
   index: -1
 space_invaders/enemy1
   rotate: false
-  xy: 307, 16
+  xy: 317, 50
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 0
 space_invaders/enemy1
   rotate: false
-  xy: 307, 2
-  size: 12, 12
-  orig: 12, 12
-  offset: 0, 0
-  index: 1
-space_invaders/enemy2
-  rotate: false
-  xy: 317, 50
-  size: 12, 12
-  orig: 12, 12
-  offset: 0, 0
-  index: 0
-space_invaders/enemy2
-  rotate: false
-  xy: 321, 16
-  size: 12, 12
-  orig: 12, 12
-  offset: 0, 0
-  index: 1
-space_invaders/enemy3
-  rotate: false
-  xy: 321, 2
-  size: 12, 12
-  orig: 12, 12
-  offset: 0, 0
-  index: 0
-space_invaders/enemy3
-  rotate: false
   xy: 326, 36
+  size: 12, 12
+  orig: 12, 12
+  offset: 0, 0
+  index: 1
+space_invaders/enemy2
+  rotate: false
+  xy: 331, 50
+  size: 12, 12
+  orig: 12, 12
+  offset: 0, 0
+  index: 0
+space_invaders/enemy2
+  rotate: false
+  xy: 329, 22
+  size: 12, 12
+  orig: 12, 12
+  offset: 0, 0
+  index: 1
+space_invaders/enemy3
+  rotate: false
+  xy: 340, 36
+  size: 12, 12
+  orig: 12, 12
+  offset: 0, 0
+  index: 0
+space_invaders/enemy3
+  rotate: false
+  xy: 345, 50
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 1
 space_invaders/enemy4
   rotate: false
-  xy: 331, 52
+  xy: 329, 10
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 space_invaders/enemyShot
   rotate: false
-  xy: 352, 40
+  xy: 355, 26
   size: 3, 10
   orig: 3, 10
   offset: 0, 0
@@ -237,14 +244,14 @@ space_invaders/player
   index: -1
 space_invaders/playerShot
   rotate: false
-  xy: 355, 52
+  xy: 360, 26
   size: 3, 10
   orig: 3, 10
   offset: 0, 0
   index: -1
 space_invaders/shield
   rotate: false
-  xy: 347, 28
+  xy: 353, 12
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
@@ -258,7 +265,7 @@ tetris/i
   index: -1
 tetris/i2
   rotate: false
-  xy: 402, 22
+  xy: 409, 22
   size: 10, 40
   orig: 10, 40
   offset: 0, 0
@@ -356,7 +363,7 @@ worm/fruit
   index: -1
 worm/worm
   rotate: false
-  xy: 295, 42
+  xy: 307, 8
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
