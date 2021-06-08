@@ -163,6 +163,8 @@ class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
 
 			levelFactory.hud.setScore(levelFactory.playerScore)
 			levelFactory.hud.setLives(levelFactory.playerLives)
+			levelFactory.hud.setBullets(levelFactory.playerBullets)
+			levelFactory.hud.setGrenades(levelFactory.playerGrenades)
 		}
 
 		// Gif Recorder support

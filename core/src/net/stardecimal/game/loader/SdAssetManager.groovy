@@ -54,6 +54,7 @@ class SdAssetManager {
 	final static String powerUp = "input/pacman/107_Free_Retro_Game_Sounds/He_is_a_plumber.wav"
 
 	final static String ikariWarriorsMap = "maps/ikari_warriors/map.tmx"
+	final static String ikariWarriorsShot = "input/ikari_warriors/shot.wav"
 
 //	final static String playingSong = 'music/Rolemusic_-_pl4y1ng.mp3'
 //
@@ -104,6 +105,10 @@ class SdAssetManager {
 		manager.load(eatPelletB, Sound)
 		manager.load(gameOverPacMan, Sound)
 		manager.load(powerUp, Sound)
+
+
+
+		manager.load(ikariWarriorsShot, Sound)
 	}
 
 	void queueAddMusic() {

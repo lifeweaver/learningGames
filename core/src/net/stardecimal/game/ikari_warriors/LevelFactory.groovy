@@ -2,6 +2,7 @@ package net.stardecimal.game.ikari_warriors
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
@@ -14,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import net.stardecimal.game.BodyFactory
 import net.stardecimal.game.DFUtils
-import net.stardecimal.game.DefaultHud
 import net.stardecimal.game.DefaultLevelFactory
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
@@ -25,12 +25,12 @@ import net.stardecimal.game.entity.components.SoundEffectComponent
 import net.stardecimal.game.entity.components.TextureComponent
 import net.stardecimal.game.entity.components.TransformComponent
 import net.stardecimal.game.entity.components.TypeComponent
-import net.stardecimal.game.entity.components.VelocityComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
 
 class LevelFactory implements DefaultLevelFactory {
 	private TextureRegion playerTex, shotTex
+	Sound shot
 	RandomXS128 rand = new RandomXS128()
 	Entity player
 	TiledMapTileLayer collisionLayer
@@ -49,6 +49,7 @@ class LevelFactory implements DefaultLevelFactory {
 //		playerTex = atlas.findRegion("ikari_warriors/player")
 		playerTex = DFUtils.makeTextureRegion(1, 1.25, '#ffffff')
 		shotTex = atlas.findRegion("ikari_warriors/shot")
+		shot = assetManager.manager.get(SdAssetManager.ikariWarriorsShot)
 
 		log.info("level factory initialized")
 	}
@@ -94,8 +95,11 @@ class LevelFactory implements DefaultLevelFactory {
 	}
 
 	void playerShoot() {
-		Body body = Mapper.bCom.get(player).body
-		createShot(body.position, body.angle)
+		if(playerBullets > 0) {
+			playerBullets--
+			Body body = Mapper.bCom.get(player).body
+			createShot(body.position, body.angle)
+		}
 	}
 
 	void createShot(Vector2 startPos, float angle, BulletComponent.Owner owner=BulletComponent.Owner.PLAYER) {
@@ -106,14 +110,14 @@ class LevelFactory implements DefaultLevelFactory {
 		CollisionComponent colComp = engine.createComponent(CollisionComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
 		BulletComponent bul = engine.createComponent(BulletComponent)
-		VelocityComponent velCom = engine.createComponent(VelocityComponent)
 
-		DFUtils.angleToVector(velCom.linearVelocity, angle)
-		Vector2 shotStartPos = new Vector2(velCom.linearVelocity.x, velCom.linearVelocity.y).add(startPos)
-		velCom.linearVelocity.x += velCom.linearVelocity.x * 15
-		velCom.linearVelocity.y += velCom.linearVelocity.y * 15
-		bul.xVel = velCom.linearVelocity.x
-		bul.yVel = velCom.linearVelocity.y
+		Vector2 linearVelocity = new Vector2()
+		DFUtils.angleToVector(linearVelocity, angle)
+		Vector2 shotStartPos = new Vector2(linearVelocity.x, linearVelocity.y).add(startPos)
+		linearVelocity.x += linearVelocity.x * 15
+		linearVelocity.y += linearVelocity.y * 15
+		bul.xVel = linearVelocity.x
+		bul.yVel = linearVelocity.y
 
 		sdBody.body = bodyFactory.makeBoxPolyBody(
 				shotStartPos.x,
@@ -132,18 +136,16 @@ class LevelFactory implements DefaultLevelFactory {
 		position.scale.x = 40
 		position.scale.y = 40
 
-
 		bul.owner = owner
 		bul.maxLife = 1.25
 
-//		SoundEffectComponent soundCom = engine.createComponent(SoundEffectComponent)
-//		soundCom.soundEffect = playerFiring
-//		soundCom.play()
-//		entity.add(soundCom)
+		SoundEffectComponent soundCom = engine.createComponent(SoundEffectComponent)
+		soundCom.soundEffect = shot
+		soundCom.play()
+		entity.add(soundCom)
 
 
 		entity.add(bul)
-//		entity.add(velCom)
 		entity.add(sdBody)
 		entity.add(position)
 		entity.add(texture)
@@ -162,7 +164,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 	@Override
 	def createHud(SpriteBatch batch) {
-		hud = new DefaultHud(batch)
+		hud = new IkariWarriorsHud(batch)
 		return hud
 	}
 }
