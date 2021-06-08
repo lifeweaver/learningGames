@@ -8,6 +8,7 @@ class SoundEffectComponent implements Component, Pool.Poolable {
 	Sound soundEffect
 	boolean looping = false
 	long soundId = -1
+	float playingVolume = 1
 
 	@Override
 	void reset() {
@@ -15,11 +16,12 @@ class SoundEffectComponent implements Component, Pool.Poolable {
 		soundEffect = null
 		looping = false
 		soundId = -1
+		playingVolume = 1
 	}
 
 	void play() {
 		if(soundEffect) {
-			soundId = soundEffect.play()
+			soundId = soundEffect.play(playingVolume)
 			soundEffect.setLooping(soundId, looping)
 		}
 	}
