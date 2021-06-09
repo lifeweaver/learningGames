@@ -32,7 +32,7 @@ import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.loader.SdAssetManager
 
 class LevelFactory implements DefaultLevelFactory {
-	private TextureRegion playerTex, shotTex, grenadeTex
+	private TextureRegion playerTex, shotTex, grenadeTex, tankTex
 	Sound shot, grenadeBoom, grenadeWhistle
 	RandomXS128 rand = new RandomXS128()
 	Entity player
@@ -52,6 +52,7 @@ class LevelFactory implements DefaultLevelFactory {
 		playerTex = DFUtils.makeTextureRegion(1, 1.25, '#ffffff')
 		shotTex = atlas.findRegion("ikari_warriors/shot")
 		grenadeTex = atlas.findRegion("ikari_warriors/grenade")
+		tankTex = atlas.findRegion("ikari_warriors/tank")
 		shot = assetManager.manager.get(SdAssetManager.ikariWarriorsShot)
 		grenadeBoom = assetManager.manager.get(SdAssetManager.ikariWarriorsGrenade)
 		grenadeWhistle = assetManager.manager.get(SdAssetManager.ikariWarriorsGrenadeWhistle)
@@ -74,8 +75,8 @@ class LevelFactory implements DefaultLevelFactory {
 		sdBody.body = bodyFactory.makeBoxPolyBody(
 				screenSize.x / 2 as float,
 				16.5,
-				1,
-				1.25,
+				2,
+				2,
 				BodyFactory.STEEL,
 				BodyDef.BodyType.DynamicBody,
 				true
@@ -283,6 +284,39 @@ class LevelFactory implements DefaultLevelFactory {
 		return entity
 	}
 
+	void createTank(Vector2 startPos) {
+		Entity entity = engine.createEntity()
+		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+		TransformComponent position = engine.createComponent(TransformComponent)
+		TextureComponent texture = engine.createComponent(TextureComponent)
+		CollisionComponent colCom = engine.createComponent(CollisionComponent)
+		TypeComponent type = engine.createComponent(TypeComponent)
+
+		sdBody.body = bodyFactory.makeBoxPolyBody(
+				startPos.x,
+				startPos.y,
+				2,
+				2,
+				BodyFactory.STEEL,
+				BodyDef.BodyType.DynamicBody,
+				true
+		)
+
+		//TODO: figure out how to do a moveable turret
+		texture.region = tankTex
+		position.scale.x = 15
+		position.scale.y = 15
+
+		type.type = TypeComponent.TYPES.TANK
+		sdBody.body.setUserData(entity)
+
+		entity.add(colCom)
+		entity.add(sdBody)
+		entity.add(position)
+		entity.add(texture)
+		entity.add(type)
+		engine.addEntity(entity)
+	}
 
 	@Override
 	TiledMap generateBackground() {
