@@ -5,11 +5,13 @@ import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.ai.steer.SteeringBehavior
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
@@ -39,6 +41,7 @@ import net.stardecimal.game.loader.SdAssetManager
 
 class LevelFactory implements DefaultLevelFactory {
 	private TextureRegion playerTex, shotTex, grenadeTex, tankTex, gunSoldierTex
+	Animation<TextureRegion> playerAnimation
 	Sound shot, grenadeBoom, grenadeWhistle
 	RandomXS128 rand = new RandomXS128()
 	Entity player
@@ -55,7 +58,8 @@ class LevelFactory implements DefaultLevelFactory {
 		TextureAtlas atlas = assetManager.manager.get(SdAssetManager.gameImages)
 		atlas.findRegion("ikari_warriors/")
 
-		playerTex = DFUtils.makeTextureRegion(1, 1.25, '#ffffff')
+		playerTex = atlas.findRegion("ikari_warriors/player")
+		playerAnimation = new Animation<TextureRegion>(0.1f, atlas.findRegions('ikari_warriors/player'), Animation.PlayMode.NORMAL)
 		gunSoldierTex = DFUtils.makeTextureRegion(1, 1.25, '#121B96')
 		shotTex = atlas.findRegion("ikari_warriors/shot")
 		grenadeTex = atlas.findRegion("ikari_warriors/grenade")
@@ -66,6 +70,51 @@ class LevelFactory implements DefaultLevelFactory {
 		pem.addParticleEffect(ParticleEffectManager.EXPLOSION, assetManager.manager.get(SdAssetManager.ikariWarriorsExplosionParticle))
 
 		log.info("level factory initialized")
+	}
+
+	TextureRegion determinePlayerTexture(float angleRad) {
+		int angleDeg = Math.round((angleRad * MathUtils.radiansToDegrees)) % 360
+		TextureRegion newPlayerTex = playerAnimation.keyFrames[0]
+
+		switch(angleDeg) {
+			case 45:
+			case -315:
+				newPlayerTex = playerAnimation.keyFrames[7]
+				break
+
+			case 90:
+			case -270:
+				newPlayerTex = playerAnimation.keyFrames[6]
+				break
+
+			case 135:
+			case -225:
+				newPlayerTex = playerAnimation.keyFrames[5]
+				break
+
+			case 180:
+			case -180:
+				newPlayerTex = playerAnimation.keyFrames[4]
+				break
+
+			case -135:
+			case 225:
+				newPlayerTex = playerAnimation.keyFrames[3]
+				break
+
+			case -90:
+			case 270:
+				newPlayerTex = playerAnimation.keyFrames[2]
+				break
+
+			case -45:
+			case 315:
+				newPlayerTex = playerAnimation.keyFrames[1]
+				break
+
+		}
+
+		return newPlayerTex
 	}
 
 	Entity createPlayer(OrthographicCamera cam, Vector2 startPos=new Vector2(RenderingSystem.getScreenSizeInPixesWorld().x / 2 as float, 16.5)) {
@@ -87,7 +136,7 @@ class LevelFactory implements DefaultLevelFactory {
 				true
 		)
 
-		texture.region = playerTex
+		texture.region = playerAnimation.getKeyFrames()[0]
 		position.scale.x = 15
 		position.scale.y = 15
 

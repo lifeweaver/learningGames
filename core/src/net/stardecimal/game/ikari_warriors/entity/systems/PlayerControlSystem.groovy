@@ -49,12 +49,16 @@ class PlayerControlSystem extends IteratingSystem {
 
 		if (controller.q && System.currentTimeMillis() - lastTurn > 300) {
 			lastTurn = System.currentTimeMillis()
-			playerBody.body.setTransform(playerBody.body.position.x, playerBody.body.position.y, playerBody.body.angle + (MathUtils.degreesToRadians * 45) as float)
+			float newAngle = playerBody.body.angle + (MathUtils.degreesToRadians * 45) as float
+			playerBody.body.setTransform(playerBody.body.position.x, playerBody.body.position.y, newAngle)
+			Mapper.texCom.get(entity).region = levelFactory.determinePlayerTexture(newAngle)
 		}
 
 		if (controller.e && System.currentTimeMillis() - lastTurn > 300) {
 			lastTurn = System.currentTimeMillis()
-			playerBody.body.setTransform(playerBody.body.position.x, playerBody.body.position.y, playerBody.body.angle - (MathUtils.degreesToRadians * 45) as float)
+			float newAngle = playerBody.body.angle - (MathUtils.degreesToRadians * 45) as float
+			playerBody.body.setTransform(playerBody.body.position.x, playerBody.body.position.y, newAngle)
+			Mapper.texCom.get(entity).region = levelFactory.determinePlayerTexture(newAngle)
 		}
 
 		if (controller.left && System.currentTimeMillis() - lastGrenade > 1000) {

@@ -99,10 +99,6 @@ class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
 	 * Limited ammo - 99 bullets and 99 grenades
 	 *
 	 * 2 players
-	 * Basic road map:
-	 *  - player looking
-	 *    - just use different textures and start the shot with a different angle, and different start pos
-	 *  - shooting
 	 */
 
 	IkariWarriorsScreen(final MyGames game) {
