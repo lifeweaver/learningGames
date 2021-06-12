@@ -28,6 +28,8 @@ class PlayerControlSystem extends IteratingSystem {
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
 		SdBodyComponent playerBody = Mapper.bCom.get(entity)
+		//Update the invulnerabilityTime for the player
+		playerBody.invulnerabilityTime -= deltaTime
 
 		if (controller.a) {
 			playerBody.body.setLinearVelocity(MathUtils.lerp(playerBody.body.linearVelocity.x, -speed, 0.2f), playerBody.body.linearVelocity.y)

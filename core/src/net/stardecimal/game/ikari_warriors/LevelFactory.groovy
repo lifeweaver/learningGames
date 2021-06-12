@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
@@ -26,6 +25,7 @@ import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.ParticleEffectComponent
 import net.stardecimal.game.entity.components.PlayerComponent
+import net.stardecimal.game.entity.components.ScoreComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.components.SdLocation
 import net.stardecimal.game.entity.components.SoundEffectComponent
@@ -68,20 +68,18 @@ class LevelFactory implements DefaultLevelFactory {
 		log.info("level factory initialized")
 	}
 
-	Entity createPlayer(OrthographicCamera cam) {
+	Entity createPlayer(OrthographicCamera cam, Vector2 startPos=new Vector2(RenderingSystem.getScreenSizeInPixesWorld().x / 2 as float, 16.5)) {
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)
 		TextureComponent texture = engine.createComponent(TextureComponent)
 		PlayerComponent playerCom = engine.createComponent(PlayerComponent)
-		CollisionComponent colCom = engine.createComponent(CollisionComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
-		Vector2 screenSize = RenderingSystem.getScreenSizeInPixesWorld()
 
 		playerCom.cam = cam
 		sdBody.body = bodyFactory.makeBoxPolyBody(
-				screenSize.x / 2 as float,
-				16.5,
+				startPos.x,
+				startPos.y,
 				2,
 				2,
 				BodyFactory.STEEL,
@@ -95,8 +93,8 @@ class LevelFactory implements DefaultLevelFactory {
 
 		type.type = TypeComponent.TYPES.PLAYER
 		sdBody.body.setUserData(entity)
+		sdBody.invulnerabilityTime = 1
 
-		entity.add(colCom)
 		entity.add(sdBody)
 		entity.add(position)
 		entity.add(texture)
@@ -140,6 +138,7 @@ class LevelFactory implements DefaultLevelFactory {
 				0.25,
 				BodyFactory.STONE,
 				BodyDef.BodyType.DynamicBody,
+				true,
 				true
 		)
 
@@ -268,6 +267,7 @@ class LevelFactory implements DefaultLevelFactory {
 			if(it?.userData instanceof Entity) {
 				Entity ent = it.userData as Entity
 				Mapper.bCom.get(ent).isDead = true
+				//TODO update things accordingly, i.e. player death, score worth, invulnerabilityTime
 			}
 		}
 
@@ -284,6 +284,7 @@ class LevelFactory implements DefaultLevelFactory {
 			if(it?.userData instanceof Entity) {
 				Entity ent = it.userData as Entity
 				Mapper.bCom.get(ent).isDead = true
+				//TODO update things accordingly, i.e. player death, score worth, invulnerabilityTime
 			}
 		}
 
@@ -331,9 +332,10 @@ class LevelFactory implements DefaultLevelFactory {
 		TransformComponent position = engine.createComponent(TransformComponent)
 		TextureComponent texture = engine.createComponent(TextureComponent)
 		EnemyComponent enemyComponent = engine.createComponent(EnemyComponent)
-		CollisionComponent colCom = engine.createComponent(CollisionComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
 		SteeringComponent scom = engine.createComponent(SteeringComponent)
+		ScoreComponent scoreCom = engine.createComponent(ScoreComponent)
+		scoreCom.worth = 10
 
 		sdBody.body = bodyFactory.makeBoxPolyBody(
 				startPos.x,
@@ -341,7 +343,7 @@ class LevelFactory implements DefaultLevelFactory {
 				2,
 				2,
 				BodyFactory.STEEL,
-				BodyDef.BodyType.KinematicBody,
+				BodyDef.BodyType.DynamicBody,
 				true
 		)
 
@@ -359,9 +361,9 @@ class LevelFactory implements DefaultLevelFactory {
 		scom.steeringBehavior = steeringBehavior
 		scom.currentMode = SteeringComponent.SteeringState.SEEK
 
+		entity.add(scoreCom)
 		entity.add(scom)
 		entity.add(enemyComponent)
-		entity.add(colCom)
 		entity.add(sdBody)
 		entity.add(position)
 		entity.add(texture)

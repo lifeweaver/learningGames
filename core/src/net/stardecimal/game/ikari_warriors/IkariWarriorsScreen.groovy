@@ -10,6 +10,7 @@ import net.stardecimal.game.RenderingConstants
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
+import net.stardecimal.game.ikari_warriors.entity.systems.CollisionSystem
 import net.stardecimal.game.ikari_warriors.entity.systems.EnemySpawningSystem
 import net.stardecimal.game.ikari_warriors.entity.systems.EnemySystem
 import net.stardecimal.game.ikari_warriors.entity.systems.FiringSystem
@@ -125,7 +126,7 @@ class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
 		engine.addSystem(new FiringSystem(levelFactory))
 		engine.addSystem(new EnemySpawningSystem(levelFactory, initialEnemySpawnInterval))
 		engine.addSystem(new EnemySystem(levelFactory))
-//		engine.addSystem(new CollisionSystem(parent, levelFactory))
+		engine.addSystem(new CollisionSystem(levelFactory))
 		renderingSystem = engine.getSystem(RenderingSystem)
 
 		float totalHeight = (levelFactory.collisionLayer.tileHeight * RenderingSystem.PIXELS_TO_METRES) * levelFactory.collisionLayer.height as float
