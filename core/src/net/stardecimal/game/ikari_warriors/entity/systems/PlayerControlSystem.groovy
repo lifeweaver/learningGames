@@ -17,6 +17,7 @@ class PlayerControlSystem extends IteratingSystem {
 	long lastShot = System.currentTimeMillis()
 	long lastGrenade = System.currentTimeMillis()
 	long lastTurn = System.currentTimeMillis()
+	float rotation = 0
 
 	@SuppressWarnings("unchecked")
 	PlayerControlSystem(LevelFactory lvlFactory) {
@@ -49,26 +50,26 @@ class PlayerControlSystem extends IteratingSystem {
 
 		if (controller.q && System.currentTimeMillis() - lastTurn > 300) {
 			lastTurn = System.currentTimeMillis()
-			float newAngle = playerBody.body.angle + (MathUtils.degreesToRadians * 45) as float
-			playerBody.body.setTransform(playerBody.body.position.x, playerBody.body.position.y, newAngle)
-			Mapper.texCom.get(entity).region = levelFactory.determinePlayerTexture(newAngle)
+			float newAngle = rotation + 45 as float
+			rotation = newAngle
+ 			Mapper.texCom.get(entity).region = levelFactory.determinePlayerTexture(rotation)
 		}
 
 		if (controller.e && System.currentTimeMillis() - lastTurn > 300) {
 			lastTurn = System.currentTimeMillis()
-			float newAngle = playerBody.body.angle - (MathUtils.degreesToRadians * 45) as float
-			playerBody.body.setTransform(playerBody.body.position.x, playerBody.body.position.y, newAngle)
-			Mapper.texCom.get(entity).region = levelFactory.determinePlayerTexture(newAngle)
+			float newAngle = rotation - 45 as float
+			rotation = newAngle
+			Mapper.texCom.get(entity).region = levelFactory.determinePlayerTexture(rotation)
 		}
 
 		if (controller.left && System.currentTimeMillis() - lastGrenade > 1000) {
 			lastGrenade = System.currentTimeMillis()
-			levelFactory.playerGrenade(playerBody.body.position, playerBody.body.angle)
+			levelFactory.playerGrenade(playerBody.body.position, rotation * MathUtils.degreesToRadians as float)
 		}
 
 		if (controller.right && System.currentTimeMillis() - lastShot > 300) {
 			lastShot = System.currentTimeMillis()
-			levelFactory.playerShoot()
+			levelFactory.playerShoot(rotation * MathUtils.degreesToRadians as float)
 		}
 
 		if (!controller.a && !controller.d) {

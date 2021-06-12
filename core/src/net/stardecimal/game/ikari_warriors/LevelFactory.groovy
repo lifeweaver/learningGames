@@ -72,8 +72,8 @@ class LevelFactory implements DefaultLevelFactory {
 		log.info("level factory initialized")
 	}
 
-	TextureRegion determinePlayerTexture(float angleRad) {
-		int angleDeg = Math.round((angleRad * MathUtils.radiansToDegrees)) % 360
+	TextureRegion determinePlayerTexture(float startAngle) {
+		int angleDeg = Math.round(startAngle) % 360
 		TextureRegion newPlayerTex = playerAnimation.keyFrames[0]
 
 		switch(angleDeg) {
@@ -155,11 +155,11 @@ class LevelFactory implements DefaultLevelFactory {
 		return entity
 	}
 
-	void playerShoot() {
+	void playerShoot(float angleRad) {
 		if(playerBullets > 0) {
 			playerBullets--
 			Body body = Mapper.bCom.get(player).body
-			createShot(body.position, body.angle)
+			createShot(body.position, angleRad)
 		}
 	}
 
