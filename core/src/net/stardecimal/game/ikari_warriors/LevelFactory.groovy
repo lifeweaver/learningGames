@@ -2,6 +2,7 @@ package net.stardecimal.game.ikari_warriors
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
+import com.badlogic.gdx.ai.steer.SteeringBehavior
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -19,13 +20,16 @@ import net.stardecimal.game.BodyFactory
 import net.stardecimal.game.DFUtils
 import net.stardecimal.game.DefaultLevelFactory
 import net.stardecimal.game.ParticleEffectManager
+import net.stardecimal.game.ai.SteeringPresets
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.CollisionComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.ParticleEffectComponent
 import net.stardecimal.game.entity.components.PlayerComponent
 import net.stardecimal.game.entity.components.SdBodyComponent
+import net.stardecimal.game.entity.components.SdLocation
 import net.stardecimal.game.entity.components.SoundEffectComponent
+import net.stardecimal.game.entity.components.SteeringComponent
 import net.stardecimal.game.entity.components.TextureComponent
 import net.stardecimal.game.entity.components.TransformComponent
 import net.stardecimal.game.entity.components.TypeComponent
@@ -329,6 +333,7 @@ class LevelFactory implements DefaultLevelFactory {
 		EnemyComponent enemyComponent = engine.createComponent(EnemyComponent)
 		CollisionComponent colCom = engine.createComponent(CollisionComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
+		SteeringComponent scom = engine.createComponent(SteeringComponent)
 
 		sdBody.body = bodyFactory.makeBoxPolyBody(
 				startPos.x,
@@ -348,6 +353,13 @@ class LevelFactory implements DefaultLevelFactory {
 		sdBody.body.setTransform(sdBody.body.position.x, sdBody.body.position.y, 0)
 		sdBody.body.setUserData(entity)
 
+		scom.body = sdBody.body
+		SteeringBehavior<Vector2> steeringBehavior = SteeringPresets.getSeek(scom, new SdLocation(position: Mapper.bCom.get(player).body.position, orientation: 0))
+		scom.maxLinearSpeed = 3
+		scom.steeringBehavior = steeringBehavior
+		scom.currentMode = SteeringComponent.SteeringState.SEEK
+
+		entity.add(scom)
 		entity.add(enemyComponent)
 		entity.add(colCom)
 		entity.add(sdBody)

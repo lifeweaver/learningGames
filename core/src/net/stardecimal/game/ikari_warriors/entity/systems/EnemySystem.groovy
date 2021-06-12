@@ -11,6 +11,7 @@ import net.stardecimal.game.DFUtils
 import net.stardecimal.game.entity.components.BulletComponent
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
+import net.stardecimal.game.entity.components.SteeringComponent
 import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
 import net.stardecimal.game.ikari_warriors.LevelFactory
@@ -49,35 +50,48 @@ class EnemySystem extends IteratingSystem {
 	}
 
 	void gunSoldierBehavior(Entity entity, EnemyComponent enemyComponent) {
-		if(enemyComponent.firingDelay <= 0) {
-			SdBodyComponent playerBody = Mapper.bCom.get(levelFactory.player)
-			SdBodyComponent sdBody = Mapper.bCom.get(entity)
-			Vector2 soldierPos = sdBody.body.position
+		SdBodyComponent playerBody = Mapper.bCom.get(levelFactory.player)
+		SdBodyComponent sdBody = Mapper.bCom.get(entity)
+		Vector2 soldierPos = sdBody.body.position
+		SteeringComponent scom = Mapper.sCom.get(entity)
 
-			if(playerBody && foundShootablePlayer(soldierPos, playerBody.body.position)) {
-				float shootingAngle = DFUtils.vectorToAngle(DFUtils.aimTo(soldierPos, playerBody.body.position))
+		//Movement
+		if(playerBody) {
+			//Once a soldier is in position, stop and return fire
+			if(scom.currentMode == SteeringComponent.SteeringState.SEEK && soldierPos.dst(playerBody.body.position) <= 15) {
+				scom.currentMode = SteeringComponent.SteeringState.NONE
+				scom.steeringBehavior = null
+				sdBody.body.setLinearVelocity(0, 0)
+			}
 
-				if(enemyComponent.timesFired > 2) {
-					enemyComponent.firingDelay = enemyComponent.FIRING_INTERVAL
-					enemyComponent.lastTimeFired = System.currentTimeMillis()
-					enemyComponent.timesFired = 0
+
+			//Shooting - only shoot when not moving, and ready to shoot
+			if(scom.currentMode == SteeringComponent.SteeringState.NONE && enemyComponent.firingDelay <= 0) {
+				if(playerBody && foundShootablePlayer(soldierPos, playerBody.body.position)) {
+					float shootingAngle = DFUtils.vectorToAngle(DFUtils.aimTo(soldierPos, playerBody.body.position))
+
+					if(enemyComponent.timesFired > 2) {
+						enemyComponent.firingDelay = enemyComponent.FIRING_INTERVAL
+						enemyComponent.lastTimeFired = System.currentTimeMillis()
+						enemyComponent.timesFired = 0
+					} else {
+						enemyComponent.timesFired++
+						enemyComponent.firingDelay = enemyComponent.FIRING_INTERVAL_BURST
+					}
+
+					//If the enemy hasn't shot yet, give them a chance to throw a grenade instead
+					if(enemyComponent.timesFired == 1 && levelFactory.rand.nextInt(100) > 95) {
+						levelFactory.createGrenade(soldierPos, shootingAngle, BulletComponent.Owner.ENEMY)
+						enemyComponent.firingDelay = enemyComponent.FIRING_INTERVAL
+						enemyComponent.lastTimeFired = System.currentTimeMillis()
+						enemyComponent.timesFired = 0
+					} else {
+						levelFactory.createShot(soldierPos, shootingAngle, BulletComponent.Owner.ENEMY)
+					}
 				} else {
-					enemyComponent.timesFired++
-					enemyComponent.firingDelay = enemyComponent.FIRING_INTERVAL_BURST
-				}
-
-				//If the enemy hasn't shot yet, give them a chance to throw a grenade instead
-				if(enemyComponent.timesFired == 1 && levelFactory.rand.nextInt(100) > 95) {
-					levelFactory.createGrenade(soldierPos, shootingAngle, BulletComponent.Owner.ENEMY)
-					enemyComponent.firingDelay = enemyComponent.FIRING_INTERVAL
-					enemyComponent.lastTimeFired = System.currentTimeMillis()
+					//Reset
 					enemyComponent.timesFired = 0
-				} else {
-					levelFactory.createShot(soldierPos, shootingAngle, BulletComponent.Owner.ENEMY)
 				}
-			} else {
-				//Reset
-				enemyComponent.timesFired = 0
 			}
 		}
 	}

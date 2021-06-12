@@ -21,6 +21,11 @@ class SteeringPresets {
 		return wander
 	}
 
+	static Seek<Vector2> getSeek(SteeringComponent seeker, SdLocation target) {
+		Seek<Vector2> seek = new Seek<Vector2>(seeker,target)
+		return seek
+	}
+
 	static Seek<Vector2> getSeek(SteeringComponent seeker, SteeringComponent target) {
 		Seek<Vector2> seek = new Seek<Vector2>(seeker,target)
 		return seek
