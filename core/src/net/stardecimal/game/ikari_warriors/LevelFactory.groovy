@@ -247,6 +247,7 @@ class LevelFactory implements DefaultLevelFactory {
 				0.5,
 				BodyFactory.STONE,
 				BodyDef.BodyType.KinematicBody,
+				true,
 				true
 		)
 
