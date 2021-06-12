@@ -99,11 +99,6 @@ class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
 	 * Limited ammo - 99 bullets and 99 grenades
 	 *
 	 * 2 players
-	 *
-	 * bullets:
-	 *  - short range, maybe half the screen height?
-	 *  - don't collide with each other
-	 *
 	 * Basic road map:
 	 *  - player looking
 	 *    - just use different textures and start the shot with a different angle, and different start pos
