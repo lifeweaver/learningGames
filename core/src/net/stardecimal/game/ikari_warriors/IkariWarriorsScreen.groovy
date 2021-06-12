@@ -3,18 +3,22 @@ package net.stardecimal.game.ikari_warriors
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.math.Vector2
 import net.stardecimal.game.GameScreen
 import net.stardecimal.game.MyGames
 import net.stardecimal.game.RenderingConstants
 import net.stardecimal.game.entity.components.Mapper
 import net.stardecimal.game.entity.components.SdBodyComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
+import net.stardecimal.game.ikari_warriors.entity.systems.EnemySpawningSystem
+import net.stardecimal.game.ikari_warriors.entity.systems.EnemySystem
 import net.stardecimal.game.ikari_warriors.entity.systems.FiringSystem
 import net.stardecimal.game.ikari_warriors.entity.systems.PlayerControlSystem
 
 class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 	RenderingSystem renderingSystem
+	float initialEnemySpawnInterval = 10f
 
 	//TODO:
 	//everything
@@ -70,6 +74,7 @@ class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
 	 *
 	 * Player:
 	 *  - can commandeer enemy tanks and helicopters
+	 *    - getting into and out of these makes you invincible for 1 second
 	 *    - vehicle size is similar to player
 	 *    - tank
 	 *      - blowing up tank will kill player unless he gets out and clear of boom
@@ -118,8 +123,9 @@ class IkariWarriorsScreen extends ScreenAdapter implements GameScreen {
 
 		engine.addSystem(new PlayerControlSystem(levelFactory))
 		engine.addSystem(new FiringSystem(levelFactory))
+		engine.addSystem(new EnemySpawningSystem(levelFactory, initialEnemySpawnInterval))
+		engine.addSystem(new EnemySystem(levelFactory))
 //		engine.addSystem(new CollisionSystem(parent, levelFactory))
-//		engine.addSystem(new EnemySystem(levelFactory))
 		renderingSystem = engine.getSystem(RenderingSystem)
 
 		float totalHeight = (levelFactory.collisionLayer.tileHeight * RenderingSystem.PIXELS_TO_METRES) * levelFactory.collisionLayer.height as float

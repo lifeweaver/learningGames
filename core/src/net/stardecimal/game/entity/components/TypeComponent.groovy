@@ -33,6 +33,7 @@ class TypeComponent implements Component, Pool.Poolable {
 			CLYDE: 24,
 			GRENADE: 25,
 			TANK: 26,
+			GUN_SOLDIER: 27,
 			DEFAULT: 999
 	]
 

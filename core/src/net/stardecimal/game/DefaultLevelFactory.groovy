@@ -176,17 +176,16 @@ trait DefaultLevelFactory {
 		return entPE
 	}
 
-	Array<Body> circleRayCast(Vector2 center, float radius) {
-		final int RAY_COUNT = 30
+	Array<Body> circleRayCast(Vector2 center, float radius, int rayCount=30) {
 		Array<SeeThroughRayCastCallback> rayCasts = new Array<SeeThroughRayCastCallback>()
 		Array<Body> rayCastBodies = new Array<Body>()
 		Vector2 direction = new Vector2()
 
 		//Start with zero degrees
 		direction.set(1, 0)
-		float rotateAngle = 360 / RAY_COUNT
+		float rotateAngle = 360 / rayCount
 
-		RAY_COUNT.times {
+		rayCount.times {
 			float x1 = center.x
 			float y1 = center.y
 			float x2 = x1 + direction.x as float
@@ -204,12 +203,12 @@ trait DefaultLevelFactory {
 			direction.rotateDeg(rotateAngle)
 		}
 
-		if(rayCasts && !rayCasts.first().collisionBodies.isEmpty()) {
+//		if(rayCasts && !rayCasts.first().collisionBodies.isEmpty()) {
 //			log.debug("rayCasts: ${rayCasts}, jtest: ${Integer.toHexString(rayCasts.first().collisionBodies.first().hashCode())}")
-		}
-		if(rayCastBodies && !rayCastBodies.isEmpty()) {
+//		}
+//		if(rayCastBodies && !rayCastBodies.isEmpty()) {
 //			log.debug("rayCastBodies: ${rayCastBodies}, jtest2: ${Integer.toHexString(rayCastBodies.first().hashCode())}")
-		}
+//		}
 
 		return rayCastBodies
 	}

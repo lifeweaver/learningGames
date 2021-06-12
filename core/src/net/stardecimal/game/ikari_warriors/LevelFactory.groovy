@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
@@ -29,10 +30,11 @@ import net.stardecimal.game.entity.components.TextureComponent
 import net.stardecimal.game.entity.components.TransformComponent
 import net.stardecimal.game.entity.components.TypeComponent
 import net.stardecimal.game.entity.systems.RenderingSystem
+import net.stardecimal.game.ikari_warriors.entity.components.EnemyComponent
 import net.stardecimal.game.loader.SdAssetManager
 
 class LevelFactory implements DefaultLevelFactory {
-	private TextureRegion playerTex, shotTex, grenadeTex, tankTex
+	private TextureRegion playerTex, shotTex, grenadeTex, tankTex, gunSoldierTex
 	Sound shot, grenadeBoom, grenadeWhistle
 	RandomXS128 rand = new RandomXS128()
 	Entity player
@@ -50,6 +52,7 @@ class LevelFactory implements DefaultLevelFactory {
 		atlas.findRegion("ikari_warriors/")
 
 		playerTex = DFUtils.makeTextureRegion(1, 1.25, '#ffffff')
+		gunSoldierTex = DFUtils.makeTextureRegion(1, 1.25, '#121B96')
 		shotTex = atlas.findRegion("ikari_warriors/shot")
 		grenadeTex = atlas.findRegion("ikari_warriors/grenade")
 		tankTex = atlas.findRegion("ikari_warriors/tank")
@@ -316,6 +319,43 @@ class LevelFactory implements DefaultLevelFactory {
 		entity.add(texture)
 		entity.add(type)
 		engine.addEntity(entity)
+	}
+
+	void createSoldier(Vector2 startPos, int soldierType=TypeComponent.TYPES.GUN_SOLDIER) {
+		Entity entity = engine.createEntity()
+		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+		TransformComponent position = engine.createComponent(TransformComponent)
+		TextureComponent texture = engine.createComponent(TextureComponent)
+		EnemyComponent enemyComponent = engine.createComponent(EnemyComponent)
+		CollisionComponent colCom = engine.createComponent(CollisionComponent)
+		TypeComponent type = engine.createComponent(TypeComponent)
+
+		sdBody.body = bodyFactory.makeBoxPolyBody(
+				startPos.x,
+				startPos.y,
+				2,
+				2,
+				BodyFactory.STEEL,
+				BodyDef.BodyType.KinematicBody,
+				true
+		)
+
+		texture.region = gunSoldierTex
+		position.scale.x = 15
+		position.scale.y = 15
+
+		type.type = soldierType
+		sdBody.body.setTransform(sdBody.body.position.x, sdBody.body.position.y, 0)
+		sdBody.body.setUserData(entity)
+
+		entity.add(enemyComponent)
+		entity.add(colCom)
+		entity.add(sdBody)
+		entity.add(position)
+		entity.add(texture)
+		entity.add(type)
+		engine.addEntity(entity)
+		log.debug("Soldier spawned: ${startPos}, playerPos: ${Mapper.bCom.get(player)?.body?.position}")
 	}
 
 	@Override
