@@ -40,8 +40,8 @@ import net.stardecimal.game.ikari_warriors.entity.components.EnemyComponent
 import net.stardecimal.game.loader.SdAssetManager
 
 class LevelFactory implements DefaultLevelFactory {
-	private TextureRegion playerTex, shotTex, grenadeTex, tankTex, gunSoldierTex
-	Animation<TextureRegion> playerAnimation
+	private TextureRegion shotTex, grenadeTex, gunSoldierTex
+	Animation<TextureRegion> playerAnimation, tankAnimation
 	Sound shot, grenadeBoom, grenadeWhistle
 	RandomXS128 rand = new RandomXS128()
 	Entity player
@@ -58,12 +58,11 @@ class LevelFactory implements DefaultLevelFactory {
 		TextureAtlas atlas = assetManager.manager.get(SdAssetManager.gameImages)
 		atlas.findRegion("ikari_warriors/")
 
-		playerTex = atlas.findRegion("ikari_warriors/player")
 		playerAnimation = new Animation<TextureRegion>(0.1f, atlas.findRegions('ikari_warriors/player'), Animation.PlayMode.NORMAL)
+		tankAnimation = new Animation<TextureRegion>(0.1f, atlas.findRegions('ikari_warriors/tank'), Animation.PlayMode.NORMAL)
 		gunSoldierTex = DFUtils.makeTextureRegion(1, 1.25, '#121B96')
 		shotTex = atlas.findRegion("ikari_warriors/shot")
 		grenadeTex = atlas.findRegion("ikari_warriors/grenade")
-		tankTex = atlas.findRegion("ikari_warriors/tank")
 		shot = assetManager.manager.get(SdAssetManager.ikariWarriorsShot)
 		grenadeBoom = assetManager.manager.get(SdAssetManager.ikariWarriorsGrenade)
 		grenadeWhistle = assetManager.manager.get(SdAssetManager.ikariWarriorsGrenadeWhistle)
@@ -72,44 +71,44 @@ class LevelFactory implements DefaultLevelFactory {
 		log.info("level factory initialized")
 	}
 
-	TextureRegion determinePlayerTexture(float startAngle) {
+	TextureRegion determinePlayerTexture(float startAngle, Animation<TextureRegion> animation=playerAnimation) {
 		int angleDeg = Math.round(startAngle) % 360
-		TextureRegion newPlayerTex = playerAnimation.keyFrames[0]
+		TextureRegion newPlayerTex = animation.keyFrames[0]
 
 		switch(angleDeg) {
 			case 45:
 			case -315:
-				newPlayerTex = playerAnimation.keyFrames[7]
+				newPlayerTex = animation.keyFrames[7]
 				break
 
 			case 90:
 			case -270:
-				newPlayerTex = playerAnimation.keyFrames[6]
+				newPlayerTex = animation.keyFrames[6]
 				break
 
 			case 135:
 			case -225:
-				newPlayerTex = playerAnimation.keyFrames[5]
+				newPlayerTex = animation.keyFrames[5]
 				break
 
 			case 180:
 			case -180:
-				newPlayerTex = playerAnimation.keyFrames[4]
+				newPlayerTex = animation.keyFrames[4]
 				break
 
 			case -135:
 			case 225:
-				newPlayerTex = playerAnimation.keyFrames[3]
+				newPlayerTex = animation.keyFrames[3]
 				break
 
 			case -90:
 			case 270:
-				newPlayerTex = playerAnimation.keyFrames[2]
+				newPlayerTex = animation.keyFrames[2]
 				break
 
 			case -45:
 			case 315:
-				newPlayerTex = playerAnimation.keyFrames[1]
+				newPlayerTex = animation.keyFrames[1]
 				break
 
 		}
@@ -360,8 +359,7 @@ class LevelFactory implements DefaultLevelFactory {
 				true
 		)
 
-		//TODO: figure out how to do a moveable turret
-		texture.region = tankTex
+		texture.region = tankAnimation.getKeyFrames()[0]
 		position.scale.x = 15
 		position.scale.y = 15
 

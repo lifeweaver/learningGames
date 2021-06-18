@@ -1,467 +1,516 @@
 
 atlas.png
-size: 512, 128
+size: 1024, 256
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 asteroids/asteroid
   rotate: false
-  xy: 500, 27
+  xy: 715, 208
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 asteroids/enemy
   rotate: false
-  xy: 416, 2
+  xy: 391, 38
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 asteroids/particle
   rotate: false
-  xy: 409, 94
+  xy: 715, 220
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 asteroids/player
   rotate: false
-  xy: 468, 8
+  xy: 529, 138
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 asteroids/shield
   rotate: false
-  xy: 480, 10
+  xy: 727, 208
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 ikari_warriors/explosion
   rotate: false
-  xy: 487, 22
+  xy: 501, 112
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 missile_command/explosion
   rotate: false
-  xy: 487, 22
+  xy: 501, 112
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 ikari_warriors/grenade
   rotate: false
-  xy: 340, 5
+  xy: 749, 212
   size: 20, 40
   orig: 20, 40
   offset: 0, 0
   index: -1
 ikari_warriors/player
   rotate: false
-  xy: 276, 39
+  xy: 437, 105
   size: 30, 45
   orig: 30, 45
   offset: 0, 0
   index: 0
 ikari_warriors/player
   rotate: false
-  xy: 308, 39
+  xy: 512, 164
   size: 30, 45
   orig: 30, 45
   offset: 0, 0
   index: 1
 ikari_warriors/player
   rotate: false
-  xy: 340, 47
+  xy: 469, 105
   size: 30, 45
   orig: 30, 45
   offset: 0, 0
   index: 2
 ikari_warriors/player
   rotate: false
-  xy: 372, 47
+  xy: 555, 207
   size: 30, 45
   orig: 30, 45
   offset: 0, 0
   index: 3
 ikari_warriors/player
   rotate: false
-  xy: 404, 47
+  xy: 587, 207
   size: 30, 45
   orig: 30, 45
   offset: 0, 0
   index: 4
 ikari_warriors/player
   rotate: false
-  xy: 436, 47
+  xy: 619, 207
   size: 30, 45
   orig: 30, 45
   offset: 0, 0
   index: 5
 ikari_warriors/player
   rotate: false
-  xy: 477, 81
+  xy: 651, 207
   size: 30, 45
   orig: 30, 45
   offset: 0, 0
   index: 6
 ikari_warriors/player
   rotate: false
-  xy: 468, 34
+  xy: 683, 207
   size: 30, 45
   orig: 30, 45
   offset: 0, 0
   index: 7
 ikari_warriors/pre_particle
   rotate: false
-  xy: 443, 94
+  xy: 205, 16
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 missile_command/pre_particle
   rotate: false
-  xy: 443, 94
+  xy: 205, 16
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 ikari_warriors/shot
   rotate: false
-  xy: 174, 4
+  xy: 827, 232
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 ikari_warriors/tank
   rotate: false
-  xy: 2, 26
+  xy: 2, 50
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
-  index: -1
+  index: 0
+ikari_warriors/tank
+  rotate: false
+  xy: 104, 152
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 1
+ikari_warriors/tank
+  rotate: false
+  xy: 104, 50
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 2
+ikari_warriors/tank
+  rotate: false
+  xy: 206, 152
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 3
+ikari_warriors/tank
+  rotate: false
+  xy: 206, 50
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 4
+ikari_warriors/tank
+  rotate: false
+  xy: 308, 152
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 5
+ikari_warriors/tank
+  rotate: false
+  xy: 308, 50
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 6
+ikari_warriors/tank
+  rotate: false
+  xy: 410, 152
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 7
 ikari_warriors/tankChassis
   rotate: false
-  xy: 104, 26
+  xy: 2, 152
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 ikari_warriors/tankTurrent
   rotate: false
-  xy: 206, 13
+  xy: 410, 79
   size: 25, 71
   orig: 25, 71
   offset: 0, 0
   index: -1
 missile_command/bomberPlane
   rotate: false
-  xy: 328, 94
+  xy: 124, 16
   size: 45, 32
   orig: 45, 32
   offset: 0, 0
   index: -1
 missile_command/city
   rotate: false
-  xy: 206, 86
+  xy: 2, 8
   size: 120, 40
   orig: 120, 40
   offset: 0, 0
   index: -1
 missile_command/crosshairs
   rotate: false
-  xy: 375, 94
+  xy: 171, 16
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 missile_command/defenderMissile
   rotate: false
-  xy: 196, 16
+  xy: 739, 210
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 missile_command/enemyMissileTrail
   rotate: false
-  xy: 414, 29
+  xy: 813, 214
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 missile_command/satellite
   rotate: false
-  xy: 233, 43
+  xy: 512, 211
   size: 41, 41
   orig: 41, 41
   offset: 0, 0
   index: -1
 missile_command/smartBomb
   rotate: false
-  xy: 396, 29
+  xy: 795, 214
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 pacman/ghost1
   rotate: false
-  xy: 374, 10
+  xy: 849, 239
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 pacman/ghost2
   rotate: false
-  xy: 414, 32
+  xy: 347, 35
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 pacman/ghost3
   rotate: false
-  xy: 429, 32
+  xy: 813, 217
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 pacman/ghost4
   rotate: false
-  xy: 444, 32
+  xy: 864, 239
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 pacman/pacman
   rotate: false
-  xy: 250, 6
+  xy: 362, 35
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: 0
 pacman/pacman
   rotate: false
-  xy: 389, 10
+  xy: 828, 217
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: 1
 pacman/pacman
   rotate: false
-  xy: 404, 14
+  xy: 879, 239
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: 2
 pong/paddle
   rotate: false
-  xy: 362, 5
+  xy: 783, 212
   size: 10, 40
   orig: 10, 40
   offset: 0, 0
   index: -1
 pong/pingPong
   rotate: false
-  xy: 456, 6
+  xy: 515, 126
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 space_invaders/barrier
   rotate: false
-  xy: 404, 2
+  xy: 239, 16
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 space_invaders/enemy1
   rotate: false
-  xy: 419, 18
+  xy: 501, 138
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 0
 space_invaders/enemy1
   rotate: false
-  xy: 433, 18
+  xy: 377, 36
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 1
 space_invaders/enemy2
   rotate: false
-  xy: 447, 18
+  xy: 894, 240
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 0
 space_invaders/enemy2
   rotate: false
-  xy: 428, 4
+  xy: 501, 124
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 1
 space_invaders/enemy3
   rotate: false
-  xy: 442, 4
+  xy: 515, 138
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 0
 space_invaders/enemy3
   rotate: false
-  xy: 461, 20
+  xy: 529, 150
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: 1
 space_invaders/enemy4
   rotate: false
-  xy: 475, 22
+  xy: 908, 242
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 space_invaders/enemyShot
   rotate: false
-  xy: 468, 82
+  xy: 544, 199
   size: 3, 10
   orig: 3, 10
   offset: 0, 0
   index: -1
 space_invaders/player
   rotate: false
-  xy: 233, 9
+  xy: 512, 152
   size: 15, 10
   orig: 15, 10
   offset: 0, 0
   index: -1
 space_invaders/playerShot
   rotate: false
-  xy: 265, 31
+  xy: 432, 67
   size: 3, 10
   orig: 3, 10
   offset: 0, 0
   index: -1
 space_invaders/shield
   rotate: false
-  xy: 492, 10
+  xy: 251, 16
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 tetris/i
   rotate: false
-  xy: 509, 122
+  xy: 2, 2
   size: 1, 4
   orig: 1, 4
   offset: 0, 0
   index: -1
 tetris/i2
   rotate: false
-  xy: 500, 39
+  xy: 771, 212
   size: 10, 40
   orig: 10, 40
   offset: 0, 0
   index: -1
 tetris/j
   rotate: false
-  xy: 396, 25
+  xy: 124, 12
   size: 3, 2
   orig: 3, 2
   offset: 0, 0
   index: -1
 tetris/j2
   rotate: false
-  xy: 2, 4
+  xy: 437, 83
   size: 30, 20
   orig: 30, 20
   offset: 0, 0
   index: -1
 tetris/l
   rotate: false
-  xy: 419, 14
+  xy: 437, 79
   size: 3, 2
   orig: 3, 2
   offset: 0, 0
   index: -1
 tetris/l2
   rotate: false
-  xy: 233, 21
+  xy: 239, 28
   size: 30, 20
   orig: 30, 20
   offset: 0, 0
   index: -1
 tetris/o
   rotate: false
-  xy: 424, 14
+  xy: 843, 228
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 tetris/o2
   rotate: false
-  xy: 152, 4
+  xy: 303, 28
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 tetris/s
   rotate: false
-  xy: 456, 2
+  xy: 410, 53
   size: 3, 2
   orig: 3, 2
   offset: 0, 0
   index: -1
 tetris/s2
   rotate: false
-  xy: 34, 4
+  xy: 469, 83
   size: 30, 20
   orig: 30, 20
   offset: 0, 0
   index: -1
 tetris/t
   rotate: false
-  xy: 461, 2
+  xy: 849, 235
   size: 3, 2
   orig: 3, 2
   offset: 0, 0
   index: -1
 tetris/t2
   rotate: false
-  xy: 66, 4
+  xy: 271, 28
   size: 30, 20
   orig: 30, 20
   offset: 0, 0
   index: -1
 tetris/z
   rotate: false
-  xy: 466, 2
+  xy: 347, 31
   size: 3, 2
   orig: 3, 2
   offset: 0, 0
   index: -1
 tetris/z2
   rotate: false
-  xy: 98, 4
+  xy: 795, 232
   size: 30, 20
   orig: 30, 20
   offset: 0, 0
   index: -1
 worm/fruit
   rotate: false
-  xy: 130, 4
+  xy: 410, 57
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 worm/worm
   rotate: false
-  xy: 374, 25
+  xy: 325, 28
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
