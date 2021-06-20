@@ -24,44 +24,10 @@ class SdAssetManager {
 	// Textures
 	final static String gameImages = 'atlas.atlas'
 //	final static String loadingImages = 'images/loading.atlas'
-//
-//	final static String smokeEffect = "particles/smoke.pe"
-//	final static String waterEffect = "particles/water.pe"
-//	final static String fireEffect = "particles/fire.pe"
-
-	final static String bounce = 'input/pong/bounce.wav'
-	final static String paddleLeftLoss = 'input/pong/computerWhatAreYouDoing.wav'
-	final static String paddleRightLoss = 'input/pong/computerSorry.wav'
 	final static String skin = "skin/glassy-ui.json"
 
-	final static String enemyMissileTrail = "input/missile_command/enemyMissileTrail.pe"
-	final static String flames = "input/asteroids/flames.pe"
-	final static String shield = "input/asteroids/shield.pe"
-	final static String explosionParticle = "input/missile_command/explosion.pe"
-	final static String boom = "input/missile_command/boom.wav"
-	final static String targeting_beep = "input/missile_command/targeting_beep.wav"
-
-	final static String enemy4Theme = "input/space_invaders/enemy4Theme.wav"
-	final static String background = "input/space_invaders/background.wav"
-	final static String enemyBlownUp = "input/space_invaders/enemyBlownUp.wav"
-	final static String playerBlownUp = "input/space_invaders/playerBlownUp.wav"
-	final static String playerFiring = "input/space_invaders/playerFiring.wav"
-
-	final static String pacmanMap = "maps/pacman/pacman.tmx"
-	final static String eatPelletA = "input/pacman/107_Free_Retro_Game_Sounds/Another_Wakka_parta.wav"
-	final static String eatPelletB = "input/pacman/107_Free_Retro_Game_Sounds/Another_Wakka_partb.wav"
-	final static String gameOverPacMan = "input/pacman/107_Free_Retro_Game_Sounds/Game_Over_Music_2.wav"
-	final static String powerUp = "input/pacman/107_Free_Retro_Game_Sounds/He_is_a_plumber.wav"
-
-//	final static String playingSong = 'music/Rolemusic_-_pl4y1ng.mp3'
-//
-
 	void queueAddIndividualAssets() {
-		manager.load(enemyMissileTrail, ParticleEffect)
-		manager.load(explosionParticle, ParticleEffect)
-		manager.load(flames, ParticleEffect)
-		manager.load(shield, ParticleEffect)
-		manager.load(pacmanMap, TiledMap)
+
 	}
 
 	void queueAddImages() {
@@ -85,22 +51,7 @@ class SdAssetManager {
 //	}
 
 	void queueAddSounds() {
-		manager.load(bounce, Sound)
-		manager.load(paddleLeftLoss, Sound)
-		manager.load(paddleRightLoss, Sound)
-		manager.load(boom, Sound)
-		manager.load(targeting_beep, Sound)
 
-		manager.load(enemy4Theme, Sound)
-		manager.load(background, Sound)
-		manager.load(enemyBlownUp, Sound)
-		manager.load(playerBlownUp, Sound)
-		manager.load(playerFiring, Sound)
-
-		manager.load(eatPelletA, Sound)
-		manager.load(eatPelletB, Sound)
-		manager.load(gameOverPacMan, Sound)
-		manager.load(powerUp, Sound)
 	}
 
 	void queueAddMusic() {

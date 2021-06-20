@@ -18,7 +18,7 @@ class MainGameScreen extends ScreenAdapter implements GameScreen {
 		init(game, LevelFactory.class)
 		levelFactory = (LevelFactory) lvlFactory
 		levelFactory.gameName = 'Balls - a rolling story'
-
+		renderingSystem = engine.getSystem(RenderingSystem)
 
 
 		resetWorld()

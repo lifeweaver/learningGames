@@ -22,7 +22,7 @@ import com.badlogic.gdx.physics.box2d.Shape
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
-import com.stardecimal.game.RenderingConstants
+import com.stardecimal.game.util.RenderingConstants
 import com.stardecimal.game.entity.util.Mapper
 import com.stardecimal.game.entity.components.SdBodyComponent
 import com.stardecimal.game.entity.components.TextureComponent

@@ -70,7 +70,7 @@ class MenuScreen extends ScreenAdapter {
 		newGame.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeEvent event, Actor actor) {
-				parent.changeScreen(GameJamGame.GAME_SELECTION)
+				parent.changeScreen(GameJamGame.GAME)
 			}
 		})
 
