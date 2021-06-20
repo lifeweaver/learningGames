@@ -1,4 +1,4 @@
-package net.stardecimal.game.config
+package com.stardecimal.game.config
 
 import ch.qos.logback.core.*
 import ch.qos.logback.core.encoder.*
