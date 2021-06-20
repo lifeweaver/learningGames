@@ -35,12 +35,21 @@
   <image width="128" height="128" source="png/Tiles/18.png"/>
  </tile>
  <tile id="11">
+  <properties>
+   <property name="blocked" type="bool" value="true"/>
+  </properties>
   <image width="128" height="128" source="png/Tiles/1.png"/>
  </tile>
  <tile id="12">
+  <properties>
+   <property name="blocked" type="bool" value="true"/>
+  </properties>
   <image width="128" height="128" source="png/Tiles/2.png"/>
  </tile>
  <tile id="13">
+  <properties>
+   <property name="blocked" type="bool" value="true"/>
+  </properties>
   <image width="128" height="128" source="png/Tiles/3.png"/>
  </tile>
  <tile id="14">

@@ -3,8 +3,10 @@ package com.stardecimal.game.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.math.Vector2
 import com.stardecimal.game.GameJamGame
 import com.stardecimal.game.LevelFactory
+import com.stardecimal.game.entity.systems.CollisionSystem
 import com.stardecimal.game.entity.systems.PlayerControlSystem
 import com.stardecimal.game.entity.util.Mapper
 import com.stardecimal.game.entity.components.SdBodyComponent
@@ -15,12 +17,17 @@ class MainGameScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 	RenderingSystem renderingSystem
 
+
+	//TODO: thoughtful pancake easter egg
+
 	MainGameScreen(final GameJamGame game) {
 		init(game, LevelFactory.class)
 		levelFactory = (LevelFactory) lvlFactory
+		levelFactory.world.gravity = new Vector2(0, -9.8f)
 		levelFactory.gameName = 'Balls - a rolling story'
 
 		engine.addSystem(new PlayerControlSystem(levelFactory))
+		engine.addSystem(new CollisionSystem(parent, levelFactory))
 
 		renderingSystem = engine.getSystem(RenderingSystem)
 
@@ -35,6 +42,7 @@ class MainGameScreen extends ScreenAdapter implements GameScreen {
 		levelFactory.playerLives = 3
 //		float totalHeight = (levelFactory.collisionLayer.tileHeight * RenderingSystem.PIXELS_TO_METRES) * levelFactory.collisionLayer.height as float
 //		levelFactory.createScrollingYBoundaries(totalHeight)
+		levelFactory.buildMap()
 		levelFactory.createPlayer(camera)
 	}
 
