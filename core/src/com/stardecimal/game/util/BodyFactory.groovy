@@ -244,6 +244,21 @@ class BodyFactory {
 		return boxBody
 	}
 
+	Body makePolygonShapeBody(float[] vertices, float posX, float posY, int material, BodyDef.BodyType bodyType){
+		BodyDef boxBodyDef = new BodyDef()
+		boxBodyDef.type = bodyType
+		boxBodyDef.position.x = posX
+		boxBodyDef.position.y = posY
+		Body boxBody = world.createBody(boxBodyDef)
+
+		PolygonShape polygon = new PolygonShape()
+		polygon.set(vertices)
+		boxBody.createFixture(makeFixture(material,polygon))
+		polygon.dispose()
+
+		return boxBody
+	}
+
 	void makeConeSensor(Body body, float size){
 
 		FixtureDef fixtureDef = new FixtureDef()
