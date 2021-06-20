@@ -44,14 +44,6 @@ class GameJamGame extends Game {
 	MyUiInputProcessor uiInputProcessor
 	GifRecorder recorder
 
-	//TODO
-	//Save preferences
-	//use https://github.com/libgdx/libgdx/wiki/Texture-packer
-	//stop using .finishLoading() and have a progress screen with a loading bar.
-	//Additionally you can automate your resource loading via:
-	//https://github.com/raeleus/Java-Poet-and-libGDX-Example/wiki
-	//Switch from using camera directly to viewport? https://github.com/libgdx/libgdx/wiki/Viewports
-	// something else
 	GameJamGame() {
 		uiInputProcessor = new MyUiInputProcessor(this)
 		multiplexer.addProcessor(uiInputProcessor)
