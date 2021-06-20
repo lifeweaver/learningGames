@@ -5,6 +5,8 @@ import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.maps.tiled.TiledMap
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
+import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.stardecimal.game.entity.components.PlayerComponent
@@ -20,6 +22,9 @@ import com.stardecimal.game.util.DefaultHud
 import com.stardecimal.game.util.DefaultLevelFactory
 
 class LevelFactory implements DefaultLevelFactory {
+	RandomXS128 rand = new RandomXS128()
+	Entity player
+	TiledMapTileLayer collisionLayer
 
 	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		init(en, assetManager)
@@ -32,6 +37,7 @@ class LevelFactory implements DefaultLevelFactory {
 	}
 
 	Entity createPlayer(OrthographicCamera cam, Vector2 startPos=new Vector2(RenderingSystem.getScreenSizeInPixesWorld().x / 2 as float, 16.5)) {
+		log.debug("RenderingSystem.getScreenSizeInPixesWorld().x / 2: ${RenderingSystem.getScreenSizeInPixesWorld().x / 2}")
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)
@@ -51,8 +57,8 @@ class LevelFactory implements DefaultLevelFactory {
 		)
 
 		texture.region = DFUtils.makeTextureRegion(2, 2, '#ffffff')
-		position.scale.x = 15
-		position.scale.y = 15
+//		position.scale.x = 15
+//		position.scale.y = 15
 
 		type.type = TypeComponent.TYPES.PLAYER
 		sdBody.body.setUserData(entity)
@@ -71,7 +77,9 @@ class LevelFactory implements DefaultLevelFactory {
 
 
 	TiledMap generateBackground() {
-		return null
+		map = assetManager.manager.get(SdAssetManager.gameMap)
+		collisionLayer = (TiledMapTileLayer) map.getLayers().first()
+		return map
 	}
 
 	@Override

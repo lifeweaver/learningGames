@@ -26,8 +26,10 @@ class SdAssetManager {
 //	final static String loadingImages = 'images/loading.atlas'
 	final static String skin = "skin/glassy-ui.json"
 
-	void queueAddIndividualAssets() {
+	final static String gameMap = "maps/map.tmx"
 
+	void queueAddIndividualAssets() {
+		manager.load(gameMap, TiledMap)
 	}
 
 	void queueAddImages() {

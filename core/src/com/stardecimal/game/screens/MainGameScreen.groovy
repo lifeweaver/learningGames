@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.stardecimal.game.GameJamGame
 import com.stardecimal.game.LevelFactory
+import com.stardecimal.game.entity.systems.PlayerControlSystem
 import com.stardecimal.game.entity.util.Mapper
 import com.stardecimal.game.entity.components.SdBodyComponent
 import com.stardecimal.game.entity.systems.RenderingSystem
@@ -18,6 +19,9 @@ class MainGameScreen extends ScreenAdapter implements GameScreen {
 		init(game, LevelFactory.class)
 		levelFactory = (LevelFactory) lvlFactory
 		levelFactory.gameName = 'Balls - a rolling story'
+
+		engine.addSystem(new PlayerControlSystem(levelFactory))
+
 		renderingSystem = engine.getSystem(RenderingSystem)
 
 
@@ -42,8 +46,9 @@ class MainGameScreen extends ScreenAdapter implements GameScreen {
 			//Update the camera location before updating the systems.
 			if(levelFactory.player) {
 				SdBodyComponent playerBody = Mapper.bCom.get(levelFactory.player)
-				renderingSystem.getCamera().position.x = playerBody.body.position.x
-				renderingSystem.getCamera().position.y = playerBody.body.position.y
+				if(playerBody.body.position.x > 20) {
+					renderingSystem.getCamera().position.x = playerBody.body.position.x
+				}
 			}
 			engine.update(delta)
 
