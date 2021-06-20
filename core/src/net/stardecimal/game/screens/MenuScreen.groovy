@@ -11,16 +11,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import net.stardecimal.game.MyGames
+import net.stardecimal.game.GameJamGame
 import net.stardecimal.game.loader.SdAssetManager
 
 class MenuScreen extends ScreenAdapter {
-	MyGames parent
+	GameJamGame parent
 	Stage stage
 	Skin skin
 //	TextureRegion background
 
-	MenuScreen(MyGames game) {
+	MenuScreen(GameJamGame game) {
 		parent = game
 		stage = new Stage(new ScreenViewport())
 		parent.assetManager.queueAddSkin()
@@ -70,14 +70,14 @@ class MenuScreen extends ScreenAdapter {
 		newGame.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.GAME_SELECTION)
+				parent.changeScreen(GameJamGame.GAME_SELECTION)
 			}
 		})
 
 		preferences.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.PREFERENCES)
+				parent.changeScreen(GameJamGame.PREFERENCES)
 			}
 		})
 	}

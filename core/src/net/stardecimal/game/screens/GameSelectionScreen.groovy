@@ -11,15 +11,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import net.stardecimal.game.MyGames
+import net.stardecimal.game.GameJamGame
 import net.stardecimal.game.loader.SdAssetManager
 
 class GameSelectionScreen extends ScreenAdapter {
-	MyGames parent
+	GameJamGame parent
 	Stage stage
 	Skin skin
 
-	GameSelectionScreen(MyGames game) {
+	GameSelectionScreen(GameJamGame game) {
 		parent = game
 		stage = new Stage(new ScreenViewport())
 		parent.assetManager.queueAddSkin()
@@ -101,56 +101,56 @@ class GameSelectionScreen extends ScreenAdapter {
 		pingPong.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.PONG)
+				parent.changeScreen(GameJamGame.PONG)
 			}
 		})
 
 		worm.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.WORM)
+				parent.changeScreen(GameJamGame.WORM)
 			}
 		})
 
 		breakout.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.BREAKOUT)
+				parent.changeScreen(GameJamGame.BREAKOUT)
 			}
 		})
 
 		missileCommand.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.MISSILE_COMMAND)
+				parent.changeScreen(GameJamGame.MISSILE_COMMAND)
 			}
 		})
 
 		spaceInvaders.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.SPACE_INVADERS)
+				parent.changeScreen(GameJamGame.SPACE_INVADERS)
 			}
 		})
 
 		asteroids.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.ASTEROIDS)
+				parent.changeScreen(GameJamGame.ASTEROIDS)
 			}
 		})
 
 		tetris.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.TETRIS)
+				parent.changeScreen(GameJamGame.TETRIS)
 			}
 		})
 
 		pacman.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.PACMAN)
+				parent.changeScreen(GameJamGame.PACMAN)
 			}
 		})
 	}

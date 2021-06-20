@@ -16,11 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import net.stardecimal.game.MyGames
+import net.stardecimal.game.GameJamGame
 import net.stardecimal.game.loader.SdAssetManager
 
 class PreferencesScreen extends ScreenAdapter {
-	MyGames parent
+	GameJamGame parent
 	Stage stage
 	private Label titleLabel
 	private Label volumeMusicLabel
@@ -28,7 +28,7 @@ class PreferencesScreen extends ScreenAdapter {
 	private Label musicOnOffLabel
 	private Label soundOnOffLabel
 
-	PreferencesScreen(MyGames game) {
+	PreferencesScreen(GameJamGame game) {
 		parent = game
 		stage = new Stage(new ScreenViewport())
 	}

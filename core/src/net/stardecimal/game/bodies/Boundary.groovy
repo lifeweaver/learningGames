@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.PolygonShape
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.ui.Image
-import net.stardecimal.game.SizingUtil
+import net.stardecimal.game.util.SizingUtil
 
 
 class Boundary extends Image {

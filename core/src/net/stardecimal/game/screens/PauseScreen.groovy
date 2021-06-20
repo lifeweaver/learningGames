@@ -10,15 +10,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import net.stardecimal.game.MyGames
+import net.stardecimal.game.GameJamGame
 import net.stardecimal.game.loader.SdAssetManager
 
 class PauseScreen extends ScreenAdapter {
-	private MyGames parent
+	private GameJamGame parent
 	private Skin skin
 	private Stage stage
 
-	PauseScreen(MyGames game) {
+	PauseScreen(GameJamGame game) {
 		parent = game
 		stage = new Stage(new ScreenViewport())
 		parent.assetManager.queueAddSkin()
@@ -69,14 +69,14 @@ class PauseScreen extends ScreenAdapter {
 		preferences.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.PREFERENCES)
+				parent.changeScreen(GameJamGame.PREFERENCES)
 			}
 		})
 
 		mainMenu.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.MENU)
+				parent.changeScreen(GameJamGame.MENU)
 			}
 		})
 

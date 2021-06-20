@@ -2,7 +2,7 @@ package net.stardecimal.game.entity.components
 
 import com.badlogic.gdx.ai.utils.Location
 import com.badlogic.gdx.math.Vector2
-import net.stardecimal.game.DFUtils
+import net.stardecimal.game.util.DFUtils
 
 class SdLocation implements Location<Vector2> {
 

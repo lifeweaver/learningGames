@@ -13,18 +13,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import groovy.json.JsonSlurper
-import net.stardecimal.game.DefaultLevelFactory
-import net.stardecimal.game.MyGames
+import net.stardecimal.game.util.DefaultLevelFactory
+import net.stardecimal.game.GameJamGame
 import net.stardecimal.game.loader.SdAssetManager
-import net.stardecimal.game.HighScores
+import net.stardecimal.game.util.HighScores
 
 class HighScoresScreen extends ScreenAdapter {
-	private MyGames parent
+	private GameJamGame parent
 	private Stage stage
 	private HighScores highScores
 	private DefaultLevelFactory levelFactory
 
-	HighScoresScreen(MyGames game, DefaultLevelFactory lvlFactory) {
+	HighScoresScreen(GameJamGame game, DefaultLevelFactory lvlFactory) {
 		parent = game
 		stage = new Stage(new ScreenViewport())
 		highScores = new HighScores()
@@ -48,7 +48,7 @@ class HighScoresScreen extends ScreenAdapter {
 		backButton.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.MENU)
+				parent.changeScreen(GameJamGame.MENU)
 			}
 		})
 

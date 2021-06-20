@@ -15,19 +15,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import net.stardecimal.game.DefaultLevelFactory
-import net.stardecimal.game.HighScores
-import net.stardecimal.game.MyGames
+import net.stardecimal.game.util.DefaultLevelFactory
+import net.stardecimal.game.util.HighScores
+import net.stardecimal.game.GameJamGame
 
 class EndScreen extends ScreenAdapter {
-	private MyGames parent
+	private GameJamGame parent
 	private Skin skin
 	private Stage stage
 	private TextureAtlas atlas
 	private TextureAtlas.AtlasRegion background
 	private DefaultLevelFactory levelFactory
 
-	EndScreen(MyGames game, DefaultLevelFactory lvlFactory) {
+	EndScreen(GameJamGame game, DefaultLevelFactory lvlFactory) {
 		parent = game
 		levelFactory = lvlFactory
 		skin = parent.assetManager.manager.get("skin/glassy-ui.json")
@@ -46,14 +46,14 @@ class EndScreen extends ScreenAdapter {
 			@Override
 			void changed(ChangeEvent event, Actor actor) {
 				println("To the MENU")
-				parent.changeScreen(MyGames.MENU)
+				parent.changeScreen(GameJamGame.MENU)
 			}
 		})
 
 		highScoresButton.addListener(new ChangeListener() {
 			@Override
 			void changed(ChangeEvent event, Actor actor) {
-				parent.changeScreen(MyGames.HIGH_SCORES)
+				parent.changeScreen(GameJamGame.HIGH_SCORES)
 			}
 		})
 
@@ -62,7 +62,7 @@ class EndScreen extends ScreenAdapter {
 			void changed(ChangeEvent event, Actor actor) {
 				levelFactory.playerScore
 				new HighScores().addScore(levelFactory.gameName, name.text ?: 'Anonymous', levelFactory.playerScore.toString())
-				parent.changeScreen(MyGames.HIGH_SCORES)
+				parent.changeScreen(GameJamGame.HIGH_SCORES)
 			}
 		})
 
