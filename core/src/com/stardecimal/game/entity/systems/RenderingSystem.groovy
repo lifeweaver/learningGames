@@ -22,6 +22,7 @@ import com.badlogic.gdx.physics.box2d.Shape
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
+import com.stardecimal.game.util.MyOrthogonalTiledMapRenderer
 import com.stardecimal.game.util.RenderingConstants
 import com.stardecimal.game.entity.util.Mapper
 import com.stardecimal.game.entity.components.SdBodyComponent
@@ -78,7 +79,7 @@ class RenderingSystem extends SortedIteratingSystem {
 	private OrthographicCamera cam
 	private Viewport viewport
 	private TiledMap background
-	private OrthogonalTiledMapRenderer backgroundRenderer
+	private MyOrthogonalTiledMapRenderer backgroundRenderer
 	private Matrix4 hudMatrix
 	private def hud
 	private float stateTime = 0
@@ -144,7 +145,7 @@ class RenderingSystem extends SortedIteratingSystem {
 				PIXELS_TO_METRES = FRUSTUM_HEIGHT / (firstLayer.height * firstLayer.tileHeight)
 			}
 
-			backgroundRenderer = new OrthogonalTiledMapRenderer(background, PIXELS_TO_METRES, batch)
+			backgroundRenderer = new MyOrthogonalTiledMapRenderer(background, PIXELS_TO_METRES, batch)
 		}
 	}
 
