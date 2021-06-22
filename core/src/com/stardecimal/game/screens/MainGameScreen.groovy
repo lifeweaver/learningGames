@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2
 import com.stardecimal.game.GameJamGame
 import com.stardecimal.game.LevelFactory
 import com.stardecimal.game.entity.systems.CollisionSystem
+import com.stardecimal.game.entity.systems.FiringSystem
 import com.stardecimal.game.entity.systems.PlayerControlSystem
 import com.stardecimal.game.entity.util.Mapper
 import com.stardecimal.game.entity.components.SdBodyComponent
@@ -26,8 +27,9 @@ class MainGameScreen extends ScreenAdapter implements GameScreen {
 		levelFactory.world.gravity = new Vector2(0, -9.8f)
 		levelFactory.gameName = 'Balls - a rolling story'
 
-		engine.addSystem(new PlayerControlSystem(levelFactory))
+		engine.addSystem(new PlayerControlSystem(levelFactory, camera))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))
+		engine.addSystem(new FiringSystem(levelFactory))
 
 		renderingSystem = engine.getSystem(RenderingSystem)
 
