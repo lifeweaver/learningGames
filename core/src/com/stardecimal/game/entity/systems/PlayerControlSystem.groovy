@@ -17,10 +17,8 @@ import com.stardecimal.game.util.KeyboardController
 class PlayerControlSystem extends IteratingSystem {
 	KeyboardController controller
 	LevelFactory levelFactory
-	float speed = 5
-	long lastShot = System.currentTimeMillis()
+	float speed = 1
 	long lastBounce = System.currentTimeMillis()
-	long lastGrenade = System.currentTimeMillis()
 	long lastTurn = System.currentTimeMillis()
 	float rotation = 0
 	long lastClick = System.currentTimeMillis()
@@ -70,19 +68,9 @@ class PlayerControlSystem extends IteratingSystem {
 //			Mapper.texCom.get(entity).region = levelFactory.determinePlayerTexture(rotation)
 		}
 
-		if (controller.left && System.currentTimeMillis() - lastGrenade > 1000) {
-			lastGrenade = System.currentTimeMillis()
-//			levelFactory.playerGrenade(playerBody.body.position, rotation * MathUtils.degreesToRadians as float)
-		}
-
-		if (controller.right && System.currentTimeMillis() - lastShot > 300) {
-			lastShot = System.currentTimeMillis()
-//			levelFactory.playerShoot(rotation * MathUtils.degreesToRadians as float)
-		}
-
 		if (controller.spacbar && System.currentTimeMillis() - lastBounce > 500) {
 			lastBounce = System.currentTimeMillis()
-			playerBody.body.applyForceToCenter(0, 10, true)
+			playerBody.body.applyLinearImpulse(new Vector2(0, 0.2), playerBody.body.position, true)
 		}
 
 		if(controller.isMouse1Down && System.currentTimeMillis() - lastClick > 200 ) {
