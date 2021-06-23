@@ -52,7 +52,7 @@ class LevelFactory implements DefaultLevelFactory {
 //		enemyScoreWallTex = DFUtils.makeTextureRegion(0.1, 1, '#000000')
 	}
 
-	Entity createPlayer(OrthographicCamera cam, Vector2 startPos=new Vector2(RenderingSystem.getScreenSizeInPixesWorld().x / 2 as float, 16.5)) {
+	Entity createPlayer(OrthographicCamera cam, Vector2 startPos=new Vector2(RenderingSystem.getScreenSizeInPixesWorld().x / RenderingSystem.PPM / 2 as float, 16.5 / RenderingSystem.PPM as float)) {
 		Entity entity = engine.createEntity()
 		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
 		TransformComponent position = engine.createComponent(TransformComponent)
@@ -65,8 +65,8 @@ class LevelFactory implements DefaultLevelFactory {
 		sdBody.body = bodyFactory.makeBoxPolyBody(
 				startPos.x,
 				startPos.y,
-				2,
-				2,
+				2 / RenderingSystem.PPM as float,
+				2 / RenderingSystem.PPM as float,
 				BodyFactory.STEEL,
 				BodyDef.BodyType.DynamicBody,
 				true
@@ -75,8 +75,8 @@ class LevelFactory implements DefaultLevelFactory {
 		sdBody.body.fixtureList.first().filterData.maskBits = GROUND_BIT
 
 		texture.region = DFUtils.makeTextureRegion(2, 2, '#ffffff')
-//		position.scale.x = 15
-//		position.scale.y = 15
+		position.scale.x = 1000
+		position.scale.y = 1000
 
 		type.type = TypeComponent.TYPES.PLAYER
 		sdBody.body.setUserData(entity)
@@ -105,16 +105,13 @@ class LevelFactory implements DefaultLevelFactory {
 
 		Vector2 linearVelocity = new Vector2()
 		DFUtils.angleToVector(linearVelocity, angle)
-		Vector2 shotStartPos = new Vector2(linearVelocity.x, linearVelocity.y).add(startPos)
-		linearVelocity.x += linearVelocity.x * 15
-		linearVelocity.y += linearVelocity.y * 15
 		bul.xVel = linearVelocity.x
 		bul.yVel = linearVelocity.y
 
 		sdBody.body = bodyFactory.makeCirclePolyBody(
-				shotStartPos.x,
-				shotStartPos.y,
-				1,
+				startPos.x,
+				startPos.y,
+				1 / RenderingSystem.PPM as float,
 				BodyFactory.STONE,
 				BodyDef.BodyType.DynamicBody,
 				false,
@@ -127,8 +124,8 @@ class LevelFactory implements DefaultLevelFactory {
 		sdBody.body.bullet = true
 		sdBody.body.setUserData(entity)
 		texture.region = shotTex
-		position.scale.x = 20
-		position.scale.y = 20
+		position.scale.x = 500
+		position.scale.y = 500
 
 		bul.owner = owner
 		bul.maxLife = 3

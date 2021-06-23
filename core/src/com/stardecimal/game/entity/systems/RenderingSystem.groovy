@@ -103,16 +103,13 @@ class RenderingSystem extends SortedIteratingSystem {
 			PIXELS_TO_METRES = constants.MPP
 			FRUSTUM_WIDTH = constants.WORLD_WIDTH
 			FRUSTUM_HEIGHT = constants.WORLD_HEIGHT
-
-			cam = new OrthographicCamera()
-			viewport = new FitViewport(FRUSTUM_WIDTH, FRUSTUM_HEIGHT, cam)
-			cam.viewportWidth = viewport.worldWidth
-			cam.viewportHeight = viewport.worldHeight
-			cam.position.set(viewport.worldWidth / 2f as float, viewport.worldHeight / 2f as float, 0)
-		} else {
-			cam = new OrthographicCamera(FRUSTUM_WIDTH, FRUSTUM_HEIGHT)
-			cam.position.set(FRUSTUM_WIDTH / 2f as float, FRUSTUM_HEIGHT / 2f as float, 0)
 		}
+
+		cam = new OrthographicCamera()
+		viewport = new FitViewport(FRUSTUM_WIDTH, FRUSTUM_HEIGHT, cam)
+		cam.viewportWidth = viewport.worldWidth / PPM as float
+		cam.viewportHeight = viewport.worldHeight / PPM as float
+		cam.position.set(viewport.worldWidth / PPM / 2f as float, viewport.worldHeight / PPM / 2f as float, 0)
 
 	}
 
@@ -142,7 +139,7 @@ class RenderingSystem extends SortedIteratingSystem {
 
 			if(background.properties.get("ScaleMap--Scrolling--X")) {
 				TiledMapTileLayer firstLayer = (TiledMapTileLayer) (background.layers.find {it.name == "foreground" } ?: background.layers.first())
-				PIXELS_TO_METRES = FRUSTUM_HEIGHT / (firstLayer.height * firstLayer.tileHeight)
+				PIXELS_TO_METRES = FRUSTUM_HEIGHT / (firstLayer.height * firstLayer.tileHeight) / PPM
 			}
 
 			backgroundRenderer = new MyOrthogonalTiledMapRenderer(background, PIXELS_TO_METRES, batch)

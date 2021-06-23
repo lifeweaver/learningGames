@@ -19,6 +19,7 @@ class PlayerControlSystem extends IteratingSystem {
 	LevelFactory levelFactory
 	float speed = 5
 	long lastShot = System.currentTimeMillis()
+	long lastBounce = System.currentTimeMillis()
 	long lastGrenade = System.currentTimeMillis()
 	long lastTurn = System.currentTimeMillis()
 	float rotation = 0
@@ -77,6 +78,11 @@ class PlayerControlSystem extends IteratingSystem {
 		if (controller.right && System.currentTimeMillis() - lastShot > 300) {
 			lastShot = System.currentTimeMillis()
 //			levelFactory.playerShoot(rotation * MathUtils.degreesToRadians as float)
+		}
+
+		if (controller.spacbar && System.currentTimeMillis() - lastBounce > 500) {
+			lastBounce = System.currentTimeMillis()
+			playerBody.body.applyForceToCenter(0, 10, true)
 		}
 
 		if(controller.isMouse1Down && System.currentTimeMillis() - lastClick > 200 ) {
