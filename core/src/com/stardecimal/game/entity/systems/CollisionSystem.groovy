@@ -43,5 +43,6 @@ class CollisionSystem extends IteratingSystem {
 				cc.collisionEntity = null
 			}
 		}
+		cc.collisionEntity = null
 	}
 }
