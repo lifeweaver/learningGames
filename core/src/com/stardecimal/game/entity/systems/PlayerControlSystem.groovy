@@ -3,11 +3,15 @@ package com.stardecimal.game.entity.systems
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
 import com.stardecimal.game.LevelFactory
 import com.stardecimal.game.entity.components.PlayerComponent
 import com.stardecimal.game.entity.components.SdBodyComponent
 import com.stardecimal.game.entity.util.Mapper
+import com.stardecimal.game.util.DFUtils
 import com.stardecimal.game.util.KeyboardController
 
 class PlayerControlSystem extends IteratingSystem {
@@ -18,12 +22,15 @@ class PlayerControlSystem extends IteratingSystem {
 	long lastGrenade = System.currentTimeMillis()
 	long lastTurn = System.currentTimeMillis()
 	float rotation = 0
+	long lastClick = System.currentTimeMillis()
+	OrthographicCamera camera
 
 	@SuppressWarnings("unchecked")
-	PlayerControlSystem(LevelFactory lvlFactory) {
+	PlayerControlSystem(LevelFactory lvlFactory, OrthographicCamera cam) {
 		super(Family.all(PlayerComponent.class).get())
 		controller = lvlFactory.controller
 		levelFactory = lvlFactory
+		camera = cam
 	}
 
 	@Override
@@ -70,6 +77,14 @@ class PlayerControlSystem extends IteratingSystem {
 		if (controller.right && System.currentTimeMillis() - lastShot > 300) {
 			lastShot = System.currentTimeMillis()
 //			levelFactory.playerShoot(rotation * MathUtils.degreesToRadians as float)
+		}
+
+		if(controller.isMouse1Down && System.currentTimeMillis() - lastClick > 200 ) {
+			lastClick = System.currentTimeMillis()
+			Vector3 gameCoords = camera.unproject(new Vector3(controller.mouseLocation.x, controller.mouseLocation.y, 0))
+			Vector2 pos = new Vector2(gameCoords.x, gameCoords.y)
+			float angle = DFUtils.vectorToAngle(DFUtils.aimTo(playerBody.body.position, pos))
+			levelFactory.createShot(playerBody.body.position, angle)
 		}
 
 		if (!controller.a && !controller.d) {

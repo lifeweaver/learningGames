@@ -4,18 +4,19 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.MapLayer
 import com.badlogic.gdx.maps.MapObject
 import com.badlogic.gdx.maps.objects.PolygonMapObject
 import com.badlogic.gdx.maps.objects.RectangleMapObject
 import com.badlogic.gdx.maps.tiled.TiledMap
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
 import com.badlogic.gdx.math.Polygon
 import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
+import com.stardecimal.game.entity.components.BulletComponent
 import com.stardecimal.game.entity.components.CollisionComponent
 import com.stardecimal.game.entity.components.PlayerComponent
 import com.stardecimal.game.entity.components.SdBodyComponent
@@ -30,14 +31,19 @@ import com.stardecimal.game.util.DefaultHud
 import com.stardecimal.game.util.DefaultLevelFactory
 
 class LevelFactory implements DefaultLevelFactory {
+	private TextureRegion shotTex
 	RandomXS128 rand = new RandomXS128()
 	Entity player
 	static final short NOTHING_BIT = 0x0000
 	static final short GROUND_BIT = 0x0001
-	static final short PLAYER_BIT = 0x0010
+	static final short PLAYER_BIT = 0x0002
+	static final short BULLET_BIT = 0x0004
 
 	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		init(en, assetManager)
+
+		TextureAtlas atlas = assetManager.manager.get(SdAssetManager.gameImages)
+		shotTex = atlas.findRegion("shot")
 
 		//Specific textures
 //		paddleTex = DFUtils.makeTextureRegion(1, 1, '#ffffff')
@@ -88,14 +94,73 @@ class LevelFactory implements DefaultLevelFactory {
 		return entity
 	}
 
+	void createShot(Vector2 startPos, float angle, BulletComponent.Owner owner=BulletComponent.Owner.PLAYER) {
+		Entity entity = engine.createEntity()
+		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+		TransformComponent position = engine.createComponent(TransformComponent)
+		TextureComponent texture = engine.createComponent(TextureComponent)
+		CollisionComponent colComp = engine.createComponent(CollisionComponent)
+		TypeComponent type = engine.createComponent(TypeComponent)
+		BulletComponent bul = engine.createComponent(BulletComponent)
+
+		Vector2 linearVelocity = new Vector2()
+		DFUtils.angleToVector(linearVelocity, angle)
+		Vector2 shotStartPos = new Vector2(linearVelocity.x, linearVelocity.y).add(startPos)
+		linearVelocity.x += linearVelocity.x * 15
+		linearVelocity.y += linearVelocity.y * 15
+		bul.xVel = linearVelocity.x
+		bul.yVel = linearVelocity.y
+
+		sdBody.body = bodyFactory.makeCirclePolyBody(
+				shotStartPos.x,
+				shotStartPos.y,
+				1,
+				BodyFactory.STONE,
+				BodyDef.BodyType.DynamicBody,
+				false,
+				true
+		)
+		sdBody.body.fixtureList.first().filterData.categoryBits = BULLET_BIT
+		sdBody.body.fixtureList.first().filterData.maskBits = (short) (PLAYER_BIT | GROUND_BIT)
+
+		type.type = TypeComponent.TYPES.BULLET
+		sdBody.body.bullet = true
+		sdBody.body.setUserData(entity)
+		texture.region = shotTex
+		position.scale.x = 20
+		position.scale.y = 20
+
+		bul.owner = owner
+		bul.maxLife = 3
+
+		//TODO: figure out why not colliding off each other?
+
+//		SoundEffectComponent soundCom = engine.createComponent(SoundEffectComponent)
+//		soundCom.soundEffect = shot
+//		soundCom.play()
+//		entity.add(soundCom)
+
+
+		entity.add(bul)
+		entity.add(sdBody)
+		entity.add(position)
+		entity.add(texture)
+		entity.add(colComp)
+		entity.add(type)
+		engine.addEntity(entity)
+	}
+
 	void buildMap() {
 		MapLayer collisionLayer = (MapLayer) map.layers.find { it.name == 'collision' }
 		collisionLayer.objects.each { MapObject mapObject ->
-			Body body = null
+			Entity entity = engine.createEntity()
+			SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+			TypeComponent type = engine.createComponent(TypeComponent)
+			TransformComponent position = engine.createComponent(TransformComponent)
 
 			if(mapObject instanceof RectangleMapObject) {
 				Rectangle rectangle = adjustRectangleDimensions2(mapObject.rectangle)
-				body = bodyFactory.makeBoxPolyBody(
+				sdBody.body = bodyFactory.makeBoxPolyBody(
 						rectangle.x,
 						rectangle.y,
 						rectangle.width,
@@ -107,7 +172,7 @@ class LevelFactory implements DefaultLevelFactory {
 
 			if(mapObject instanceof PolygonMapObject) {
 				Polygon polygon = adjustPolygonDimensions(mapObject.polygon)
-				body = bodyFactory.makePolygonShapeBody(
+				sdBody.body = bodyFactory.makePolygonShapeBody(
 						polygon.vertices,
 						polygon.x,
 						polygon.y,
@@ -117,8 +182,15 @@ class LevelFactory implements DefaultLevelFactory {
 			}
 
 
-			body.fixtureList.first().filterData.categoryBits = GROUND_BIT
-			body.fixtureList.first().filterData.maskBits = PLAYER_BIT // can combine with | if multiple i.e. GROUND_BIT | PLAYER_BIT
+			sdBody.body.fixtureList.first().filterData.categoryBits = GROUND_BIT
+			sdBody.body.fixtureList.first().filterData.maskBits = (short) (PLAYER_BIT | BULLET_BIT) // can combine with | if multiple i.e. GROUND_BIT | PLAYER_BIT
+			sdBody.body.setUserData(entity)
+			type.type = TypeComponent.TYPES.SCENERY
+
+			entity.add(position)
+			entity.add(type)
+			entity.add(sdBody)
+			engine.addEntity(entity)
 		}
 	}
 

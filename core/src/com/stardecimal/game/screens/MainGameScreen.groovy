@@ -20,6 +20,7 @@ class MainGameScreen extends ScreenAdapter implements GameScreen {
 
 
 	//TODO: thoughtful pancake easter egg
+	//bouncing ball concept
 
 	MainGameScreen(final GameJamGame game) {
 		init(game, LevelFactory.class)
