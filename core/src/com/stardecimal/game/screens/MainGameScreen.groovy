@@ -57,7 +57,7 @@ class MainGameScreen extends ScreenAdapter implements GameScreen {
 			//Update the camera location before updating the systems.
 			if(levelFactory.player) {
 				SdBodyComponent playerBody = Mapper.bCom.get(levelFactory.player)
-				if(playerBody.body.position.x > 20) {
+				if(playerBody.body.position.x > 20 / RenderingSystem.PPM) {
 					renderingSystem.getCamera().position.x = playerBody.body.position.x
 				}
 			}
