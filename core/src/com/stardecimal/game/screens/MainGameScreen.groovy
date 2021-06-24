@@ -47,6 +47,7 @@ class MainGameScreen extends ScreenAdapter implements GameScreen {
 //		levelFactory.createScrollingYBoundaries(totalHeight)
 		levelFactory.buildMap()
 		levelFactory.createPlayer(camera)
+		levelFactory.generateLevel(20)
 	}
 
 	@Override

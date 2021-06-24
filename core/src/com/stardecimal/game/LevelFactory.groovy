@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.MapObject
 import com.badlogic.gdx.maps.objects.PolygonMapObject
 import com.badlogic.gdx.maps.objects.RectangleMapObject
 import com.badlogic.gdx.maps.tiled.TiledMap
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Polygon
 import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Rectangle
@@ -29,27 +30,28 @@ import com.stardecimal.game.util.BodyFactory
 import com.stardecimal.game.util.DFUtils
 import com.stardecimal.game.util.DefaultHud
 import com.stardecimal.game.util.DefaultLevelFactory
+import com.stardecimal.game.util.simplexnoise.OpenSimplexNoise
 
 class LevelFactory implements DefaultLevelFactory {
-	private TextureRegion shotTex
+	private TextureRegion shotTex, platform1Tex
 	RandomXS128 rand = new RandomXS128()
 	Entity player
+	int currentLevel = 0
+	float lastPlatformX = 0
 	static final short NOTHING_BIT = 0x0000
 	static final short GROUND_BIT = 0x0001
 	static final short PLAYER_BIT = 0x0002
 	static final short BULLET_BIT = 0x0004
+	OpenSimplexNoise openSim
 
 	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		init(en, assetManager)
 
 		TextureAtlas atlas = assetManager.manager.get(SdAssetManager.gameImages)
 		shotTex = atlas.findRegion("shot")
+		platform1Tex = atlas.findRegion("platform1")
 
-		//Specific textures
-//		paddleTex = DFUtils.makeTextureRegion(1, 1, '#ffffff')
-//		pingPongTex = DFUtils.makeTextureRegion(1, 1, '#ffffff')
-//		boundaryTex = DFUtils.makeTextureRegion(RenderingSystem.getScreenSizeInMeters().x / RenderingSystem.PPM as float, 0.1f, '#ffffff')
-//		enemyScoreWallTex = DFUtils.makeTextureRegion(0.1, 1, '#000000')
+		openSim = new OpenSimplexNoise(MathUtils.random(2000l))
 	}
 
 	Entity createPlayer(OrthographicCamera cam, Vector2 startPos=new Vector2(RenderingSystem.getScreenSizeInPixesWorld().x / RenderingSystem.PPM / 2 as float, 16.5 / RenderingSystem.PPM as float)) {
@@ -147,6 +149,79 @@ class LevelFactory implements DefaultLevelFactory {
 		engine.addEntity(entity)
 	}
 
+	void generateLevel(int yLevel) {
+		while(yLevel > currentLevel) {
+//			for(int i = 10; i < 50; i = i + 10){
+//				generateSingleColumn(i)
+				generateSingleColumn(currentLevel)
+//			}
+			currentLevel++
+		}
+	}
+
+	float genNForL(int level, int height) {
+		return openSim.eval(height, level)
+	}
+
+	void generateSingleColumn(int i) {
+		float minPlatformY = 2.5
+		float maxPlatformY = 20
+		int startOffset = 35
+		int offset = 15 * i
+		int range = 10
+		lastPlatformX = lastPlatformX ?: startOffset
+
+		if(genNForL(i,currentLevel) > -0.5f) {
+			float newPlatformX = startOffset + offset as float
+			float newPlatformY = genNForL(i * 100, currentLevel) * range + 10 as float
+//			log.debug("test: ${genNForL(i * 100, currentLevel)}, x: ${newPlatformX}, y: ${newPlatformY}, test2: ${newPlatformX - lastPlatformX}")
+			if(newPlatformX - lastPlatformX > 30) {
+				newPlatformX = newPlatformX + 30 as float
+			}
+			lastPlatformX = newPlatformX
+
+			//Keep platform y withing parameters.
+			if(newPlatformY < minPlatformY) {
+				newPlatformY = minPlatformY
+			} else if(newPlatformY > maxPlatformY) {
+				newPlatformY = maxPlatformY
+			}
+
+			buildPlatform(newPlatformX, newPlatformY)
+		}
+	}
+
+	void buildPlatform(float x, float y) {
+		Entity entity = engine.createEntity()
+		SdBodyComponent sdBody = engine.createComponent(SdBodyComponent)
+		TypeComponent type = engine.createComponent(TypeComponent)
+		TransformComponent position = engine.createComponent(TransformComponent)
+		TextureComponent texture = engine.createComponent(TextureComponent)
+
+		sdBody.body = bodyFactory.makeBoxPolyBody(
+				x / RenderingSystem.PPM as float,
+				y / RenderingSystem.PPM as float,
+				6 / RenderingSystem.PPM as float,
+				1 / RenderingSystem.PPM as float,
+				BodyFactory.STONE,
+				BodyDef.BodyType.StaticBody
+		)
+
+		sdBody.body.fixtureList.first().filterData.categoryBits = GROUND_BIT
+		sdBody.body.fixtureList.first().filterData.maskBits = (short) (PLAYER_BIT | BULLET_BIT) // can combine with | if multiple i.e. GROUND_BIT | PLAYER_BIT
+		sdBody.body.setUserData(entity)
+		type.type = TypeComponent.TYPES.SCENERY
+		texture.region = platform1Tex
+		position.scale.x = 680
+		position.scale.y = 720
+
+		entity.add(texture)
+		entity.add(position)
+		entity.add(type)
+		entity.add(sdBody)
+		engine.addEntity(entity)
+	}
+
 	void buildMap() {
 		MapLayer collisionLayer = (MapLayer) map.layers.find { it.name == 'collision' }
 		collisionLayer.objects.each { MapObject mapObject ->
@@ -201,18 +276,20 @@ class LevelFactory implements DefaultLevelFactory {
 
 	//Not sure why this works but the above doesn't..
 	static Rectangle adjustRectangleDimensions2(Rectangle rectangle) {
-		rectangle.x = rectangle.x * RenderingSystem.PIXELS_TO_METRES * 2 as float
-		rectangle.y = rectangle.y * RenderingSystem.PIXELS_TO_METRES * 2 as float
-		rectangle.width = rectangle.width * RenderingSystem.PIXELS_TO_METRES * 2 as float
-		rectangle.height = rectangle.height * RenderingSystem.PIXELS_TO_METRES * 2 as float
-		return rectangle
+		Rectangle newRectangle = new Rectangle()
+		newRectangle.x = rectangle.x * RenderingSystem.PIXELS_TO_METRES * 2 as float
+		newRectangle.y = rectangle.y * RenderingSystem.PIXELS_TO_METRES * 2 as float
+		newRectangle.width = rectangle.width * RenderingSystem.PIXELS_TO_METRES * 2 as float
+		newRectangle.height = rectangle.height * RenderingSystem.PIXELS_TO_METRES * 2 as float
+		return newRectangle
 	}
 
 	//Quite strange, I had to multiply the rectangle stuff by 2, but not the polygon??
 	static Polygon adjustPolygonDimensions(Polygon polygon) {
+		Polygon newPolygon = new Polygon()
 		float x = polygon.x * RenderingSystem.PIXELS_TO_METRES as float
 		float y = polygon.y * RenderingSystem.PIXELS_TO_METRES as float
-		polygon.setPosition(x, y)
+		newPolygon.setPosition(x, y)
 
 		float[] vertices = polygon.vertices //might need to get transformedVertices at some point, seems to work now
 		def adjustedVertices = []
@@ -220,9 +297,9 @@ class LevelFactory implements DefaultLevelFactory {
 			adjustedVertices.add(it * RenderingSystem.PIXELS_TO_METRES as float)
 		}
 
-		polygon.vertices = adjustedVertices
+		newPolygon.vertices = adjustedVertices
 
-		return polygon
+		return newPolygon
 	}
 
 	TiledMap generateBackground() {
