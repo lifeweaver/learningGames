@@ -50,15 +50,13 @@ class GameJamGame extends Game {
 	}
 
 	void gameChange(int screen) {
-		if(currentGame != screen) {
-			//Remove all input processors and re-add the ui input processor
-			multiplexer.clear()
-			multiplexer.addProcessor(uiInputProcessor)
+		//Remove all input processors and re-add the ui input processor
+		multiplexer.clear()
+		multiplexer.addProcessor(uiInputProcessor)
 
-			//Null out every game
-			gameScreen?.dispose()
-			gameScreen = null
-		}
+		//Null out every game
+		gameScreen?.dispose()
+		gameScreen = null
 
 		currentGame = screen
 	}
@@ -69,10 +67,8 @@ class GameJamGame extends Game {
 		switch(screen) {
 			case GAME:
 				gameChange(screen)
-				if(!gameScreen) {
+				if(!gameScreen || lastMenu != PAUSE) {
 					gameScreen = new MainGameScreen(this)
-				} else if(lastMenu != PAUSE) {
-					gameScreen.resetWorld()
 				}
 
 				this.setScreen(gameScreen)
