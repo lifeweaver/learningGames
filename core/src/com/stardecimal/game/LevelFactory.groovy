@@ -34,6 +34,7 @@ import com.stardecimal.game.util.simplexnoise.OpenSimplexNoise
 
 class LevelFactory implements DefaultLevelFactory {
 	private TextureRegion shotTex, platform1Tex
+	private TextureRegion[] balls
 	RandomXS128 rand = new RandomXS128()
 	Entity player
 	int currentLevel = 0
@@ -50,6 +51,7 @@ class LevelFactory implements DefaultLevelFactory {
 		TextureAtlas atlas = assetManager.manager.get(SdAssetManager.gameImages)
 		shotTex = atlas.findRegion("shot")
 		platform1Tex = atlas.findRegion("platform1")
+		balls = [atlas.findRegion("baseball"), atlas.findRegion("basketball"), atlas.findRegion("soccer"), atlas.findRegion("tennis")]
 
 		openSim = new OpenSimplexNoise(MathUtils.random(2000l))
 	}
@@ -125,7 +127,7 @@ class LevelFactory implements DefaultLevelFactory {
 		type.type = TypeComponent.TYPES.BULLET
 		sdBody.body.bullet = true
 		sdBody.body.setUserData(entity)
-		texture.region = shotTex
+		texture.region = balls[rand.nextInt(balls.size())]
 		position.scale.x = 500
 		position.scale.y = 500
 

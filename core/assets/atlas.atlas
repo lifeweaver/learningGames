@@ -1,27 +1,55 @@
 
 atlas.png
-size: 512, 256
+size: 1024, 256
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+baseball
+  rotate: false
+  xy: 388, 147
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+basketball
+  rotate: false
+  xy: 388, 45
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
 platform1
   rotate: false
-  xy: 2, 2
+  xy: 2, 24
   size: 384, 93
   orig: 384, 93
   offset: 0, 0
   index: -1
 platform2
   rotate: false
-  xy: 2, 97
+  xy: 2, 119
   size: 384, 128
   orig: 384, 128
   offset: 0, 0
   index: -1
 shot
   rotate: false
-  xy: 388, 205
+  xy: 2, 2
   size: 20, 20
   orig: 20, 20
+  offset: 0, 0
+  index: -1
+soccer
+  rotate: false
+  xy: 490, 147
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+tennis
+  rotate: false
+  xy: 490, 45
+  size: 100, 100
+  orig: 100, 100
   offset: 0, 0
   index: -1
