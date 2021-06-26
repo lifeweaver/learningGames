@@ -80,7 +80,9 @@ class EndScreen extends ScreenAdapter {
 		Label labelCredits1 = new Label("Game Design by ", skin)
 		Label labelCredits2 = new Label("Lifeweaver", skin)
 		Label labelCredits3 = new Label("Art Design by ", skin)
+		Label labelCredits3Fake = new Label("               ", skin)
 		Label labelCredits4 = new Label("Lifeweaver", skin)
+		Label labelCredits5 = new Label("GameArt2D.com", skin)
 		Label labelName = new Label("Name: ", skin)
 
 		// add items to table
@@ -95,6 +97,9 @@ class EndScreen extends ScreenAdapter {
 		table.add(labelCredits2).uniformX().align(Align.left)
 		table.row().padTop(10)
 		table.add(labelCredits3).uniformX().align(Align.left)
+		table.add(labelCredits5).uniformX().align(Align.left)
+		table.row().padTop(10)
+		table.add(labelCredits3Fake).uniformX().align(Align.left)
 		table.add(labelCredits4).uniformX().align(Align.left)
 		table.row().padTop(50)
 		table.add(menuButton).uniformX()
