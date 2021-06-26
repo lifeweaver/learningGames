@@ -71,10 +71,7 @@ class MainGameScreen extends ScreenAdapter implements GameScreen {
 				parent.changeScreen(parent.ENDGAME)
 			}
 
-//			levelFactory.hud.setScore(levelFactory.playerScore)
-//			levelFactory.hud.setLives(levelFactory.playerLives)
-//			levelFactory.hud.setBullets(levelFactory.playerBullets)
-//			levelFactory.hud.setGrenades(levelFactory.playerGrenades)
+			levelFactory.hud.setScore(levelFactory.playerScore)
 		}
 
 		// Gif Recorder support

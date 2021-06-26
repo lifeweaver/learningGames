@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import com.stardecimal.game.entity.components.BulletComponent
 import com.stardecimal.game.entity.components.CollisionComponent
 import com.stardecimal.game.entity.components.PlayerComponent
+import com.stardecimal.game.entity.components.ScoreComponent
 import com.stardecimal.game.entity.components.SdBodyComponent
 import com.stardecimal.game.entity.components.TextureComponent
 import com.stardecimal.game.entity.components.TransformComponent
@@ -76,7 +77,7 @@ class LevelFactory implements DefaultLevelFactory {
 				true
 		)
 		sdBody.body.fixtureList.first().filterData.categoryBits = PLAYER_BIT
-		sdBody.body.fixtureList.first().filterData.maskBits = GROUND_BIT
+		sdBody.body.fixtureList.first().filterData.maskBits = (short) (BULLET_BIT | GROUND_BIT)
 
 		texture.region = goalTex
 		position.scale.x = 1000
@@ -106,6 +107,8 @@ class LevelFactory implements DefaultLevelFactory {
 		CollisionComponent colComp = engine.createComponent(CollisionComponent)
 		TypeComponent type = engine.createComponent(TypeComponent)
 		BulletComponent bul = engine.createComponent(BulletComponent)
+		ScoreComponent scoreCom = engine.createComponent(ScoreComponent)
+		scoreCom.worth = 100
 
 		Vector2 linearVelocity = new Vector2()
 		DFUtils.angleToVector(linearVelocity, angle)
@@ -140,6 +143,8 @@ class LevelFactory implements DefaultLevelFactory {
 		linearVelocity.x = MathUtils.clamp(linearVelocity.x, -0.008f, 0.008f)
 		linearVelocity.y = MathUtils.clamp(linearVelocity.y, -0.002f, 0.002f)
 		sdBody.body.applyLinearImpulse(linearVelocity, sdBody.body.position, true)
+
+		entity.add(scoreCom)
 		entity.add(bul)
 		entity.add(sdBody)
 		entity.add(position)

@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 
 class DefaultHud implements HudOverlay, Disposable {
-	Label score, lives
+	Label score
 
 
 	DefaultHud(SpriteBatch spriteBatch) {
@@ -19,23 +19,17 @@ class DefaultHud implements HudOverlay, Disposable {
 		table = new Table(fillParent: true)
 
 		font = new BitmapFont(Gdx.files.internal("font/calibri14.fnt"), false)
-		Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE)
+		Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.RED)
 
 		score = new Label("SCORE:" + String.format("%06d", 0), labelStyle)
-		lives = new Label(String.format("%06d", 0), labelStyle)
 		table.add(score).expand().center().top().padTop(10)
 		table.row()
-		table.add(lives).bottom().left().fillX().padBottom(10).padLeft(10)
 
 		stage.addActor(table)
 	}
 
 	void setScore(int value) {
 		score.setText("SCORE:" + String.format("%06d", value))
-	}
-
-	void setLives(int value) {
-		lives.setText(String.format("%06d", value))
 	}
 
 	@Override

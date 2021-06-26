@@ -39,6 +39,12 @@ class CollisionSystem extends IteratingSystem {
 		// collisions
 		if (type == TypeComponent.TYPES.PLAYER) {
 			if (collidedEntity) {
+				SdBodyComponent collidedBody = Mapper.bCom.get(collidedEntity)
+				if(collidedType == TypeComponent.TYPES.BULLET) {
+					int worth = Mapper.scoreCom.get(collidedEntity).worth
+					collidedBody.isDead = true
+					levelFactory.playerScore = levelFactory.playerScore - worth
+				}
 				//TODO: do something
 				cc.collisionEntity = null
 			}
