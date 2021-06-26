@@ -7,7 +7,7 @@ import groovy.json.JsonSlurper
 
 class HighScores {
 	private static final String PREF_HIGH_SCORES = "high_scores"
-	private static final String DEFAULT_HIGH_SCORES = '[{"name": "Captain", "score": 1000},{"name": "Senior first officer", "score": 800},{"name": "First officer", "score": 600},{"name": "Second officer", "score": 400},{"name": "Cadet", "score": 100}]'
+	private static final String DEFAULT_HIGH_SCORES = '[{"name": "Captain", "score": 10000},{"name": "Senior first officer", "score": 8000},{"name": "First officer", "score": 6000},{"name": "Second officer", "score": 4000},{"name": "Cadet", "score": 1000}]'
 
 	protected Preferences getPrefs(String game) {
 		return Gdx.app.getPreferences(game)
