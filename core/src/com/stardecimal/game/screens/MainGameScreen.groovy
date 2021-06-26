@@ -8,7 +8,7 @@ import com.stardecimal.game.GameJamGame
 import com.stardecimal.game.LevelFactory
 import com.stardecimal.game.entity.systems.CollisionSystem
 import com.stardecimal.game.entity.systems.EnemySpawningSystem
-import com.stardecimal.game.entity.systems.FiringSystem
+import com.stardecimal.game.entity.systems.FallingBallSystem
 import com.stardecimal.game.entity.systems.PlayerControlSystem
 import com.stardecimal.game.entity.util.Mapper
 import com.stardecimal.game.entity.components.SdBodyComponent
@@ -31,8 +31,8 @@ class MainGameScreen extends ScreenAdapter implements GameScreen {
 
 		engine.addSystem(new PlayerControlSystem(levelFactory, camera))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))
-		engine.addSystem(new FiringSystem(levelFactory))
-		engine.addSystem(new EnemySpawningSystem(levelFactory, 5))
+		engine.addSystem(new FallingBallSystem(levelFactory))
+		engine.addSystem(new EnemySpawningSystem(levelFactory, 1))
 
 		renderingSystem = engine.getSystem(RenderingSystem)
 

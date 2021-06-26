@@ -18,6 +18,13 @@ basketball
   orig: 100, 100
   offset: 0, 0
   index: -1
+goal
+  rotate: false
+  xy: 490, 147
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
 platform1
   rotate: false
   xy: 2, 24
@@ -41,14 +48,14 @@ shot
   index: -1
 soccer
   rotate: false
-  xy: 490, 147
+  xy: 490, 45
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 tennis
   rotate: false
-  xy: 490, 45
+  xy: 592, 147
   size: 100, 100
   orig: 100, 100
   offset: 0, 0

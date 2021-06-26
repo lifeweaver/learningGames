@@ -33,7 +33,7 @@ import com.stardecimal.game.util.DefaultLevelFactory
 import com.stardecimal.game.util.simplexnoise.OpenSimplexNoise
 
 class LevelFactory implements DefaultLevelFactory {
-	private TextureRegion shotTex, platform1Tex
+	private TextureRegion goalTex, platform1Tex
 	private TextureRegion[] balls
 	RandomXS128 rand = new RandomXS128()
 	Entity player
@@ -49,8 +49,8 @@ class LevelFactory implements DefaultLevelFactory {
 		init(en, assetManager)
 
 		TextureAtlas atlas = assetManager.manager.get(SdAssetManager.gameImages)
-		shotTex = atlas.findRegion("shot")
 		platform1Tex = atlas.findRegion("platform1")
+		goalTex = atlas.findRegion("goal")
 		balls = [atlas.findRegion("baseball"), atlas.findRegion("basketball"), atlas.findRegion("soccer"), atlas.findRegion("tennis")]
 
 		openSim = new OpenSimplexNoise(MathUtils.random(2000l))
@@ -78,7 +78,7 @@ class LevelFactory implements DefaultLevelFactory {
 		sdBody.body.fixtureList.first().filterData.categoryBits = PLAYER_BIT
 		sdBody.body.fixtureList.first().filterData.maskBits = GROUND_BIT
 
-		texture.region = DFUtils.makeTextureRegion(2, 2, '#ffffff')
+		texture.region = goalTex
 		position.scale.x = 1000
 		position.scale.y = 1000
 
@@ -109,17 +109,15 @@ class LevelFactory implements DefaultLevelFactory {
 
 		Vector2 linearVelocity = new Vector2()
 		DFUtils.angleToVector(linearVelocity, angle)
-		bul.xVel = linearVelocity.x
-		bul.yVel = linearVelocity.y
 
 		sdBody.body = bodyFactory.makeCirclePolyBody(
 				startPos.x,
 				startPos.y,
 				1 / RenderingSystem.PPM as float,
-				BodyFactory.STONE,
+				BodyFactory.RUBBER,
 				BodyDef.BodyType.DynamicBody,
 				false,
-				true
+				false
 		)
 		sdBody.body.fixtureList.first().filterData.categoryBits = BULLET_BIT
 		sdBody.body.fixtureList.first().filterData.maskBits = (short) (PLAYER_BIT | GROUND_BIT)
@@ -134,14 +132,14 @@ class LevelFactory implements DefaultLevelFactory {
 		bul.owner = owner
 		bul.maxLife = 3
 
-		//TODO: figure out why not colliding off each other?
-
 //		SoundEffectComponent soundCom = engine.createComponent(SoundEffectComponent)
 //		soundCom.soundEffect = shot
 //		soundCom.play()
 //		entity.add(soundCom)
 
-
+		linearVelocity.x = MathUtils.clamp(linearVelocity.x, -0.008f, 0.008f)
+		linearVelocity.y = MathUtils.clamp(linearVelocity.y, -0.002f, 0.002f)
+		sdBody.body.applyLinearImpulse(linearVelocity, sdBody.body.position, true)
 		entity.add(bul)
 		entity.add(sdBody)
 		entity.add(position)

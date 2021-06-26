@@ -8,11 +8,11 @@ import com.stardecimal.game.entity.components.BulletComponent
 import com.stardecimal.game.entity.components.SdBodyComponent
 import com.stardecimal.game.entity.util.Mapper
 
-class FiringSystem extends IteratingSystem {
+class FallingBallSystem extends IteratingSystem {
 	LevelFactory levelFactory
 
 	@SuppressWarnings("unchecked")
-	FiringSystem(LevelFactory lvlFactory) {
+	FallingBallSystem(LevelFactory lvlFactory) {
 		super(Family.all(BulletComponent.class).get())
 		this.levelFactory = lvlFactory
 	}
@@ -22,9 +22,6 @@ class FiringSystem extends IteratingSystem {
 		//get box 2d body and bullet components
 		SdBodyComponent b2body = Mapper.bCom.get(entity)
 		BulletComponent bullet = Mapper.bulletCom.get(entity)
-
-		// apply bullet velocity to bullet body
-		b2body.body.setLinearVelocity(bullet.xVel, bullet.yVel)
 
 		//Bullets only last so long.
 		if(bullet.maxLife >= 0) {
