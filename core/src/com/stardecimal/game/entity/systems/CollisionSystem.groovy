@@ -45,7 +45,7 @@ class CollisionSystem extends IteratingSystem {
 					collidedBody.isDead = true
 					levelFactory.playerScore = levelFactory.playerScore - worth
 				}
-				//TODO: do something
+
 				cc.collisionEntity = null
 			}
 		}
