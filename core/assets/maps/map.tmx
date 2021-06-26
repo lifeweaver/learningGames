@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="100" height="10" tilewidth="128" tileheight="128" infinite="0" nextlayerid="7" nextobjectid="9">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="120" height="10" tilewidth="128" tileheight="128" infinite="0" nextlayerid="7" nextobjectid="16">
  <properties>
   <property name="ScaleMap--Scrolling--X" type="bool" value="true"/>
  </properties>
  <tileset firstgid="1" source="background.tsx"/>
- <tileset firstgid="3" source="tileset.tsx"/>
+ <tileset firstgid="5" source="tileset.tsx"/>
  <objectgroup id="6" name="background2">
   <object id="7" gid="2" x="3" y="1278" width="12800" height="768"/>
-  <object id="8" gid="21" x="4" y="516" width="12796" height="512"/>
+  <object id="8" gid="23" x="4" y="516" width="12796" height="512"/>
+  <object id="14" gid="4" x="14856" y="860" width="500" height="500"/>
  </objectgroup>
- <layer id="2" name="foreground" width="100" height="10">
+ <layer id="2" name="foreground" width="120" height="10">
   <data encoding="base64" compression="zlib">
-   eJztzqERACAMALFKQAD7T0slG1Q0uXv/EQAA0M/IZraqR6DQzs7Xrd1p7wH9/ABn
+   eJztzjEOABAQAEE1Cvz/sa7UUEmumUm231IAAAB4qVGLevYIcDWiebRyd/hsA2VzAHc=
   </data>
  </layer>
  <objectgroup id="4" name="collision">
