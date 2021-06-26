@@ -26,6 +26,7 @@ import com.stardecimal.game.entity.components.TextureComponent
 import com.stardecimal.game.entity.components.TransformComponent
 import com.stardecimal.game.entity.components.TypeComponent
 import com.stardecimal.game.entity.systems.RenderingSystem
+import com.stardecimal.game.screens.MainGameScreen
 import com.stardecimal.game.util.SdAssetManager
 import com.stardecimal.game.util.BodyFactory
 import com.stardecimal.game.util.DFUtils
@@ -45,6 +46,7 @@ class LevelFactory implements DefaultLevelFactory {
 	static final short PLAYER_BIT = 0x0002
 	static final short BULLET_BIT = 0x0004
 	OpenSimplexNoise openSim
+	MainGameScreen parent
 
 	LevelFactory(PooledEngine en, SdAssetManager assetManager) {
 		init(en, assetManager)

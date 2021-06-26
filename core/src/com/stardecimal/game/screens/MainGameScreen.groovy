@@ -19,15 +19,12 @@ class MainGameScreen extends ScreenAdapter implements GameScreen {
 	LevelFactory levelFactory
 	RenderingSystem renderingSystem
 
-
-	//TODO: thoughtful pancake easter egg
-	//bouncing ball concept
-
 	MainGameScreen(final GameJamGame game) {
 		init(game, LevelFactory.class)
 		levelFactory = (LevelFactory) lvlFactory
 		levelFactory.world.gravity = new Vector2(0, -9.8f)
 		levelFactory.gameName = 'Balls - a rolling story'
+		levelFactory.parent = this
 
 		engine.addSystem(new PlayerControlSystem(levelFactory, camera))
 		engine.addSystem(new CollisionSystem(parent, levelFactory))
@@ -42,11 +39,10 @@ class MainGameScreen extends ScreenAdapter implements GameScreen {
 
 	void resetWorld() {
 		reset()
-		levelFactory.playerScore = 0
+		levelFactory.playerScore = 1000
 		levelFactory.enemyScore = 0
 		levelFactory.playerLives = 3
-//		float totalHeight = (levelFactory.collisionLayer.tileHeight * RenderingSystem.PIXELS_TO_METRES) * levelFactory.collisionLayer.height as float
-//		levelFactory.createScrollingYBoundaries(totalHeight)
+
 		levelFactory.buildMap()
 		levelFactory.createPlayer(camera)
 		levelFactory.generateLevel(20)
@@ -65,18 +61,9 @@ class MainGameScreen extends ScreenAdapter implements GameScreen {
 				}
 			}
 			engine.update(delta)
-
-			//Move to end game screen once all lives used up
-			if(levelFactory.playerLives == -1) {
-				parent.changeScreen(parent.ENDGAME)
-			}
-
 			levelFactory.hud.setScore(levelFactory.playerScore)
-		}
-
-		// Gif Recorder support
-		if(parent.recorder) {
-			parent.recorder.update()
+		} else if(parent.state == GameJamGame.STATE.OVER) {
+			parent.changeScreen(GameJamGame.ENDGAME)
 		}
 	}
 

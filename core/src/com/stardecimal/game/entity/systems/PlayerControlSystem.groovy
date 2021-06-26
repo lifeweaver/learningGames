@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import com.stardecimal.game.GameJamGame
 import com.stardecimal.game.LevelFactory
 import com.stardecimal.game.entity.components.PlayerComponent
 import com.stardecimal.game.entity.components.SdBodyComponent
@@ -38,6 +39,11 @@ class PlayerControlSystem extends IteratingSystem {
 		//Update the invulnerabilityTime for the player
 		playerBody.invulnerabilityTime -= deltaTime
 
+		if(playerBody.body.position.y < 0) {
+			levelFactory.parent.parent.state = GameJamGame.STATE.OVER
+			return
+		}
+
 		if (controller.a) {
 			playerBody.body.setLinearVelocity(MathUtils.lerp(playerBody.body.linearVelocity.x, -speed, 0.2f), playerBody.body.linearVelocity.y)
 		}
@@ -68,7 +74,7 @@ class PlayerControlSystem extends IteratingSystem {
 //			Mapper.texCom.get(entity).region = levelFactory.determinePlayerTexture(rotation)
 		}
 
-		if (controller.spacbar && System.currentTimeMillis() - lastBounce > 500) {
+		if (controller.spacbar && System.currentTimeMillis() - lastBounce > 1000) {
 			lastBounce = System.currentTimeMillis()
 			playerBody.body.applyLinearImpulse(new Vector2(0, 0.2), playerBody.body.position, true)
 		}
