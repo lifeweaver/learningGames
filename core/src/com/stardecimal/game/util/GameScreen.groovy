@@ -42,9 +42,9 @@ trait GameScreen {
 		engine.addSystem(new PhysicsSystem(lvlFactory.world))
 		engine.addSystem(renderingSystem)
 
-		if(System.getenv('debug') == 'true') {
-			engine.addSystem(new PhysicsDebugSystem(lvlFactory.world, renderingSystem.camera))
-		}
+//		if(System.getenv('debug') == 'true') {
+//			engine.addSystem(new PhysicsDebugSystem(lvlFactory.world, renderingSystem.camera))
+//		}
 		engine.addSystem(new SteeringSystem())
 	}
 
