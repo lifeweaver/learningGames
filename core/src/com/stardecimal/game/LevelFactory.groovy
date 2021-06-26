@@ -156,12 +156,9 @@ class LevelFactory implements DefaultLevelFactory {
 		engine.addEntity(entity)
 	}
 
-	void generateLevel(int yLevel) {
-		while(yLevel > currentLevel) {
-//			for(int i = 10; i < 50; i = i + 10){
-//				generateSingleColumn(i)
-				generateSingleColumn(currentLevel)
-//			}
+	void generateLevel(int plateforms) {
+		while(plateforms > currentLevel) {
+			generateSingleColumn(currentLevel)
 			currentLevel++
 		}
 	}

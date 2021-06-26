@@ -20,8 +20,7 @@ class PlayerControlSystem extends IteratingSystem {
 	LevelFactory levelFactory
 	float speed = 1
 	long lastBounce = System.currentTimeMillis()
-	long lastTurn = System.currentTimeMillis()
-	float rotation = 0
+	long lastScore = System.currentTimeMillis()
 	long lastClick = System.currentTimeMillis()
 	OrthographicCamera camera
 
@@ -44,34 +43,17 @@ class PlayerControlSystem extends IteratingSystem {
 			return
 		}
 
+		if(playerBody.body.position.x % (levelFactory.lastPlatformX / RenderingSystem.PPM / 20) < 0.1 && System.currentTimeMillis() - lastScore > 1000) {
+			lastScore = System.currentTimeMillis()
+			levelFactory.playerScore += 100
+		}
+
 		if (controller.a) {
 			playerBody.body.setLinearVelocity(MathUtils.lerp(playerBody.body.linearVelocity.x, -speed, 0.2f), playerBody.body.linearVelocity.y)
 		}
 
 		if (controller.d) {
 			playerBody.body.setLinearVelocity(MathUtils.lerp(playerBody.body.linearVelocity.x, +speed, 0.2f), playerBody.body.linearVelocity.y)
-		}
-
-		if (controller.w) {
-			playerBody.body.setLinearVelocity(playerBody.body.linearVelocity.x, MathUtils.lerp(playerBody.body.linearVelocity.y, +speed, 0.2f))
-		}
-
-		if (controller.s) {
-			playerBody.body.setLinearVelocity(playerBody.body.linearVelocity.x, MathUtils.lerp(playerBody.body.linearVelocity.y, -speed, 0.2f))
-		}
-
-		if (controller.q && System.currentTimeMillis() - lastTurn > 300) {
-			lastTurn = System.currentTimeMillis()
-			float newAngle = rotation + 45 as float
-			rotation = newAngle
-//			Mapper.texCom.get(entity).region = levelFactory.determinePlayerTexture(rotation)
-		}
-
-		if (controller.e && System.currentTimeMillis() - lastTurn > 300) {
-			lastTurn = System.currentTimeMillis()
-			float newAngle = rotation - 45 as float
-			rotation = newAngle
-//			Mapper.texCom.get(entity).region = levelFactory.determinePlayerTexture(rotation)
 		}
 
 		if (controller.spacbar && System.currentTimeMillis() - lastBounce > 1000) {
@@ -91,9 +73,6 @@ class PlayerControlSystem extends IteratingSystem {
 			playerBody.body.setLinearVelocity(MathUtils.lerp(playerBody.body.linearVelocity.x, 0, 0.2f), playerBody.body.linearVelocity.y)
 		}
 
-		if (!controller.w && !controller.s) {
-			playerBody.body.setLinearVelocity(playerBody.body.linearVelocity.x, MathUtils.lerp(playerBody.body.linearVelocity.y, 0, 0.2f))
-		}
-
+		playerBody.body.setLinearVelocity(playerBody.body.linearVelocity.x, MathUtils.lerp(playerBody.body.linearVelocity.y, 0, 0.2f))
 	}
 }
